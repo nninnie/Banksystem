@@ -22,16 +22,36 @@
 
         <!-- SIDEBAR -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
-            <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+
+            <!-- LOGO (fixed-top removed!) -->
+            <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center">
                 <a class="sidebar-brand brand-logo" asp-page="/Index">
-                    <img src="~/images/logo.svg" alt="logo" />
+                    <img src="~/images/mybank-logo.png" alt="logo" />
                 </a>
                 <a class="sidebar-brand brand-logo-mini" asp-page="/Index">
-                    <img src="~/images/logo-mini.svg" alt="logo" />
+                    <img src="~/images/mybank-logo-mini.png" alt="logo" />
                 </a>
             </div>
 
             <ul class="nav">
+
+                <!-- PROFILE SECTION -->
+                <li class="nav-item profile">
+                    <div class="profile-desc">
+                        <div class="profile-pic">
+                            <div class="count-indicator">
+                                <img class="img-xs rounded-circle" src="~/images/profile.png" alt="">
+                                <span class="count bg-success"></span>
+                            </div>
+                            <div class="profile-name">
+                                <h5 class="mb-0 font-weight-normal">@User.Identity.Name</h5>
+                                <span>Gold Member</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- NAVIGATION -->
                 <li class="nav-item nav-category">
                     <span class="nav-link">Navigation</span>
                 </li>
@@ -64,7 +84,6 @@
                     </a>
                 </li>
 
-                <!-- ADMIN ONLY -->
                 <li class="nav-item menu-items">
                     <a class="nav-link" asp-page="/Admin/Index">
                         <span class="menu-icon"><i class="mdi mdi-shield"></i></span>
@@ -72,11 +91,10 @@
                     </a>
                 </li>
 
-                <!-- LOGIN / LOGOUT -->
                 <li class="nav-item menu-items">
                     <a class="nav-link" asp-page="/Account/Login">
                         <span class="menu-icon"><i class="mdi mdi-login"></i></span>
-                        <span class="menu-title">Login</span>
+                        <span class="menu-title">Logga in</span>
                     </a>
                 </li>
 
@@ -84,10 +102,11 @@
                     <form method="post" asp-page="/Account/Logout">
                         <button class="nav-link btn btn-link text-start">
                             <span class="menu-icon"><i class="mdi mdi-logout"></i></span>
-                            <span class="menu-title">Logout</span>
+                            <span class="menu-title">Logga ut</span>
                         </button>
                     </form>
                 </li>
+
             </ul>
         </nav>
 
@@ -96,9 +115,10 @@
 
             <!-- NAVBAR -->
             <nav class="navbar p-0 fixed-top d-flex flex-row">
+
                 <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
                     <a class="navbar-brand brand-logo-mini" asp-page="/Index">
-                        <img src="~/images/logo-mini.svg" alt="logo" />
+                        <img src="~/images/mybank-logo-mini.png" alt="logo" />
                     </a>
                 </div>
 
@@ -107,10 +127,45 @@
                         <span class="mdi mdi-menu"></span>
                     </button>
 
+                    <!-- NAVBAR ICONS (correct placement!) -->
                     <ul class="navbar-nav navbar-nav-right">
-                        <li class="nav-item">
-                            <span class="nav-link text-white">Bank System</span>
+
+                        <li class="nav-item dropdown d-none d-lg-block">
+                            <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-bs-toggle="dropdown">
+                                + Create New Project
+                            </a>
                         </li>
+
+                        <li class="nav-item nav-settings d-none d-lg-block">
+                            <a class="nav-link" href="#">
+                                <i class="mdi mdi-view-grid"></i>
+                            </a>
+                        </li>
+
+                        <li class="nav-item dropdown border-left">
+                            <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-bs-toggle="dropdown">
+                                <i class="mdi mdi-email"></i>
+                                <span class="count bg-success"></span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item dropdown border-left">
+                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
+                                <i class="mdi mdi-bell"></i>
+                                <span class="count bg-danger"></span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">
+                                <div class="navbar-profile">
+                                    <img class="img-xs rounded-circle" src="~/images/profile.png" alt="">
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">@User.Identity.Name</p>
+                                    <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                                </div>
+                            </a>
+                        </li>
+
                     </ul>
                 </div>
             </nav>
