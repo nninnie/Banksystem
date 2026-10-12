@@ -29,7 +29,7 @@ namespace BankApp.Data
 
             if (await userManager.FindByEmailAsync(adminUser.Email) == null)
             {
-                await userManager.CreateAsync(adminUser, "Admin123#");
+                await userManager.CreateAsync(adminUser, "Abc123#");
                 await userManager.AddToRoleAsync(adminUser, "Admin");
             }
 
