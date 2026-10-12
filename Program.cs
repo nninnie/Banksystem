@@ -8,7 +8,7 @@ namespace BankApp
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +52,13 @@ namespace BankApp
             app.MapStaticAssets();
             app.MapRazorPages()
                .WithStaticAssets();
+
+            // Seed the database with roles and users - changed to async method to avoid blocking the main thread - Ska jag ha denna så ?
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                await SeedData.InitializeAsync(services);
+            }
 
             app.Run();
         }
