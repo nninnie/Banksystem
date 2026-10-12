@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
+using BankApp.Models;
+
 namespace BankApp
 {
     public class Program
@@ -8,6 +12,11 @@ namespace BankApp
 
             // Add services to the container.
             builder.Services.AddRazorPages();
+
+            // Add database context, Dependency Injection, and configure the connection string
+            builder.Services.AddDbContext<BankAppContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
             var app = builder.Build();
 
