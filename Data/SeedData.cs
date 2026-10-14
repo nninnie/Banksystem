@@ -2,20 +2,12 @@
 
 namespace BankApp.Data
 {
-    // SeedData class automatically creates required roles and system users (Admin and Cashier) at startup if they do not already exist.
     public static class SeedData
     {
         public static async Task InitializeAsync(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
-            var config = serviceProvider.GetRequiredService<IConfiguration>();
-
-            // Hämta lösenord och email från appsettings.json
-            string adminEmail = config["SeedUsers:AdminEmail"];
-            string adminPassword = config["SeedUsers:AdminPassword"];
-            string cashierEmail = config["SeedUsers:CashierEmail"];
-            string cashierPassword = config["SeedUsers:CashierPassword"];
 
             // Roller som ska seedas
             string[] roles = { "Admin", "Cashier" };
@@ -29,6 +21,9 @@ namespace BankApp.Data
             }
 
             // Admin
+            string adminEmail = "robert.johansson@admin.se";
+            string adminPassword = "Abc123#";
+
             if (await userManager.FindByEmailAsync(adminEmail) == null)
             {
                 var adminUser = new IdentityUser
@@ -43,6 +38,9 @@ namespace BankApp.Data
             }
 
             // Cashier
+            string cashierEmail = "robert.johansson@cashier.se";
+            string cashierPassword = "Abc123#";
+
             if (await userManager.FindByEmailAsync(cashierEmail) == null)
             {
                 var cashierUser = new IdentityUser
@@ -54,9 +52,7 @@ namespace BankApp.Data
 
                 await userManager.CreateAsync(cashierUser, cashierPassword);
                 await userManager.AddToRoleAsync(cashierUser, "Cashier");
-
             }
         }
     }
 }
-
