@@ -23,10 +23,12 @@
         <!-- SIDEBAR -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
 
-            <!-- LOGO (fixed-top removed!) -->
+            <!-- LOGO -->
             <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center">
                 <a class="sidebar-brand brand-logo" asp-page="/Index">
-                    <img src="~/images/mybank-logo.png" alt="logo" />
+                    
+                    <img src="~/images/mybank-logo.png" alt="logo" class="mybank-logo" />
+
                 </a>
                 <a class="sidebar-brand brand-logo-mini" asp-page="/Index">
                     <img src="~/images/mybank-logo-mini.png" alt="logo" />
@@ -40,11 +42,17 @@
                     <div class="profile-desc">
                         <div class="profile-pic">
                             <div class="count-indicator">
-                                <img class="img-xs rounded-circle" src="~/images/profile.png" alt="">
+                                <img class="img-xs rounded-circle" src="~/images/faces-clipart/pic-1.png" alt="">
                                 <span class="count bg-success"></span>
                             </div>
                             <div class="profile-name">
-                                <h5 class="mb-0 font-weight-normal">@User.Identity.Name</h5>
+                                @{
+    var rawSidebar = User.Identity.Name.Split('@')[0].Replace(".", " ");
+    var nameSidebar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawSidebar);
+}
+<h5 class="mb-0 font-weight-normal">@nameSidebar</h5>
+
+
                                 <span>Gold Member</span>
                             </div>
                         </div>
@@ -92,14 +100,14 @@
                 </li>
 
                 <li class="nav-item menu-items">
-                    <a class="nav-link" asp-page="/Account/Login">
+                    <a class="nav-link" asp-page="/Login">
                         <span class="menu-icon"><i class="mdi mdi-login"></i></span>
                         <span class="menu-title">Logga in</span>
                     </a>
                 </li>
 
                 <li class="nav-item menu-items">
-                    <form method="post" asp-page="/Account/Logout">
+                    <form method="post" asp-page="/Logout">
                         <button class="nav-link btn btn-link text-start">
                             <span class="menu-icon"><i class="mdi mdi-logout"></i></span>
                             <span class="menu-title">Logga ut</span>
@@ -159,8 +167,15 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">
                                 <div class="navbar-profile">
-                                    <img class="img-xs rounded-circle" src="~/images/profile.png" alt="">
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">@User.Identity.Name</p>
+                                    <img class="img-xs rounded-circle" src="~/images/faces-clipart/pic-1.png" alt="">
+                                    @{
+    var rawNavbar = User.Identity.Name.Split('@')[0].Replace(".", " ");
+    var nameNavbar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawNavbar);
+}
+<p class="mb-0 d-none d-sm-block navbar-profile-name">@nameNavbar</p>
+
+
+
                                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                                 </div>
                             </a>

@@ -9,7 +9,15 @@ namespace BankApp.Data
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var config = serviceProvider.GetRequiredService<IConfiguration>();
 
+            // Hämta lösenord och email från appsettings.json
+            string adminEmail = config["SeedUsers:AdminEmail"];
+            string adminPassword = config["SeedUsers:AdminPassword"];
+            string cashierEmail = config["SeedUsers:CashierEmail"];
+            string cashierPassword = config["SeedUsers:CashierPassword"];
+
+            // Roller som ska seedas
             string[] roles = { "Admin", "Cashier" };
 
             foreach (var role in roles)
@@ -20,30 +28,33 @@ namespace BankApp.Data
                 }
             }
 
-            var adminUser = new IdentityUser
+            // Admin
+            if (await userManager.FindByEmailAsync(adminEmail) == null)
             {
-                UserName = "robert.johansson@admin.se",
-                Email = "robert.johansson@admin.se",
-                EmailConfirmed = true
-            };
+                var adminUser = new IdentityUser
+                {
+                    UserName = adminEmail,
+                    Email = adminEmail,
+                    EmailConfirmed = true
+                };
 
-            if (await userManager.FindByEmailAsync(adminUser.Email) == null)
-            {
-                await userManager.CreateAsync(adminUser, "Abc123#");
+                await userManager.CreateAsync(adminUser, adminPassword);
                 await userManager.AddToRoleAsync(adminUser, "Admin");
             }
 
-            var cashierUser = new IdentityUser
+            // Cashier
+            if (await userManager.FindByEmailAsync(cashierEmail) == null)
             {
-                UserName = "robert.johansson@cashier.se",
-                Email = "robert.johansson@cashier.se",
-                EmailConfirmed = true
-            };
+                var cashierUser = new IdentityUser
+                {
+                    UserName = cashierEmail,
+                    Email = cashierEmail,
+                    EmailConfirmed = true
+                };
 
-            if (await userManager.FindByEmailAsync(cashierUser.Email) == null)
-            {
-                await userManager.CreateAsync(cashierUser, "Abc123#");
+                await userManager.CreateAsync(cashierUser, cashierPassword);
                 await userManager.AddToRoleAsync(cashierUser, "Cashier");
+
             }
         }
     }

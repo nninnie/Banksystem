@@ -20838,7 +20838,7 @@ div.tagsinput {
 
 
 .sidebar .mybank-logo {
-    max-width: 180px !important; 
+    max-width: 150px !important; 
     height: auto !important; 
     object-fit: contain !important; 
     display: block;
@@ -20852,8 +20852,15 @@ div.tagsinput {
     background: transparent;
 }
 
+.mybank-logo {
+    margin-top: 8rem !important;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .sidebar .sidebar-brand-wrapper .sidebar-brand.brand-logo-mini img {
-    width: calc(150px - 50px);
+    width: calc(200px - 50px);
     max-width: 100%;
     height: 50px;
     margin: auto;
@@ -20882,7 +20889,6 @@ div.tagsinput {
     margin-top: 20px; 
 }
 
-.
 .sidebar,
 .navbar,
 .sidebar .sidebar-brand-wrapper {

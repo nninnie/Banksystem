@@ -30,8 +30,14 @@ namespace BankApp
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
             var app = builder.Build();
+
+            // Seed the database with roles and users - changed to async method to avoid blocking the main thread - Ska jag ha denna så ?
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                await SeedData.InitializeAsync(services);
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -52,13 +58,6 @@ namespace BankApp
             app.MapStaticAssets();
             app.MapRazorPages()
                .WithStaticAssets();
-
-            // Seed the database with roles and users - changed to async method to avoid blocking the main thread - Ska jag ha denna så ?
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                await SeedData.InitializeAsync(services);
-            }
 
             app.Run();
         }
