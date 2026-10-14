@@ -57,7 +57,20 @@
                                     }
                                 }
                                 <h5 class="mb-0 font-weight-normal">@nameSidebar</h5>
-                                <span>Gold Member</span>
+                                <span>
+    @if (User.IsInRole("Admin"))
+    {
+        @:Admin
+    }
+    else if (User.IsInRole("Cashier"))
+    {
+        @:Cashier
+    }
+    else
+    {
+        @:Visitor
+    }
+</span>
                             </div>
                         </div>
                     </div>
@@ -68,56 +81,64 @@
                     <span class="nav-link">Navigation</span>
                 </li>
 
-                <li class="nav-item menu-items">
-                    <a class="nav-link" asp-page="/Index">
-                        <span class="menu-icon"><i class="mdi mdi-speedometer"></i></span>
-                        <span class="menu-title">Dashboard</span>
-                    </a>
-                </li>
+                <!-- Visible to everyone (public start page) -->
+<li class="nav-item menu-items">
+    <a class="nav-link" asp-page="/Index">
+        <span class="menu-icon"><i class="mdi mdi-speedometer"></i></span>
+        <span class="menu-title">Dashboard</span>
+    </a>
+</li>
 
-                <li class="nav-item menu-items">
-                    <a class="nav-link" asp-page="/Customers/Index">
-                        <span class="menu-icon"><i class="mdi mdi-account"></i></span>
-                        <span class="menu-title">Customers</span>
-                    </a>
-                </li>
+<!-- Admin and Cashier -->
+@if (User.IsInRole("Admin") || User.IsInRole("Cashier"))
+{
+    <li class="nav-item menu-items">
+        <a class="nav-link" asp-page="/Customers/Index">
+            <span class="menu-icon"><i class="mdi mdi-account-search"></i></span>
+            <span class="menu-title">Customers</span>
+        </a>
+    </li>
 
-                <li class="nav-item menu-items">
-                    <a class="nav-link" asp-page="/Accounts/Index">
-                        <span class="menu-icon"><i class="mdi mdi-wallet"></i></span>
-                        <span class="menu-title">Accounts</span>
-                    </a>
-                </li>
+    <li class="nav-item menu-items">
+        <a class="nav-link" asp-page="/Transactions/Index">
+            <span class="menu-icon"><i class="mdi mdi-swap-horizontal"></i></span>
+            <span class="menu-title">Transactions</span>
+        </a>
+    </li>
+}
 
-                <li class="nav-item menu-items">
-                    <a class="nav-link" asp-page="/Transactions/Index">
-                        <span class="menu-icon"><i class="mdi mdi-swap-horizontal"></i></span>
-                        <span class="menu-title">Transactions</span>
-                    </a>
-                </li>
+<!-- Admin only -->
+@if (User.IsInRole("Admin"))
+{
+    <li class="nav-item menu-items">
+        <a class="nav-link" asp-page="/Admin/Index">
+            <span class="menu-icon"><i class="mdi mdi-shield-account"></i></span>
+            <span class="menu-title">User Administration</span>
+        </a>
+    </li>
+}
 
-                <li class="nav-item menu-items">
-                    <a class="nav-link" asp-page="/Admin/Index">
-                        <span class="menu-icon"><i class="mdi mdi-shield"></i></span>
-                        <span class="menu-title">Admin Panel</span>
-                    </a>
-                </li>
-
-                <li class="nav-item menu-items">
-                    <a class="nav-link" asp-page="/Login">
-                        <span class="menu-icon"><i class="mdi mdi-login"></i></span>
-                        <span class="menu-title">Logga in</span>
-                    </a>
-                </li>
-
-                <li class="nav-item menu-items">
-                    <form method="post" asp-page="/Logout">
-                        <button class="nav-link btn btn-link text-start">
-                            <span class="menu-icon"><i class="mdi mdi-logout"></i></span>
-                            <span class="menu-title">Logga ut</span>
-                        </button>
-                    </form>
-                </li>
+<!-- Log in / Log out -->
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <li class="nav-item menu-items">
+        <form method="post" asp-page="/Logout">
+            <button type="submit" class="nav-link btn btn-link text-start">
+                <span class="menu-icon"><i class="mdi mdi-logout"></i></span>
+                <span class="menu-title">Log out</span>
+            </button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item menu-items">
+        <a class="nav-link" asp-page="/Login">
+            <span class="menu-icon"><i class="mdi mdi-login"></i></span>
+            <span class="menu-title">Log in</span>
+        </a>
+    </li>
+}
 
             </ul>
         </nav>
@@ -166,22 +187,53 @@
                         </li>
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">
-                                <div class="navbar-profile">
-                                    <img class="img-xs rounded-circle" src="~/images/faces-clipart/pic-1.png" alt="">
-                                    @{
-                                        var nameNavbar = "Guest";
-                                        if (User.Identity?.Name != null)
-                                        {
-                                            var rawNavbar = User.Identity.Name.Split('@')[0].Replace(".", " ");
-                                            nameNavbar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawNavbar);
-                                        }
-                                    }
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">@nameNavbar</p>
-                                    <i class="mdi mdi-menu-down d-none d-sm-block"></i>
-                                </div>
-                            </a>
-                        </li>
+                             <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">
+                                    <div class="navbar-profile">
+                                     <img class="img-xs rounded-circle" src="~/images/faces-clipart/pic-1.png" alt="">
+                                @{
+                            var nameNavbar = "Guest";
+                if (User.Identity?.Name != null)
+                {
+                    var rawNavbar = User.Identity.Name.Split('@')[0].Replace(".", " ");
+                    nameNavbar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawNavbar);
+                }
+            }
+            <p class="mb-0 d-none d-sm-block navbar-profile-name">@nameNavbar</p>
+            <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+        </div>
+    </a>
+
+    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <form method="post" asp-page="/Logout">
+                <button type="submit" class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                        <div class="preview-icon bg-dark rounded-circle">
+                            <i class="mdi mdi-logout text-danger"></i>
+                        </div>
+                    </div>
+                    <div class="preview-item-content">
+                        <p class="preview-subject mb-1">Logga ut</p>
+                    </div>
+                </button>
+            </form>
+        }
+        else
+        {
+            <a class="dropdown-item preview-item" asp-page="/Login">
+                <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-login text-success"></i>
+                    </div>
+                </div>
+                <div class="preview-item-content">
+                    <p class="preview-subject mb-1">Logga in</p>
+                </div>
+            </a>
+        }
+    </div>
+</li>
 
                     </ul>
                 </div>
