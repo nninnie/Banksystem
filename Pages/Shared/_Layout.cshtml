@@ -4,16 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Bank System</title>
+    <title>MyBank</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="~/lib/mdi/css/materialdesignicons.min.css" />
-    <link rel="stylesheet" href="~/lib/css/vendor.bundle.base.css" />
-    <link rel="stylesheet" href="~/lib/jvectormap/jquery-jvectormap.css" />
-    <link rel="stylesheet" href="~/lib/flag-icon-css/css/flag-icon.min.css" />
-    <link rel="stylesheet" href="~/lib/owl-carousel-2/owl.carousel.min.css" />
-    <link rel="stylesheet" href="~/lib/owl-carousel-2/owl.theme.default.min.css" />
+    <!-- Corona Template CSS (vendors/) -->
+    <link rel="stylesheet" href="~/vendors/mdi/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="~/vendors/css/vendor.bundle.base.css" />
+    <link rel="stylesheet" href="~/vendors/jvectormap/jquery-jvectormap.css" />
+    <link rel="stylesheet" href="~/vendors/flag-icon-css/css/flag-icon.min.css" />
+    <link rel="stylesheet" href="~/vendors/owl-carousel-2/owl.carousel.min.css" />
+    <link rel="stylesheet" href="~/vendors/owl-carousel-2/owl.theme.default.min.css" />
 
+    <!-- Corona main style -->
     <link rel="stylesheet" href="~/css/style.css" />
 </head>
 
@@ -23,21 +24,20 @@
         <!-- SIDEBAR -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
 
-            <!-- LOGO -->
+            <!-- SIDEBAR LOGO -->
+
             <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center">
                 <a class="sidebar-brand brand-logo" asp-page="/Index">
-                    
-                    <img src="~/images/mybank-logo.png" alt="logo" class="mybank-logo" />
-
+                    <img src="~/images/logo/mybank-logo.png" alt="logo" />
                 </a>
                 <a class="sidebar-brand brand-logo-mini" asp-page="/Index">
-                    <img src="~/images/mybank-logo-mini.png" alt="logo" />
+                    <img src="~/images/logo/mybank-logo-mini.png" alt="logo" />
                 </a>
             </div>
 
             <ul class="nav">
 
-                <!-- PROFILE SECTION -->
+                <!-- PROFILE -->
                 <li class="nav-item profile">
                     <div class="profile-desc">
                         <div class="profile-pic">
@@ -47,12 +47,14 @@
                             </div>
                             <div class="profile-name">
                                 @{
-    var rawSidebar = User.Identity.Name.Split('@')[0].Replace(".", " ");
-    var nameSidebar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawSidebar);
-}
-<h5 class="mb-0 font-weight-normal">@nameSidebar</h5>
-
-
+                                    var nameSidebar = "Guest";
+                                    if (User.Identity?.Name != null)
+                                    {
+                                        var rawSidebar = User.Identity.Name.Split('@')[0].Replace(".", " ");
+                                        nameSidebar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawSidebar);
+                                    }
+                                }
+                                <h5 class="mb-0 font-weight-normal">@nameSidebar</h5>
                                 <span>Gold Member</span>
                             </div>
                         </div>
@@ -66,42 +68,42 @@
 
                 <li class="nav-item menu-items">
                     <a class="nav-link" asp-page="/Index">
-                        <span class="menu-icon"><i class="mdi mdi-speedometer"></i></span>
+                        <span class="menu-icon"><i class="mdi mdi-speedometer icon-yellow"></i></span>
                         <span class="menu-title">Dashboard</span>
                     </a>
                 </li>
 
                 <li class="nav-item menu-items">
                     <a class="nav-link" asp-page="/Customers/Index">
-                        <span class="menu-icon"><i class="mdi mdi-account"></i></span>
+                        <span class="menu-icon"><i class="mdi mdi-account icon-pink"></i></span>
                         <span class="menu-title">Customers</span>
                     </a>
                 </li>
 
                 <li class="nav-item menu-items">
                     <a class="nav-link" asp-page="/Accounts/Index">
-                        <span class="menu-icon"><i class="mdi mdi-wallet"></i></span>
+                        <span class="menu-icon"><i class="mdi mdi-wallet icon-blue"></i></span>
                         <span class="menu-title">Accounts</span>
                     </a>
                 </li>
 
                 <li class="nav-item menu-items">
                     <a class="nav-link" asp-page="/Transactions/Index">
-                        <span class="menu-icon"><i class="mdi mdi-swap-horizontal"></i></span>
+                        <span class="menu-icon"><i class="mdi mdi-swap-horizontal icon-green"></i></span>
                         <span class="menu-title">Transactions</span>
                     </a>
                 </li>
 
                 <li class="nav-item menu-items">
                     <a class="nav-link" asp-page="/Admin/Index">
-                        <span class="menu-icon"><i class="mdi mdi-shield"></i></span>
+                        <span class="menu-icon"><i class="mdi mdi-shield icon-purple"></i></span>
                         <span class="menu-title">Admin Panel</span>
                     </a>
                 </li>
 
                 <li class="nav-item menu-items">
                     <a class="nav-link" asp-page="/Login">
-                        <span class="menu-icon"><i class="mdi mdi-login"></i></span>
+                        <span class="menu-icon"><i class="mdi mdi-login icon-orange"></i></span>
                         <span class="menu-title">Logga in</span>
                     </a>
                 </li>
@@ -109,7 +111,7 @@
                 <li class="nav-item menu-items">
                     <form method="post" asp-page="/Logout">
                         <button class="nav-link btn btn-link text-start">
-                            <span class="menu-icon"><i class="mdi mdi-logout"></i></span>
+                            <span class="menu-icon"><i class="mdi mdi-logout icon-red"></i></span>
                             <span class="menu-title">Logga ut</span>
                         </button>
                     </form>
@@ -124,42 +126,39 @@
             <!-- NAVBAR -->
             <nav class="navbar p-0 fixed-top d-flex flex-row">
 
-                <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
-                    <a class="navbar-brand brand-logo-mini" asp-page="/Index">
-                        <img src="~/images/mybank-logo-mini.png" alt="logo" />
-                    </a>
-                </div>
-
                 <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
                     <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                         <span class="mdi mdi-menu"></span>
                     </button>
 
-                    <!-- NAVBAR ICONS (correct placement!) -->
-                    <ul class="navbar-nav navbar-nav-right">
-
-                        <li class="nav-item dropdown d-none d-lg-block">
-                            <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-bs-toggle="dropdown">
-                                + Create New Project
-                            </a>
+                    <!-- SEARCH -->
+                    <ul class="navbar-nav w-100">
+                        <li class="nav-item w-100">
+                            <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                                <input type="text" class="form-control" placeholder="Search products">
+                            </form>
                         </li>
+                    </ul>
+
+                    <!-- NAVBAR ICONS -->
+                    <ul class="navbar-nav navbar-nav-right">
 
                         <li class="nav-item nav-settings d-none d-lg-block">
                             <a class="nav-link" href="#">
-                                <i class="mdi mdi-view-grid"></i>
+                                <i class="mdi mdi-view-grid icon-white"></i>
                             </a>
                         </li>
 
                         <li class="nav-item dropdown border-left">
                             <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-bs-toggle="dropdown">
-                                <i class="mdi mdi-email"></i>
+                                <i class="mdi mdi-email icon-white"></i>
                                 <span class="count bg-success"></span>
                             </a>
                         </li>
 
                         <li class="nav-item dropdown border-left">
                             <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
-                                <i class="mdi mdi-bell"></i>
+                                <i class="mdi mdi-bell icon-white"></i>
                                 <span class="count bg-danger"></span>
                             </a>
                         </li>
@@ -169,13 +168,14 @@
                                 <div class="navbar-profile">
                                     <img class="img-xs rounded-circle" src="~/images/faces-clipart/pic-1.png" alt="">
                                     @{
-    var rawNavbar = User.Identity.Name.Split('@')[0].Replace(".", " ");
-    var nameNavbar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawNavbar);
-}
-<p class="mb-0 d-none d-sm-block navbar-profile-name">@nameNavbar</p>
-
-
-
+                                        var nameNavbar = "Guest";
+                                        if (User.Identity?.Name != null)
+                                        {
+                                            var rawNavbar = User.Identity.Name.Split('@')[0].Replace(".", " ");
+                                            nameNavbar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawNavbar);
+                                        }
+                                    }
+                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">@nameNavbar</p>
                                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                                 </div>
                             </a>
@@ -195,13 +195,13 @@
         </div>
     </div>
 
-    <!-- JS -->
-    <script src="~/lib/js/vendor.bundle.base.js"></script>
-    <script src="~/lib/chart.js/Chart.min.js"></script>
-    <script src="~/lib/progressbar.js/progressbar.min.js"></script>
-    <script src="~/lib/jvectormap/jquery-jvectormap.min.js"></script>
-    <script src="~/lib/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-    <script src="~/lib/owl-carousel-2/owl.carousel.min.js"></script>
+    <!-- JS (vendors/) -->
+    <script src="~/vendors/js/vendor.bundle.base.js"></script>
+    <script src="~/vendors/chart.js/Chart.min.js"></script>
+    <script src="~/vendors/progressbar.js/progressbar.min.js"></script>
+    <script src="~/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="~/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/vendors/owl-carousel-2/owl.carousel.min.js"></script>
 
     <script src="~/js/off-canvas.js"></script>
     <script src="~/js/hoverable-collapse.js"></script>
