@@ -166,14 +166,6 @@ html body .sidebar .sidebar-brand-wrapper {
     color: var(--text) !important;
 }
 
-/* Hover och aktiv sida: guldstreck och tonad bakgrund */
-.sidebar .nav .nav-item .nav-link:hover,
-.sidebar .nav .nav-item.active > .nav-link {
-    background: linear-gradient(90deg, rgba(212, 175, 55, 0.14), transparent) !important;
-    border-left: 3px solid var(--gold);
-    border-radius: 0 10px 10px 0;
-}
-
 .sidebar .nav .nav-item .nav-link:hover .menu-title {
      color: var(--gold) !important;
 }
@@ -184,6 +176,7 @@ html body .sidebar .sidebar-brand-wrapper {
     box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
 }
 
+/* Hover sidebar */
 .sidebar .nav .nav-item.menu-items .nav-link:hover {
     background: linear-gradient(90deg, rgba(212, 175, 55, 0.14), transparent) !important;
     border-left: 3px solid var(--gold);
