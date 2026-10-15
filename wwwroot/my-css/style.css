@@ -27,8 +27,6 @@ html body .content-wrapper {
 
 html body {
     background-color: var(--bg) !important;
-    background-image: radial-gradient(900px circle at 100% 0%, rgba(50, 80, 170, 0.18), transparent 60%) !important;
-    background-attachment: fixed !important;
 }
 
 
@@ -218,8 +216,8 @@ html body .navbar .navbar-menu-wrapper {
 
 /* Profilbild med guldring */
 .navbar .navbar-profile img {
-    border: 2px solid var(--gold) !important;
-    box-shadow: 0 0 12px rgba(212, 175, 55, 0.35) !important;
+    border: 1px solid var(--gold) !important;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.35) !important;
     border-radius: 50% !important;
 }
 
