@@ -2,15 +2,16 @@
    TEMA – färgvariabler
    ========================================================== */
 :root {
-    --bg: #010a07;
-    --nav-sidebar: #02160F;
+    --bg: #000805;
+    --navbar: #010d09;
+    --sidebar: #010d09;
     --card: #FFFFFF;
-    --line: rgba(4, 35, 23, 0.12); /* Subtil linje i smaragdton */
+    --line: rgba(4, 35, 23, 0.12); /* subtil linjefärg */
     --gold: #D4AF37;
     --gold-soft: #E8C766;
     --gold-line: rgba(212, 175, 55, 0.22);
     --text: #F8FAFC;
-    --muted: #94A3B8;
+    --muted: #A7B4C5; /* dempad textfärg */
 }
 
 
@@ -35,7 +36,7 @@ html body {
    SIDEBAR – bakgrund och layout
    ========================================================== */
     html body .sidebar {
-        background: var(--nav-sidebar) !important;
+        background: var(--sidebar) !important;
     }
 
 /* Menylistan: lite luft överst */
@@ -63,7 +64,7 @@ html body .sidebar .sidebar-brand-wrapper {
     align-items: flex-start;
     justify-content: flex-start;
     width: 100% !important;
-    background: var(--nav-sidebar) !important;
+    background: var(--sidebar) !important;
     border-bottom: none;
 }
 
@@ -173,19 +174,22 @@ html body .sidebar .sidebar-brand-wrapper {
     border-radius: 0 10px 10px 0;
 }
 
-    .sidebar .nav .nav-item .nav-link:hover .menu-title {
-        color: var(--gold) !important;
-    }
+.sidebar .nav .nav-item .nav-link:hover .menu-title {
+     color: var(--gold) !important;
+}
 
-    .sidebar .nav .nav-item .nav-link:hover .menu-icon,
-    .sidebar .nav .nav-item.active .menu-icon {
-        background: rgba(212, 175, 55, 0.22) !important;
-        box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
-    }
+.sidebar .nav .nav-item .nav-link:hover .menu-icon,
+.sidebar .nav .nav-item.active .menu-icon {
+     background: rgba(212, 175, 55, 0.22) !important;
+    box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
+}
 
-    .sidebar .nav .nav-item .nav-link:hover i {
-        color: var(--gold) !important;
-    }
+.sidebar .nav .nav-item.menu-items .nav-link:hover {
+    background: linear-gradient(90deg, rgba(212, 175, 55, 0.14), transparent) !important;
+    border-left: 3px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+}
+
 
 
 /* ==========================================================
@@ -193,7 +197,7 @@ html body .sidebar .sidebar-brand-wrapper {
    ========================================================== */
 html body .navbar,
 html body .navbar .navbar-menu-wrapper {
-    background: var(--nav-sidebar) !important;
+    background: var(--navbar) !important;
 }
 
 /* Textfärg och guld vid hover */
@@ -242,11 +246,11 @@ html body .navbar .navbar-menu-wrapper {
 
 /* Dropdown inlogg */
 .navbar .navbar-menu-wrapper {
-    background: var(--nav-sidebar) !important;
+    background: var(--navbar) !important;
 }
 
 .navbar .dropdown-menu {
-    background: var(--nav-sidebar) !important;
+    background: var(--navbar) !important;
     border: 1px solid var(--gold-line) !important;
     border-radius: 12px !important;
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55) !important;
