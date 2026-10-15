@@ -1,5 +1,61 @@
-﻿/* === SIDEBAR: Logocontainer === */
-.sidebar .sidebar-brand-wrapper {
+﻿/* ==========================================================
+   TEMA – färgvariabler
+   ========================================================== */
+:root {
+    --bg: #010a07;
+    --nav-sidebar: #02160F;
+    --card: #FFFFFF;
+    --line: rgba(4, 35, 23, 0.12); /* Subtil linje i smaragdton */
+    --gold: #D4AF37;
+    --gold-soft: #E8C766;
+    --gold-line: rgba(212, 175, 55, 0.22);
+    --text: #F8FAFC;
+    --muted: #94A3B8;
+}
+
+
+/* ==========================================================
+   BAKGRUND
+   ========================================================== */
+html body .container-scroller,
+html body .page-body-wrapper,
+html body .main-panel,
+html body .content-wrapper {
+    background: transparent !important;
+}
+
+html body {
+    background-color: var(--bg) !important;
+    background-image: radial-gradient(900px circle at 100% 0%, rgba(50, 80, 170, 0.18), transparent 60%) !important;
+    background-attachment: fixed !important;
+}
+
+
+/* ==========================================================
+   SIDEBAR – bakgrund och layout
+   ========================================================== */
+    html body .sidebar {
+        background: var(--nav-sidebar) !important;
+    }
+
+/* Menylistan: lite luft överst */
+.sidebar .nav {
+    padding-top: 10px !important;
+}
+
+    /* Rubriken "Navigation" */
+    .sidebar .nav .nav-item.nav-category .nav-link {
+        color: var(--gold) !important;
+        font-size: 0.68rem;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+    }
+
+
+/* ==========================================================
+   SIDEBAR – logotyp
+   ========================================================== */
+html body .sidebar .sidebar-brand-wrapper {
     height: auto !important;
     padding: 30px 0 !important;
     display: flex;
@@ -7,34 +63,32 @@
     align-items: flex-start;
     justify-content: flex-start;
     width: 100% !important;
-    background: #0A0F1A !important;
+    background: var(--nav-sidebar) !important;
+    border-bottom: none;
 }
 
-/* Menylistan: ingen extra padding överst */
-.sidebar .nav {
-    padding-top: 0 !important;
-}
-
-    /* Profilsektionen: dra upp den mot loggan (rätt selektor för din HTML) */
-    .sidebar .nav .nav-item.profile {
-        margin-top: 0 !important;
-        padding-top: 0 !important;
+    /* Tunn guldlinje under loggan */
+    html body .sidebar .sidebar-brand-wrapper::after {
+        content: "";
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        bottom: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        opacity: 0.6;
     }
 
-        .sidebar .nav .nav-item.profile .profile-desc {
-            padding-top: 0 !important;
-        }
-
-/* === SIDEBAR: Stor logga === */
+/* Stora loggan */
 .sidebar-brand-wrapper .brand-logo img {
     width: 130px !important;
     height: auto !important;
     object-fit: contain !important;
     display: block;
-    filter: drop-shadow(0 0 6px rgba(255,255,255,0.15));
+   
 }
 
-/* === SIDEBAR: Mini-logga === */
+/* Mini-loggan (hopfälld sidebar) */
 .sidebar-brand-wrapper .brand-logo-mini img {
     width: 70px !important;
     height: auto !important;
@@ -45,7 +99,10 @@
     margin-top: 6px !important;
 }
 
-/* === COLLAPSED MODE: Centrera mini-loggan === */
+
+/* ==========================================================
+   HOPFÄLLD SIDEBAR – centrera mini-loggan
+   ========================================================== */
 .sidebar-icon-only .sidebar-brand-wrapper {
     width: 100% !important;
     padding: 20px 0 10px 0 !important;
@@ -67,60 +124,171 @@
             margin: 0 auto !important;
         }
 
-/* === SIDEBAR: Profil === */
-.sidebar .nav .nav-item.nav-profile {
-    margin-top: 10px !important;
+
+/* ==========================================================
+   SIDEBAR – profil
+   ========================================================== */
+.sidebar .nav .nav-item.profile {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
 
-.sidebar .nav {
-    padding-top: 10px !important;
-}
-
-/* === SIDEBAR: Bakgrund + ikonfärg === */
-.sidebar {
-    background: #0A0F1A !important;
-}
-
-    .sidebar .nav .nav-item .nav-link i {
-        color: #F2F2F2 !important;
-        opacity: 0.85;
+    .sidebar .nav .nav-item.profile .profile-desc {
+        padding-top: 0 !important;
     }
 
-/* === NAVBAR: Bakgrund + textfärg === */
-.navbar {
-    background: #0A0F1A !important;
+/* Rollen under namnet i guld */
+.sidebar .profile-name span {
+    color: var(--gold-soft);
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
 }
 
-    .navbar .navbar-brand,
-    .navbar .navbar-menu-wrapper .nav-link {
-        color: #F2F2F2 !important;
-    }
 
-    .navbar .nav-link:hover {
-        color: #D4AF37 !important;
-    }
+/* ==========================================================
+   SIDEBAR – menyrader och ikoner
+   ========================================================== */
 
-/* === SIDEBAR: Hover-effekter === */
-.sidebar .nav .nav-item .nav-link:hover {
-    background: rgba(212, 175, 55, 0.08) !important;
-    border-radius: 8px;
+/* Ikon-cirkeln med tunn guldkant */
+.sidebar .nav .nav-item .menu-icon {
+    background: rgba(212, 175, 55, 0.10) !important;
+    border: 1px solid var(--gold-line);
+    border-radius: 50%;
+}
+
+.sidebar .nav .nav-item .nav-link i {
+    color: var(--gold-soft) !important;
+    opacity: 1;
+}
+
+.sidebar .nav .nav-item .menu-title {
+    color: var(--text) !important;
+}
+
+/* Hover och aktiv sida: guldstreck och tonad bakgrund */
+.sidebar .nav .nav-item .nav-link:hover,
+.sidebar .nav .nav-item.active > .nav-link {
+    background: linear-gradient(90deg, rgba(212, 175, 55, 0.14), transparent) !important;
+    border-left: 3px solid var(--gold);
+    border-radius: 0 10px 10px 0;
 }
 
     .sidebar .nav .nav-item .nav-link:hover .menu-title {
-        color: #D4AF37 !important;
+        color: var(--gold) !important;
     }
 
-    .sidebar .nav .nav-item .nav-link:hover .menu-icon {
-        background: rgba(212, 175, 55, 0.15) !important;
+    .sidebar .nav .nav-item .nav-link:hover .menu-icon,
+    .sidebar .nav .nav-item.active .menu-icon {
+        background: rgba(212, 175, 55, 0.22) !important;
+        box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
     }
 
     .sidebar .nav .nav-item .nav-link:hover i {
-        color: #D4AF37 !important;
-        opacity: 1;
+        color: var(--gold) !important;
     }
 
-/* === NAVBAR: Ikonfärger === */
 
+/* ==========================================================
+   NAVBAR
+   ========================================================== */
+html body .navbar,
+html body .navbar .navbar-menu-wrapper {
+    background: var(--nav-sidebar) !important;
+}
+
+/* Textfärg och guld vid hover */
+.navbar .navbar-brand,
+.navbar .navbar-menu-wrapper .nav-link {
+    color: var(--text) !important;
+}
+
+.navbar .nav-link:hover {
+    color: var(--gold) !important;
+}
+
+/* Sökfältet */
+.navbar .search .form-control {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 12px;
+    color: var(--text);
+}
+
+    .navbar .search .form-control:focus {
+        border-color: var(--gold) !important;
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15) !important;
+    }
+
+/* Profilbild med guldring */
+.navbar .navbar-profile img {
+    border: 2px solid var(--gold) !important;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.35) !important;
+    border-radius: 50% !important;
+}
+
+.navbar .navbar-profile-name {
+    color: var(--text) !important;
+}
+
+.navbar .navbar-profile-name small {
+    color: var(--gold-soft) !important;
+    font-size: 0.75rem;
+}
+
+/* Ikoner i navbaren */
 .icon-white {
     color: #ffffff;
 }
+
+/* Dropdown inlogg */
+.navbar .navbar-menu-wrapper {
+    background: var(--nav-sidebar) !important;
+}
+
+.navbar .dropdown-menu {
+    background: var(--nav-sidebar) !important;
+    border: 1px solid var(--gold-line) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55) !important;
+    padding: 10px 0 !important;
+}
+
+.navbar .dropdown-menu .dropdown-item i {
+    color: var(--gold) !important;
+    transition: 0.2s ease;
+}
+
+.navbar .dropdown-menu .dropdown-item:hover {
+    background-color: #02160F !important; 
+    color: var(--gold) !important;
+}
+
+.navbar .dropdown-menu .dropdown-item:hover i {
+    color: var(--gold-soft) !important; 
+}
+
+/* Hover ikons */
+.navbar .navbar-menu-wrapper i {
+    color: var(--text) !important;
+    transition: 0.2s ease;
+}
+
+.navbar .navbar-menu-wrapper i:hover {
+    color: var(--gold) !important;
+}
+
+
+/* ==========================================================
+   KORT
+   ========================================================== */
+.card {
+    background: var(--card) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.30);
+}
+
+    .card .card-title {
+        color: var(--text);
+        letter-spacing: 0.3px;
+    }
