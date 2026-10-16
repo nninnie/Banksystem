@@ -1,6 +1,6 @@
 ﻿namespace BankApp.ViewModels
 {
-    // ViewModel för login-formuläret
+    // ViewModel for the login form
     public class LoginViewModel
     {
         public string Username { get; set; }

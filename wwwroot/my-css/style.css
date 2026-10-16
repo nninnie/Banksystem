@@ -5,7 +5,7 @@
     --bg: #000805;
     --navbar: #021c14;
     --sidebar: #03261B;
-    --card: #FFFFFF;
+    --card: #0A1A14;
     --line: rgba(4, 35, 23, 0.12); /* subtil linjefärg */
     --gold: #F2D675;
     --gold-soft: #E8C766;
@@ -284,13 +284,14 @@ html body .navbar .navbar-menu-wrapper {
    KORT
    ========================================================== */
 .card {
-    background: var(--card) !important;
-    border: 1px solid var(--line) !important;
-    border-radius: 14px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.30);
+    background: rgba(10, 18, 14, 0.55); 
+    backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.06); 
+    border-radius: 6px; 
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 
+    inset 0 0 0.5px rgba(255, 255, 255, 0.12); 
 }
-
-    .card .card-title {
+  .card .card-title {
         color: var(--text);
         letter-spacing: 0.3px;
     }

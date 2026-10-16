@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BankApp.Pages
 {
+
+    // LogoutModel responsible for handling user logout
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;

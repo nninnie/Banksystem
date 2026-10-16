@@ -4,7 +4,20 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Bankapp</a>.</p>
+<div class="row">
+    @foreach (var c in Model.Data.Countries)
+    {
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">@c.Country</h5>
+                    <p class="card-text">
+                        Kunder: <strong>@c.CustomerCount</strong><br />
+                        Konton: <strong>@c.AccountCount</strong><br />
+                        Totalt saldo: <strong>@c.TotalBalance</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
 </div>

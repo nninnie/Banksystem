@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BankApp.Pages
 {
+    // LoginModel for responsible for handling user loggin
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;

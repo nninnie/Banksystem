@@ -1,7 +1,7 @@
 ﻿namespace BankApp.DTOs
 {
-    // DTO för Customer – UI får bara namn + plats.
-    // Skyddar känsliga kunduppgifter (adress, personnummer, telefon, email).
+    // Customer DTO – exposes only non-sensitive fields such as name and location.
+    // Sensitive customer information (address, personal ID number, phone, email) is intentionally excluded.
     public class CustomerDto
     {
         public int CustomerId { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace BankApp.DTOs
 {
-    // Statistik för ETT land
+    // Represents aggregated statistics for a single country
     public class CountryDashboardDto
     {
         public string Country { get; set; }

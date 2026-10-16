@@ -13,14 +13,9 @@ namespace BankApp.Services
             _context = context;
         }
 
-        // Metoden hämtar alla kunder med konton, grupperar dem i minnet och bygger dashboardens statistik.
+        // Builds dashboard statistics by grouping customers per country directly in the database
         public async Task<DashboardDto> GetDashboardAsync()
         {
-            var customers = await _context.Customers
-                .Include(c => c.Dispositions)
-                .ThenInclude(d => d.Account)
-                .ToListAsync();
-
             var countries = await _context.Customers
                 .GroupBy(c => c.Country)
                 .Select(g => new CountryDashboardDto
@@ -28,7 +23,9 @@ namespace BankApp.Services
                     Country = g.Key,
                     CustomerCount = g.Count(),
                     AccountCount = g.SelectMany(c => c.Dispositions).Count(),
-                    TotalBalance = g.SelectMany(c => c.Dispositions).Select(d => d.Account).Sum(a => a.Balance)
+                    TotalBalance = g.SelectMany(c => c.Dispositions)
+                                    .Select(d => d.Account.Balance)
+                                    .Sum()
                 })
                 .ToListAsync();
 
@@ -36,7 +33,6 @@ namespace BankApp.Services
             {
                 Countries = countries
             };
-
         }
     }
 }

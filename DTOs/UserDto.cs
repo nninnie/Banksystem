@@ -1,7 +1,7 @@
 ﻿namespace BankApp.DTOs
 {
-    // DTO för User – UI får ALDRIG PasswordHash eller interna Identity‑fält.
-    // Visar bara det som är säkert att visa i UI.
+    // User DTO – excludes PasswordHash and internal Identity fields.
+    // Only exposes safe, non-sensitive data to the UI.
     public class UserDto
     {
         public int UserId { get; set; }

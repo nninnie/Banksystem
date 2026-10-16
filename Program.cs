@@ -1,5 +1,6 @@
 using BankApp.Data;
 using BankApp.Models;
+using BankApp.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace BankApp
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
 
+            // Configures ASP.NET Core Identity with roles and EF Core as the storage provider
             builder.Services.AddDefaultIdentity<IdentityUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
@@ -30,9 +32,13 @@ namespace BankApp
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            // Registers DashboardService so it can be injected into PageModels
+            builder.Services.AddScoped<DashboardService>();
+
+
             var app = builder.Build();
 
-            // Seed the database with roles and users - changed to async method to avoid blocking the main thread - Ska jag ha denna så ?
+            // Seeds roles and default users at application startup
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -53,6 +59,7 @@ namespace BankApp
 
             app.UseAuthentication();
 
+            // Applies authorization rules for protected pages and roles
             app.UseAuthorization();
 
             app.MapStaticAssets();
