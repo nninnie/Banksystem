@@ -282,10 +282,79 @@ html body .navbar .navbar-menu-wrapper {
 }
 
 
+/* APP-LAUNCHER */
+.app-launcher.hidden {
+    display: none !important;
+}
+
+.app-launcher:not(.hidden) {
+    display: block;
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9999;
+    width: 320px;
+    padding: 20px;
+    background: var(--navbar);
+    border: 1px solid var(--gold-line);
+    border-radius: 12px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+}
+
+.launcher-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.launcher-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 8px;
+    color: var(--text);
+    text-decoration: none;
+    border: 1px solid var(--gold-line);
+    border-radius: 8px;
+    text-align: center;
+}
+
+    .launcher-item i {
+        color: var(--gold);
+        font-size: 24px;
+    }
+
+    .launcher-item:hover {
+        color: var(--gold);
+        background: rgba(242, 214, 117, 0.08);
+    }
+
+
 /* ==========================================================
    KORT
    ========================================================== */
+
+
+/* DASHBOARD – korrekt placering */
+.main-panel {
+    min-width: 0;
+}
+
+.content-wrapper {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
 .dashboard-grid {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+    justify-content: start;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1.5rem;
@@ -293,6 +362,8 @@ html body .navbar .navbar-menu-wrapper {
 }
 
 .dashboard-card {
+    min-width: 0;
+    box-sizing: border-box;
     background: rgba(10, 18, 14, 0.55);
     backdrop-filter: blur(14px) saturate(140%);
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -377,3 +448,5 @@ html body .navbar .navbar-menu-wrapper {
     color: inherit;
     display: block;
 }
+
+

@@ -165,12 +165,18 @@
 
                     <!-- NAVBAR ICONS -->
                     <ul class="navbar-nav navbar-nav-right">
-
+                  
                         <li class="nav-item nav-settings d-none d-lg-block">
-                            <a class="nav-link" href="#">
+                            <button type="button"
+                                    id="app-launcher-btn"
+                                    class="nav-link btn btn-link"
+                                    aria-label="Öppna appmenyn"
+                                    aria-controls="app-launcher"
+                                    aria-expanded="false">
                                 <i class="mdi mdi-view-grid icon-white"></i>
-                            </a>
+                            </button>
                         </li>
+
 
                         <li class="nav-item dropdown border-left">
                             <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-bs-toggle="dropdown">
@@ -239,6 +245,42 @@
                 </div>
             </nav>
 
+            <!-- APP-LAUNCHER -->
+            <div id="app-launcher" class="app-launcher hidden">
+                <div class="launcher-grid">
+                    <a href="/Dashboard" class="launcher-item">
+                        <i class="mdi mdi-view-dashboard"></i>
+                        <span>Dashboard</span>
+                    </a>
+
+                    <a href="/Customers" class="launcher-item">
+                        <i class="mdi mdi-account-group"></i>
+                        <span>Kunder</span>
+                    </a>
+
+                    <a href="/Accounts" class="launcher-item">
+                        <i class="mdi mdi-bank"></i>
+                        <span>Konton</span>
+                    </a>
+
+                    <a href="/Transactions" class="launcher-item">
+                        <i class="mdi mdi-swap-horizontal"></i>
+                        <span>Transaktioner</span>
+                    </a>
+
+                    <a href="/Reports" class="launcher-item">
+                        <i class="mdi mdi-chart-line"></i>
+                        <span>Rapporter</span>
+                    </a>
+
+                    <a href="/Settings" class="launcher-item">
+                        <i class="mdi mdi-cog"></i>
+                        <span>Inställningar</span>
+                    </a>
+                </div>
+            </div>
+
+            
             <!-- MAIN CONTENT -->
             <div class="main-panel">
                 <div class="content-wrapper">
@@ -262,5 +304,9 @@
     <script src="~/js/misc.js"></script>
     <script src="~/js/settings.js"></script>
     <script src="~/js/todolist.js"></script>
+    <script src="~/my-js/script.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
