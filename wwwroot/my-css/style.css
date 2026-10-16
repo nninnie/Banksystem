@@ -3,11 +3,11 @@
    ========================================================== */
 :root {
     --bg: #000805;
-    --navbar: #010d09;
-    --sidebar: #010d09;
+    --navbar: #021c14;
+    --sidebar: #03261B;
     --card: #FFFFFF;
     --line: rgba(4, 35, 23, 0.12); /* subtil linjefärg */
-    --gold: #D4AF37;
+    --gold: #F2D675;
     --gold-soft: #E8C766;
     --gold-line: rgba(212, 175, 55, 0.22);
     --text: #F8FAFC;
@@ -141,6 +141,13 @@ html body .sidebar .sidebar-brand-wrapper {
     color: var(--gold-soft);
     font-size: 0.75rem;
     letter-spacing: 0.5px;
+}
+
+/* Guldkant profilbiild */
+.sidebar .profile-desc img {
+    border: 1px solid var(--gold) !important;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.35) !important;
+    border-radius: 50% !important;
 }
 
 
