@@ -4,20 +4,36 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="row">
+<div class="dashboard-grid">
     @foreach (var c in Model.Data.Countries)
     {
-        <div class="col-md-3 mb-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">@c.Country</h5>
-                    <p class="card-text">
-                        Kunder: <strong>@c.CustomerCount</strong><br />
-                        Konton: <strong>@c.AccountCount</strong><br />
-                        Totalt saldo: <strong>@c.TotalBalance</strong>
-                    </p>
+        <a href="/Country/@c.Country" class="dashboard-link">
+        <div class="dashboard-card">
+            <h5 class="card-title">
+                <img src="/images/flags/@(c.Country.ToLower()).png" class="flag" />
+                @c.Country
+            </h5>
+
+            <p class="card-text">
+                <div class="data-row">
+                    <i class="mdi mdi-account-group icon"></i>
+                    <span class="label">Kunder</span>
+                    <span class="value">@c.CustomerCount</span>
                 </div>
+
+                <div class="data-row">
+                    <i class="mdi mdi-bank icon"></i>
+                    <span class="label">Konton</span>
+                    <span class="value">@c.AccountCount</span>
+                </div>
+
+                <div class="data-row">
+                    <i class="mdi mdi-cash-multiple icon"></i>
+                    <span class="label">Totalt saldo</span>
+                    <span class="value">@c.TotalBalance.ToString("N2")</span>
+                </div>
+            </p>
             </div>
-        </div>
+        </a>
     }
 </div>
