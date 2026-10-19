@@ -1,0 +1,39 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="dashboard-grid">
+    @foreach (var c in Model.Countries)
+    {
+        <a href="/Country/@c.Country" class="dashboard-link">
+            <div class="dashboard-card">
+                <h5 class="card-title">
+                    <img src="/images/flags/@(c.Country.ToLower()).png" class="flag" />
+                    @c.Country
+                </h5>
+
+                <p class="card-text">
+                    <div class="data-row">
+                        <i class="mdi mdi-account-group icon"></i>
+                        <span class="label">Kunder</span>
+                        <span class="value">@c.CustomerCount</span>
+                    </div>
+
+                    <div class="data-row">
+                        <i class="mdi mdi-bank icon"></i>
+                        <span class="label">Konton</span>
+                        <span class="value">@c.AccountCount</span>
+                    </div>
+
+                    <div class="data-row">
+                        <i class="mdi mdi-cash-multiple icon"></i>
+                        <span class="label">Totalt saldo</span>
+                        <span class="value">@c.TotalBalance.ToString("N2")</span>
+                    </div>
+                </p>
+            </div>
+        </a>
+    }
+</div>

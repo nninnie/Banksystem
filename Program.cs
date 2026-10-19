@@ -32,8 +32,10 @@ namespace BankApp
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            // Registers DashboardService so it can be injected into PageModels
+            // Registers DashboardService & IndexService so it can be injected into PageModels
             builder.Services.AddScoped<DashboardService>();
+
+            builder.Services.AddScoped<IndexService>();
 
 
             var app = builder.Build();

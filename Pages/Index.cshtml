@@ -1,39 +1,31 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Statistik per land";
 }
 
-<div class="dashboard-grid">
-    @foreach (var c in Model.Data.Countries)
-    {
-        <a href="/Country/@c.Country" class="dashboard-link">
-        <div class="dashboard-card">
-            <h5 class="card-title">
-                <img src="/images/flags/@(c.Country.ToLower()).png" class="flag" />
-                @c.Country
-            </h5>
+<h2>Statistik per land</h2>
 
-            <p class="card-text">
-                <div class="data-row">
-                    <i class="mdi mdi-account-group icon"></i>
-                    <span class="label">Kunder</span>
-                    <span class="value">@c.CustomerCount</span>
-                </div>
-
-                <div class="data-row">
-                    <i class="mdi mdi-bank icon"></i>
-                    <span class="label">Konton</span>
-                    <span class="value">@c.AccountCount</span>
-                </div>
-
-                <div class="data-row">
-                    <i class="mdi mdi-cash-multiple icon"></i>
-                    <span class="label">Totalt saldo</span>
-                    <span class="value">@c.TotalBalance.ToString("N2")</span>
-                </div>
-            </p>
-            </div>
-        </a>
-    }
-</div>
+<table class="table table-dark table-striped">
+    <thead>
+        <tr>
+            <th>Land</th>
+            <th>Kunder</th>
+            <th>Konton</th>
+            <th>Totalt saldo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model.Countries)
+        {
+            <tr>
+                <td>
+                    <a href="/Country/@c.Country">@c.Country</a>
+                </td>
+                <td>@c.CustomerCount</td>
+                <td>@c.AccountCount</td>
+                <td>@c.TotalBalance.ToString("N2")</td>
+            </tr>
+        }
+    </tbody>
+</table>

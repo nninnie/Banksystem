@@ -1,24 +1,23 @@
 using BankApp.DTOs;
 using BankApp.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BankApp.Pages
 {
-    // IndexModel for the home page. Retrieves dashboard statistics via DashboardService and passes them to the view.
     public class IndexModel : PageModel
     {
-        private readonly DashboardService _dashboardService;
+        private readonly IndexService _indexService;
 
-        public DashboardDto Data { get; set; }
+        public List<CountryDashboardDto> Countries { get; set; }
 
-        public IndexModel(DashboardService dashboardService)
+        public IndexModel(IndexService indexService)
         {
-            _dashboardService = dashboardService;
+            _indexService = indexService;
         }
+
         public async Task OnGet()
         {
-            Data = await _dashboardService.GetDashboardAsync();
+            Countries = await _indexService.GetCountryStatisticsAsync();
         }
     }
 }

@@ -85,22 +85,32 @@
                 <li class="nav-item menu-items">
                     <a class="nav-link" asp-page="/Index">
                         <span class="menu-icon"><i class="mdi mdi-speedometer"></i></span>
-                        <span class="menu-title">Dashboard</span>
+                        <span class="menu-title">Home</span>
                     </a>
                 </li>
 
                 <!-- Admin and Cashier -->
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item menu-items">
+                        <a class="nav-link" asp-page="/Admin/Dashboard">
+                            <span class="menu-icon"><i class="mdi mdi-view-dashboard"></i></span>
+                            <span class="menu-title">Dashboard</span>
+                        </a>
+                    </li>
+                }
+                
                 @if (User.IsInRole("Admin") || User.IsInRole("Cashier"))
                 {
                     <li class="nav-item menu-items">
-                        <a class="nav-link" asp-page="/Customers/Index">
+                        <a class="nav-link" asp-page="/Customers">
                             <span class="menu-icon"><i class="mdi mdi-account-search"></i></span>
                             <span class="menu-title">Customers</span>
                         </a>
                     </li>
 
                     <li class="nav-item menu-items">
-                        <a class="nav-link" asp-page="/Transactions/Index">
+                        <a class="nav-link" asp-page="/Transactions">
                             <span class="menu-icon"><i class="mdi mdi-swap-horizontal"></i></span>
                             <span class="menu-title">Transactions</span>
                         </a>
@@ -111,7 +121,7 @@
                 @if (User.IsInRole("Admin"))
                 {
                     <li class="nav-item menu-items">
-                        <a class="nav-link" asp-page="/Admin/Index">
+                        <a class="nav-link" asp-page="/Admin">
                             <span class="menu-icon"><i class="mdi mdi-shield-account"></i></span>
                             <span class="menu-title">User Administration</span>
                         </a>
