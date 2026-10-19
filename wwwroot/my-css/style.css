@@ -1,22 +1,22 @@
 ﻿/* ==========================================================
-   TEMA – färgvariabler
+   THEME – color variables
    ========================================================== */
 :root {
     --bg: #000805;
     --navbar: #021c14;
     --sidebar: #03261B;
     --card: #0A1A14;
-    --line: rgba(4, 35, 23, 0.12); /* subtil linjefärg */
+    --line: rgba(4, 35, 23, 0.12); /* subtle line color */
     --gold: #F2D675;
     --gold-soft: #E8C766;
     --gold-line: rgba(212, 175, 55, 0.22);
     --text: #F8FAFC;
-    --muted: #A7B4C5; /* dempad textfärg */
+    --muted: #A7B4C5; /* muted text color */
 }
 
 
 /* ==========================================================
-   BAKGRUND
+   BACKGROUND
    ========================================================== */
 html body .container-scroller,
 html body .page-body-wrapper,
@@ -30,19 +30,19 @@ html body {
 }
 
 
-/* ==========================================================
-   SIDEBAR – bakgrund och layout
+    /* ==========================================================
+   SIDEBAR – background and layout
    ========================================================== */
     html body .sidebar {
         background: var(--sidebar) !important;
     }
 
-/* Menylistan: lite luft överst */
+/* Menu list: a little space at the top */
 .sidebar .nav {
     padding-top: 10px !important;
 }
 
-    /* Rubriken "Navigation" */
+    /* "Navigation" heading */
     .sidebar .nav .nav-item.nav-category .nav-link {
         color: var(--gold) !important;
         font-size: 0.68rem;
@@ -52,7 +52,7 @@ html body {
 
 
 /* ==========================================================
-   SIDEBAR – logotyp
+   SIDEBAR – logo
    ========================================================== */
 html body .sidebar .sidebar-brand-wrapper {
     height: auto !important;
@@ -66,7 +66,7 @@ html body .sidebar .sidebar-brand-wrapper {
     border-bottom: none;
 }
 
-    /* Tunn guldlinje under loggan */
+    /* Thin gold line under the logo */
     html body .sidebar .sidebar-brand-wrapper::after {
         content: "";
         position: absolute;
@@ -78,16 +78,15 @@ html body .sidebar .sidebar-brand-wrapper {
         opacity: 0.6;
     }
 
-/* Stora loggan */
+/* Large logo */
 .sidebar-brand-wrapper .brand-logo img {
     width: 130px !important;
     height: auto !important;
     object-fit: contain !important;
     display: block;
-   
 }
 
-/* Mini-loggan (hopfälld sidebar) */
+/* Mini logo (collapsed sidebar) */
 .sidebar-brand-wrapper .brand-logo-mini img {
     width: 70px !important;
     height: auto !important;
@@ -100,7 +99,7 @@ html body .sidebar .sidebar-brand-wrapper {
 
 
 /* ==========================================================
-   HOPFÄLLD SIDEBAR – centrera mini-loggan
+   SIDEBAR – collapsed state (center mini logo)
    ========================================================== */
 .sidebar-icon-only .sidebar-brand-wrapper {
     width: 100% !important;
@@ -125,7 +124,7 @@ html body .sidebar .sidebar-brand-wrapper {
 
 
 /* ==========================================================
-   SIDEBAR – profil
+   SIDEBAR – profile
    ========================================================== */
 .sidebar .nav .nav-item.profile {
     margin-top: 0 !important;
@@ -136,14 +135,14 @@ html body .sidebar .sidebar-brand-wrapper {
         padding-top: 0 !important;
     }
 
-/* Rollen under namnet i guld */
+/* Role under the name in gold */
 .sidebar .profile-name span {
     color: var(--gold-soft);
     font-size: 0.75rem;
     letter-spacing: 0.5px;
 }
 
-/* Guldkant profilbiild */
+/* Gold border on profile picture */
 .sidebar .profile-desc img {
     border: 1px solid var(--gold) !important;
     box-shadow: 0 0 10px rgba(212, 175, 55, 0.35) !important;
@@ -152,16 +151,17 @@ html body .sidebar .sidebar-brand-wrapper {
 
 
 /* ==========================================================
-   SIDEBAR – menyrader och ikoner
+   SIDEBAR – menu items and icons
    ========================================================== */
 
-/* Ikon-cirkeln med tunn guldkant */
+/* Icon circle with thin gold border */
 .sidebar .nav .nav-item .menu-icon {
     background: rgba(212, 175, 55, 0.10) !important;
     border: 1px solid var(--gold-line);
     border-radius: 50%;
 }
 
+/* Icon and text color */
 .sidebar .nav .nav-item .nav-link i {
     color: var(--gold-soft) !important;
     opacity: 1;
@@ -171,17 +171,18 @@ html body .sidebar .sidebar-brand-wrapper {
     color: var(--text) !important;
 }
 
+/* Hover and active */
 .sidebar .nav .nav-item .nav-link:hover .menu-title {
-     color: var(--gold) !important;
+    color: var(--gold) !important;
 }
 
 .sidebar .nav .nav-item .nav-link:hover .menu-icon,
 .sidebar .nav .nav-item.active .menu-icon {
-     background: rgba(212, 175, 55, 0.22) !important;
+    background: rgba(212, 175, 55, 0.22) !important;
     box-shadow: 0 0 14px rgba(212, 175, 55, 0.25);
 }
 
-/* Hover sidebar */
+/* Hover row */
 .sidebar .nav .nav-item.menu-items .nav-link:hover {
     background: linear-gradient(90deg, rgba(212, 175, 55, 0.14), transparent) !important;
     border-left: 3px solid var(--gold);
@@ -198,7 +199,7 @@ html body .navbar .navbar-menu-wrapper {
     background: var(--navbar) !important;
 }
 
-/* Textfärg och guld vid hover */
+/* Text color and gold on hover */
 .navbar .navbar-brand,
 .navbar .navbar-menu-wrapper .nav-link {
     color: var(--text) !important;
@@ -208,7 +209,7 @@ html body .navbar .navbar-menu-wrapper {
     color: var(--gold) !important;
 }
 
-/* Sökfältet */
+/* Search field */
 .navbar .search .form-control {
     background: rgba(255, 255, 255, 0.04) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -224,7 +225,7 @@ html body .navbar .navbar-menu-wrapper {
         box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.15) !important;
     }
 
-/* Profilbild med guldring */
+/* Profile picture with gold ring */
 .navbar .navbar-profile img {
     border: 1px solid var(--gold) !important;
     box-shadow: 0 0 10px rgba(212, 175, 55, 0.35) !important;
@@ -235,17 +236,17 @@ html body .navbar .navbar-menu-wrapper {
     color: var(--text) !important;
 }
 
-.navbar .navbar-profile-name small {
-    color: var(--gold-soft) !important;
-    font-size: 0.75rem;
-}
+    .navbar .navbar-profile-name small {
+        color: var(--gold-soft) !important;
+        font-size: 0.75rem;
+    }
 
-/* Ikoner i navbaren */
+/* Navbar icons */
 .icon-white {
     color: #ffffff;
 }
 
-/* Dropdown inlogg */
+/* Dropdown menus */
 .navbar .navbar-menu-wrapper {
     background: var(--navbar) !important;
 }
@@ -258,10 +259,10 @@ html body .navbar .navbar-menu-wrapper {
     padding: 10px 0 !important;
 }
 
-.navbar .dropdown-menu .dropdown-item i {
-    color: var(--gold) !important;
-    transition: 0.2s ease;
-}
+    .navbar .dropdown-menu .dropdown-item i {
+        color: var(--gold) !important;
+        transition: 0.2s ease;
+    }
 
     .navbar .dropdown-menu .dropdown-item:hover {
         color: var(--gold) !important;
@@ -269,11 +270,11 @@ html body .navbar .navbar-menu-wrapper {
         border-radius: 6px;
     }
 
-.navbar .dropdown-menu .dropdown-item:hover i {
-    color: var(--gold-soft) !important; 
-}
+        .navbar .dropdown-menu .dropdown-item:hover i {
+            color: var(--gold-soft) !important;
+        }
 
-/* Hover ikons */
+/* Icon hover */
 .navbar .navbar-menu-wrapper i {
     color: var(--text) !important;
     transition: 0.2s ease;
@@ -286,7 +287,11 @@ html body .navbar .navbar-menu-wrapper {
     }
 
 
-/* APP-LAUNCHER */
+/* ==========================================================
+   APP LAUNCHER
+   ========================================================== */
+
+/* Hidden and visible state */
 .app-launcher.hidden {
     display: none !important;
 }
@@ -305,6 +310,7 @@ html body .navbar .navbar-menu-wrapper {
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
 }
 
+/* Grid and items */
 .launcher-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -335,14 +341,111 @@ html body .navbar .navbar-menu-wrapper {
         background: rgba(242, 214, 117, 0.08);
     }
 
+    /* Logout form styled as a launcher item */
+    .launcher-item.logout-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 16px 8px;
+        color: var(--text);
+        border: 1px solid var(--gold-line);
+        border-radius: 8px;
+        text-align: center;
+        background: none;
+    }
+
+        /* Button looks like a launcher link */
+        .launcher-item.logout-form button {
+            background: none;
+            border: none;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+            /* Icon style */
+            .launcher-item.logout-form button i {
+                color: var(--gold);
+                font-size: 24px;
+            }
+
+        /* Hover, same as the other items */
+        .launcher-item.logout-form:hover {
+            color: var(--gold);
+            background: rgba(242, 214, 117, 0.08);
+        }
 
 
 /* ==========================================================
-   KORT
+   TABLE – Home page
    ========================================================== */
 
+.mybank-table {
+    width: 100%;
+    background-color: var(--card);
+    color: var(--text);
+    border-radius: 8px;
+}
 
-/* DASHBOARD – korrekt placering */
+    /* Header */
+    .mybank-table thead th {
+        background-color: var(--sidebar);
+        color: var(--gold);
+        font-weight: 600;
+        padding: 14px;
+        border-bottom: 2px solid var(--gold-line);
+        letter-spacing: 0.5px;
+    }
+
+    /* Rows */
+    .mybank-table tbody tr {
+        background-color: var(--card);
+        transition: background-color 0.2s ease, transform 0.15s ease;
+    }
+
+        /* Zebra */
+        .mybank-table tbody tr:nth-child(even) {
+            background-color: #0C1F17;
+        }
+
+    /* Cells */
+    .mybank-table td {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+    }
+
+    /* Hover */
+    .mybank-table tbody tr:hover {
+        background-color: var(--navbar);
+        color: var(--gold);
+        transform: scale(1.01);
+        cursor: pointer;
+    }
+
+    /* Links */
+    .mybank-table a {
+        color: var(--gold);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+        .mybank-table a:hover {
+            color: var(--gold-soft);
+            text-decoration: underline;
+        }
+
+
+/* ==========================================================
+   DASHBOARD – layout and cards
+   ========================================================== */
+
+/* Page layout */
 .main-panel {
     min-width: 0;
 }
@@ -353,6 +456,7 @@ html body .navbar .navbar-menu-wrapper {
     box-sizing: border-box;
 }
 
+/* Card grid */
 .dashboard-grid {
     width: 100%;
     max-width: 100%;
@@ -366,6 +470,7 @@ html body .navbar .navbar-menu-wrapper {
     margin-top: 1rem;
 }
 
+/* Card */
 .dashboard-card {
     min-width: 0;
     box-sizing: border-box;
@@ -377,27 +482,28 @@ html body .navbar .navbar-menu-wrapper {
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), inset 0 0 0.5px rgba(255, 255, 255, 0.12);
 }
 
-.dashboard-card .card-title {
-     color: var(--text);
-     font-weight: 600;
-     letter-spacing: 0.4px;
-     margin-bottom: 10px;
-}
+    .dashboard-card .card-title {
+        color: var(--text);
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        margin-bottom: 10px;
+    }
 
-.dashboard-card .card-text strong {
-     font-size: 1.1rem;
-     color: var(--gold);
-}
+    .dashboard-card .card-text strong {
+        font-size: 1.1rem;
+        color: var(--gold);
+    }
 
 .dashboard-card {
     transition: 0.25s ease;
 }
 
-.dashboard-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), 0 0 8px rgba(242, 214, 117, 0.25); 
-}
+    .dashboard-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), 0 0 8px rgba(242, 214, 117, 0.25);
+    }
 
+/* Icons, indicators and flags */
 .icon {
     color: var(--gold);
     margin-right: 6px;
@@ -410,14 +516,13 @@ html body .navbar .navbar-menu-wrapper {
     margin-left: 6px;
 }
 
-.indicator.positive {
-    color: #4CAF50;
-}
+    .indicator.positive {
+        color: #4CAF50;
+    }
 
-.indicator.negative {
-    color: #E53935;
-
-}
+    .indicator.negative {
+        color: #E53935;
+    }
 
 .flag {
     width: 22px;
@@ -427,6 +532,7 @@ html body .navbar .navbar-menu-wrapper {
     object-fit: cover;
 }
 
+/* Data rows */
 .data-row {
     display: flex;
     align-items: center;
@@ -445,9 +551,10 @@ html body .navbar .navbar-menu-wrapper {
         color: var(--gold);
         margin-left: 12px;
         text-align: right;
-        min-width: 90px; 
+        min-width: 90px;
     }
 
+/* Clickable card link */
 .dashboard-link {
     text-decoration: none;
     color: inherit;
@@ -455,3 +562,100 @@ html body .navbar .navbar-menu-wrapper {
 }
 
 
+/* ==========================================================
+   LOGOUT BUTTON
+   ========================================================== */
+.logout-form {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    color: inherit;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    width: 100%;
+    text-align: left;
+    padding: 0;
+    cursor: pointer;
+}
+
+
+/* ==========================================================
+   LOGIN PAGE
+   ========================================================== */
+
+/* Login box */
+.login-wrapper {
+    max-width: 420px;
+    margin: 60px auto;
+    padding: 32px;
+    background: rgba(10, 18, 14, 0.55);
+    border: 1px solid var(--gold-line);
+    border-radius: 12px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(14px) saturate(140%);
+    color: var(--text);
+}
+
+    .login-wrapper h2 {
+        text-align: center;
+        color: var(--gold);
+        margin-bottom: 24px;
+        letter-spacing: 1px;
+    }
+
+    .login-wrapper label {
+        color: var(--gold-soft);
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+
+    /* Form fields */
+    .login-wrapper .form-control {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        color: var(--text);
+        padding: 10px 14px;
+        transition: 0.25s ease;
+        box-shadow: inset 0 0 6px rgba(212, 175, 55, 0.12);
+    }
+
+        .login-wrapper .form-control:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.15);
+        }
+
+/* Login button */
+.login-btn {
+    width: 100%;
+    margin-top: 18px;
+    padding: 12px;
+    background: var(--gold);
+    color: #000;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+    .login-btn:hover {
+        background: var(--gold-soft);
+        transform: scale(1.03);
+    }
+
+/* Error message */
+.login-error {
+    margin-top: 16px;
+    padding: 12px;
+    background: rgba(229, 57, 53, 0.15);
+    border: 1px solid rgba(229, 57, 53, 0.35);
+    color: #ffb3b3;
+    border-radius: 8px;
+    text-align: center;
+}

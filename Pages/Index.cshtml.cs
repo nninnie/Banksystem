@@ -7,8 +7,7 @@ namespace BankApp.Pages
     public class IndexModel : PageModel
     {
         private readonly IndexService _indexService;
-
-        public List<CountryDashboardDto> Countries { get; set; }
+        public List<CountryDashboardDto> Countries { get; set; } = new();
 
         public IndexModel(IndexService indexService)
         {
@@ -17,7 +16,7 @@ namespace BankApp.Pages
 
         public async Task OnGet()
         {
-            Countries = await _indexService.GetCountryStatisticsAsync();
+            Countries = await _indexService.GetCountryStatisticsAsync() ?? new();
         }
     }
 }

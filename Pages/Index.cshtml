@@ -1,18 +1,25 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Statistik per land";
+    ViewData["Title"] = "Country Statistics";
 }
 
-<h2>Statistik per land</h2>
+<h2>Country Statistics</h2>
 
-<table class="table table-dark table-striped">
+<p class="text-muted">
+    Public overview of customers, accounts, and total balance grouped by country.
+    This information is available to all visitors and does not require login.
+</p>
+
+
+<table class="mybank-table">
+
     <thead>
         <tr>
-            <th>Land</th>
-            <th>Kunder</th>
-            <th>Konton</th>
-            <th>Totalt saldo</th>
+            <th>Country</th>
+            <th>Customers</th>
+            <th>Accounts</th>
+            <th>Total Balance</th>
         </tr>
     </thead>
     <tbody>
