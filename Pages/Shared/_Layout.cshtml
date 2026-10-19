@@ -165,6 +165,32 @@
 
                     <!-- NAVBAR ICONS -->
                     <ul class="navbar-nav navbar-nav-right">
+
+                        @{
+                            var nameNavbar = "Guest";
+                            if (User.Identity?.Name != null)
+                            {
+                                var rawNavbar = User.Identity.Name.Split('@')[0].Replace(".", " ");
+                                nameNavbar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawNavbar);
+                            }
+                        }
+
+                        @{
+                            var notifications = new List<string>();
+
+                            if (TempData["NewCustomer"] != null)
+                                notifications.Add("New customer registered");
+
+                            if (TempData["LargeWithdrawal"] != null)
+                                notifications.Add("Large withdrawal detected");
+
+                            if (TempData["TransferCompleted"] != null)
+                                notifications.Add("Transfer completed");
+
+                            notifications.Add("System running normally");
+                        }
+
+
                   
                         <li class="nav-item nav-settings d-none d-lg-block">
                             <button type="button"
@@ -177,33 +203,58 @@
                             </button>
                         </li>
 
+                        <li class="nav-item dropdown border-left">
+                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
+                                <i class="mdi mdi-bell icon-white"></i>
+                                <span class="count bg-danger"></span>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
+                                <h6 class="p-3 mb-0">Notifications</h6>
+                                <div class="dropdown-divider"></div>
+
+                                @foreach (var note in notifications)
+                                {
+                                    <a class="dropdown-item">
+                                        @note
+                                    </a>
+                                }
+
+                                <div class="dropdown-divider"></div>
+                                <p class="p-3 mb-0 text-center">End of notifications</p>
+                            </div>
+                        </li>
 
                         <li class="nav-item dropdown border-left">
                             <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-bs-toggle="dropdown">
                                 <i class="mdi mdi-email icon-white"></i>
                                 <span class="count bg-success"></span>
                             </a>
+
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
+                                <h6 class="p-3 mb-0">Messages</h6>
+                                <div class="dropdown-divider"></div>
+
+                                <a class="dropdown-item">
+                                    <i class="mdi mdi-email-open text-info me-2"></i>
+                                    Welcome back, @nameNavbar!
+                                </a>
+
+                                <a class="dropdown-item">
+                                    <i class="mdi mdi-clock-outline text-secondary me-2"></i>
+                                    Last login: @(TempData["LastLoginTime"] ?? "No previous login")
+                                </a>
+
+                                <div class="dropdown-divider"></div>
+                                <p class="p-3 mb-0 text-center">End of messages</p>
+                            </div>
                         </li>
 
-                        <li class="nav-item dropdown border-left">
-                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
-                                <i class="mdi mdi-bell icon-white"></i>
-                                <span class="count bg-danger"></span>
-                            </a>
-                        </li>
 
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">
                                 <div class="navbar-profile">
                                     <img class="img-xs rounded-circle" src="~/images/faces/face16.jpg" alt="">
-                                    @{
-                                        var nameNavbar = "Guest";
-                                        if (User.Identity?.Name != null)
-                                        {
-                                            var rawNavbar = User.Identity.Name.Split('@')[0].Replace(".", " ");
-                                            nameNavbar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawNavbar);
-                                        }
-                                    }
                                     <p class="mb-0 d-none d-sm-block navbar-profile-name">@nameNavbar</p>
                                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                                 </div>
@@ -304,6 +355,8 @@
     <script src="~/js/misc.js"></script>
     <script src="~/js/settings.js"></script>
     <script src="~/js/todolist.js"></script>
+
+    <!-- My javascript -->
     <script src="~/my-js/script.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)

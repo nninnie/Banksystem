@@ -29,3 +29,43 @@ document.addEventListener("DOMContentLoaded", function () {
         launcher.classList.add("hidden");
     });
 });
+
+/* ==========================================================
+   SEARCH – Global navbar search (navigate between pages)
+   ========================================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("globalSearch");
+
+    if (!searchInput) return;
+
+    searchInput.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter") return;
+
+        e.preventDefault();
+        const value = searchInput.value.trim().toLowerCase();
+
+        switch (value) {
+            case "dashboard":
+                window.location.href = "/Dashboard";
+                break;
+            case "customers":
+                window.location.href = "/Customers";
+                break;
+            case "accounts":
+                window.location.href = "/Accounts";
+                break;
+            case "transactions":
+                window.location.href = "/Transactions";
+                break;
+            case "reports":
+                window.location.href = "/Reports";
+                break;
+            case "settings":
+                window.location.href = "/Settings";
+                break;
+            default:
+                alert("No matching page found.");
+        }
+    });
+});

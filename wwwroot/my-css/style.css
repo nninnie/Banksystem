@@ -263,9 +263,11 @@ html body .navbar .navbar-menu-wrapper {
     transition: 0.2s ease;
 }
 
-.navbar .dropdown-menu .dropdown-item:hover {
-    color: var(--gold) !important;
-}
+    .navbar .dropdown-menu .dropdown-item:hover {
+        color: var(--gold) !important;
+        background: rgba(242, 214, 117, 0.08) !important;
+        border-radius: 6px;
+    }
 
 .navbar .dropdown-menu .dropdown-item:hover i {
     color: var(--gold-soft) !important; 
@@ -277,9 +279,11 @@ html body .navbar .navbar-menu-wrapper {
     transition: 0.2s ease;
 }
 
-.navbar .navbar-menu-wrapper i:hover {
-    color: var(--gold) !important;
-}
+    .navbar .navbar-menu-wrapper i:hover {
+        color: var(--gold) !important;
+        background: rgba(242, 214, 117, 0.08) !important;
+        border-radius: 6px;
+    }
 
 
 /* APP-LAUNCHER */
@@ -330,6 +334,7 @@ html body .navbar .navbar-menu-wrapper {
         color: var(--gold);
         background: rgba(242, 214, 117, 0.08);
     }
+
 
 
 /* ==========================================================

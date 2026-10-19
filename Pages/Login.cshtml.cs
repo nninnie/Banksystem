@@ -22,6 +22,8 @@ namespace BankApp.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            TempData["LastLoginTime"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+
             var result = await _signInManager.PasswordSignInAsync(
                 Input.Username,
                 Input.Password,
