@@ -1,4 +1,5 @@
 using BankApp.Data;
+using BankApp.Mapping;
 using BankApp.Models;
 using BankApp.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -16,6 +17,9 @@ namespace BankApp
             // Add services to the container.
             builder.Services.AddRazorPages();
 
+            // Register AutoMapper (loads MappingProfile automatically)
+            builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
+
             // Add database context, Dependency Injection, and configure the connection string
             builder.Services.AddDbContext<BankAppContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -32,10 +36,11 @@ namespace BankApp
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            // Registers DashboardService & IndexService so it can be injected into PageModels
+            // Registers Services so it can be injected into PageModels
             builder.Services.AddScoped<DashboardService>();
-
             builder.Services.AddScoped<IndexService>();
+            builder.Services.AddScoped<CustomerService>();
+
 
 
             var app = builder.Build();

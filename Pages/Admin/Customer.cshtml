@@ -1,0 +1,75 @@
+﻿@page "{id:int}"
+@model BankApp.Pages.Admin.CustomerModel
+@{
+    ViewData["Title"] = "Customer";
+}
+
+<h2 class="section-title mb-4">Customer Profile</h2>
+
+<!-- Customer info card -->
+<div class="dashboard-card mb-4">
+    <h3 class="card-title">Customer Information</h3>
+
+    <div class="data-row">
+        <span class="label">Full Name</span>
+        <span class="value">@Model.Customer.FullName</span>
+    </div>
+
+    <div class="data-row">
+        <span class="label">Address</span>
+        <span class="value">@Model.Customer.Streetaddress</span>
+    </div>
+
+    <div class="data-row">
+        <span class="label">City</span>
+        <span class="value">@Model.Customer.Zipcode @Model.Customer.City</span>
+    </div>
+
+    <div class="data-row">
+        <span class="label">Country</span>
+        <span class="value">@Model.Customer.Country</span>
+    </div>
+
+    <div class="data-row">
+        <span class="label">Phone</span>
+        <span class="value">@Model.Customer.Telephone</span>
+    </div>
+
+    <div class="data-row">
+        <span class="label">Email</span>
+        <span class="value">@Model.Customer.Email</span>
+    </div>
+</div>
+
+<!-- Total balance card -->
+<div class="dashboard-card mb-4">
+    <h3 class="card-title">Total Balance</h3>
+    <p class="card-text">
+        <strong>@Model.Customer.TotalBalance</strong>
+    </p>
+</div>
+
+<!-- Accounts table -->
+<h3 class="section-title mb-3">Accounts</h3>
+
+<table class="mybank-table">
+    <thead>
+        <tr>
+            <th>Account Number</th>
+            <th>Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var account in Model.Customer.Accounts)
+        {
+            <tr>
+                <td>
+                    <a asp-page="/Admin/Account" asp-route-id="@account.AccountId">
+                        @account.AccountId
+                    </a>
+                </td>
+                <td>@account.Balance</td>
+            </tr>
+        }
+    </tbody>
+</table>

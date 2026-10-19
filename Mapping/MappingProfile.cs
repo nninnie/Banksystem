@@ -1,0 +1,32 @@
+﻿using AutoMapper;
+using BankApp.Models;
+using BankApp.ViewModels;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace BankApp.Mapping
+{
+    // MappingProfile – defines how entities are converted into ViewModels
+    public class MappingProfile : Profile
+    {
+        public MappingProfile()
+        {
+            // Maps Customer entity - CustomerViewModel
+            CreateMap<Customer, CustomerViewModel>()
+                // Creates FullName from Givenname + Surname
+                .ForMember(dest => dest.FullName,
+                    opt => opt.MapFrom(src => $"{src.Givenname} {src.Surname}"))
+
+                // Maps telephone country code + number into one string
+                .ForMember(dest => dest.Telephone,
+                    opt => opt.MapFrom(src => $"{src.Telephonecountrycode}{src.Telephonenumber}"))
+
+                // Maps email address
+                .ForMember(dest => dest.Email,
+                    opt => opt.MapFrom(src => src.Emailaddress));
+
+            // Maps Account entity - AccountViewModel
+            CreateMap<Account, AccountViewModel>();
+        }
+
+    }
+}

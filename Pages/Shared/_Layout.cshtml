@@ -108,7 +108,7 @@
                 @if (User.IsInRole("Admin") || User.IsInRole("Cashier"))
                 {
                     <li class="nav-item menu-items">
-                        <a class="nav-link" asp-page="/Customers">
+                        <a class="nav-link" asp-page="/Admin/Customers">
                             <span class="menu-icon"><i class="mdi mdi-account-search"></i></span>
                             <span class="menu-title">Customers</span>
                         </a>
@@ -119,7 +119,7 @@
                 @if (User.IsInRole("Admin"))
                 {
                     <li class="nav-item menu-items">
-                        <a class="nav-link" asp-page="/Admin">
+                        <a class="nav-link" asp-page="/Admin/UserAdmin">
                             <span class="menu-icon"><i class="mdi mdi-shield-account"></i></span>
                             <span class="menu-title">User Admin</span>
                         </a>
@@ -322,12 +322,7 @@
                         <span>Customers</span>
                     </a>
 
-                    <a href="/Admin/Accounts" class="launcher-item">
-                        <i class="mdi mdi-bank"></i>
-                        <span>Accounts</span>
-                    </a>
-
-                    <a href="/Admin/UserAdministration" class="launcher-item">
+                    <a href="/Admin/UserAdmin" class="launcher-item">
                         <i class="mdi mdi-chart-line"></i>
                         <span>User Admin</span>
                     </a>
