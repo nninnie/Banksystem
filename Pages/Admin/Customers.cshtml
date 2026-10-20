@@ -85,17 +85,18 @@
     <tbody>
         @foreach (var c in Model.Customers)
         {
-            <tr>
-                <td>@c.CustomerId</td>
-                <td>@c.NationalId</td>
+            <tr class="clickable-row">
                 <td>
-                    <a asp-page="/Admin/Customer" asp-route-id="@c.CustomerId">
-                        @c.FullName
+                    <a asp-page="/Admin/Customer" asp-route-id="@c.CustomerId" class="stretched-link">
+                        @c.CustomerId
                     </a>
                 </td>
+                <td>@c.NationalId</td>
+                <td>@c.FullName</td>
                 <td>@c.Streetaddress</td>
                 <td>@c.City</td>
             </tr>
+
         }
     </tbody>
 </table>

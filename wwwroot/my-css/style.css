@@ -424,8 +424,6 @@ html body .navbar .navbar-menu-wrapper {
     .mybank-table tbody tr:hover {
         background-color: var(--navbar);
         color: var(--gold);
-        transform: scale(1.01);
-        cursor: pointer;
     }
 
     /* Links */
@@ -439,6 +437,43 @@ html body .navbar .navbar-menu-wrapper {
             color: var(--gold-soft);
             text-decoration: underline;
         }
+
+.currency {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.balance-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 1px;
+}
+
+/* Clickable rows (Stretched link) Customer page */
+.clickable-row {
+    position: relative; 
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+    .clickable-row:hover {
+        background-color: rgba(242, 214, 117, 0.05) !important; 
+    }
+
+    .clickable-row td {
+        color: var(--text) !important;
+    }
+
+        .clickable-row td a {
+            color: var(--gold) !important;
+            text-decoration: none !important;
+        }
+
+            .clickable-row td a:hover {
+                color: var(--gold-soft) !important;
+            }
 
 
 /* ==========================================================
@@ -499,7 +534,6 @@ html body .navbar .navbar-menu-wrapper {
 }
 
     .dashboard-card:hover {
-        transform: scale(1.03);
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), 0 0 8px rgba(242, 214, 117, 0.25);
     }
 
@@ -537,22 +571,33 @@ html body .navbar .navbar-menu-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
 }
 
     .data-row .label {
         flex: 1;
         margin-left: 8px;
-        color: var(--text);
+        color: var(--muted);
     }
 
     .data-row .value {
-        font-weight: 600;
-        color: var(--gold);
+        font-weight: 500;
+        color: var(--muted);
         margin-left: 12px;
         text-align: right;
         min-width: 90px;
     }
+
+.value {
+    width: 350px;
+    text-align: right;
+}
+
+.customer-name {
+    color: var(--gold) !important;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
 
 /* Clickable card link */
 .dashboard-link {
