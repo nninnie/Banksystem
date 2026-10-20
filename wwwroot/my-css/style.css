@@ -784,3 +784,13 @@ html body .navbar .navbar-menu-wrapper {
     font-size: 0.9rem;
     letter-spacing: 0.5px;
 }
+
+/* ==========================================================
+   SECTION TITLES & SUBTITLES
+   ========================================================== */
+
+.section-subtitle {
+    color: var(--muted);
+    font-size: .9rem;
+    margin-bottom: 24px;
+}

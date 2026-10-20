@@ -5,13 +5,16 @@
 }
 
 <h2 class="section-title mb-4">Customer Profile</h2>
+<p class="section-subtitle">
+    View customer details, accounts and balances.
+</p>
 
 <!-- Customer info card -->
 <div class="dashboard-card mb-4">
-    <h3 class="card-title">Customer Information</h3>
+    <h3 class="card-title">Customer Details</h3>
 
     <div class="data-row">
-        <span class="label">Full Name</span>
+        <span class="label">Customer Name</span>
 
         <span class="value customer-name">
             @Model.Customer.FullName
@@ -34,12 +37,12 @@
     </div>
 
     <div class="data-row">
-        <span class="label">Phone</span>
+        <span class="label">Phone Number</span>
         <span class="value">@Model.Customer.Telephone</span>
     </div>
 
     <div class="data-row">
-        <span class="label">Email</span>
+        <span class="label">Email Address</span>
         <span class="value">@Model.Customer.Email</span>
     </div>
 </div>
@@ -55,7 +58,7 @@
 
 <!-- Accounts table -->
 <h3 class="section-title mb-3">
-    Accounts (@Model.Customer.Accounts.Count)
+    Customer Accounts (@Model.Customer.Accounts.Count)
 </h3>
 
 <table class="mybank-table">
