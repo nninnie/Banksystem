@@ -88,23 +88,31 @@ namespace BankApp.Services
             if (sortColumn == "Name")
             {
                 if (sortOrder == "desc")
-                    query = query.OrderByDescending(c => c.Surname);
+                    query = query.OrderByDescending(c =>
+                        EF.Functions.Collate(c.Surname, "Finnish_Swedish_CI_AS"));
                 else
-                    query = query.OrderBy(c => c.Surname);
+                    query = query.OrderBy(c =>
+                        EF.Functions.Collate(c.Surname, "Finnish_Swedish_CI_AS"));
             }
+
             if (sortColumn == "Address")
             {
                 if (sortOrder == "desc")
-                    query = query.OrderByDescending(c => c.Streetaddress);
+                    query = query.OrderByDescending(c =>
+                        EF.Functions.Collate(c.Streetaddress, "Finnish_Swedish_CI_AS"));
                 else
-                    query = query.OrderBy(c => c.Streetaddress);
+                    query = query.OrderBy(c =>
+                        EF.Functions.Collate(c.Streetaddress, "Finnish_Swedish_CI_AS"));
             }
+
             if (sortColumn == "City")
             {
                 if (sortOrder == "desc")
-                    query = query.OrderByDescending(c => c.City);
+                    query = query.OrderByDescending(c =>
+                        EF.Functions.Collate(c.City, "Finnish_Swedish_CI_AS"));
                 else
-                    query = query.OrderBy(c => c.City);
+                    query = query.OrderBy(c =>
+                        EF.Functions.Collate(c.City, "Finnish_Swedish_CI_AS"));
             }
 
             // Pagination (afetr sorting)
@@ -116,9 +124,6 @@ namespace BankApp.Services
             query = query.Take(50);
 
             return await query.ToListAsync();
-
-
-
         }
     }
 }
