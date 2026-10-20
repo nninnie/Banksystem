@@ -15,6 +15,7 @@ namespace BankApp.Pages.Admin
 
         private readonly IMapper _mapper;
 
+
         public CustomersModel(CustomerService service, IMapper mapper)
         {
             _service = service;
@@ -22,10 +23,25 @@ namespace BankApp.Pages.Admin
         }
 
         public List<CustomerViewModel> Customers { get; set; }
+        public string? SearchName { get; set; }
+        public string? SearchCity { get; set; }
+        public string? SortColumn { get; set; }
+        public string? SortOrder { get; set; }
+        public int CurrentPage { get; set; }
+        public int PageCount { get; set; }
 
-        public async Task OnGetAsync(string searchName, string searchCity)
+        public async Task OnGetAsync(string? searchName, string? searchCity, string sortColumn, string sortOrder, int pageNo)
         {
-            var customers = await _service.SearchCustomersAsync(searchName, searchCity);
+            if (pageNo == 0) pageNo = 1;
+
+            SearchName = searchName;
+            SearchCity = searchCity;
+            SortColumn = sortColumn;
+            SortOrder = sortOrder;
+            CurrentPage = pageNo;
+
+            var customers = await _service.SearchCustomersAsync(
+        searchName, searchCity, sortColumn, sortOrder, pageNo);
 
             Customers = _mapper.Map<List<CustomerViewModel>>(customers);
         }

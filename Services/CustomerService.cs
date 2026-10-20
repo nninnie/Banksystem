@@ -14,7 +14,7 @@ namespace BankApp.Services
             _context = context;
         }
 
-        // Async method – fetches a customer by ID including accounts
+        // Fetches a customer by ID including dispositions and accounts
         public async Task<Customer?> GetCustomerAsync(int id)
         {
             return await _context.Customers
@@ -24,48 +24,101 @@ namespace BankApp.Services
         }
 
 
-        // Async method – calculates the customer's total balance
-        public async Task<decimal> GetTotalBalanceAsync(Customer customer)
+        // Calculates the customer's total balance
+        public Task<decimal> GetTotalBalanceAsync(Customer customer)
         {
-            return await Task.FromResult(
-                customer.Dispositions
+            var total = customer.Dispositions
                 .Where(d => d.Account != null)
-                .Sum(d => d.Account.Balance));
+                .Sum(d => d.Account.Balance);
+
+            return Task.FromResult(total);
         }
 
 
-        // Async method – returns all accounts belonging to the customer
-        public async Task<List<Account>> GetAccountsAsync(Customer customer)
+        // Returns all accounts belonging to the customer
+        public Task<List<Account>> GetAccountsAsync(Customer customer)
         {
-            return await Task.FromResult(
-                customer.Dispositions
+            var accounts = customer.Dispositions
                 .Where(d => d.Account != null)
                 .Select(d => d.Account)
-                .ToList()
-                );
+                .ToList();
+
+            return Task.FromResult(accounts);
         }
 
-        public async Task<List<Customer>> SearchCustomersAsync(string name, string city)
+        // Search + sorting + pagination (50 per page)
+        public async Task<List<Customer>> SearchCustomersAsync(
+            string? searchName, string? searchCity,
+            string? sortColumn, string? sortOrder, int page)
         {
             var query = _context.Customers.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(name))
+            // Search
+            if (!string.IsNullOrWhiteSpace(searchName))
             {
-                query = query.Where(c => c.Givenname.Contains(name) ||
-                                         c.Surname.Contains(name));
+                query = query.Where(c => c.Givenname.Contains(searchName) ||
+                                         c.Surname.Contains(searchName));
             }
 
-            if (!string.IsNullOrWhiteSpace(city))
+            if (!string.IsNullOrWhiteSpace(searchCity))
             {
-                query = query.Where(c => c.City.Contains(city));
+                query = query.Where(c => c.City.Contains(searchCity));
             }
 
-            return await query
-                .OrderBy(c => c.CustomerId)
-                .Take(50) // första 50 (paginering kommer senare)
-                .ToListAsync();
+            // Sort (defaults)
+            if (string.IsNullOrEmpty(sortOrder))
+                sortOrder = "asc";
+            if (string.IsNullOrEmpty(sortColumn))
+                sortColumn = "Id";
+
+            if (sortColumn == "Id")
+            {
+                if (sortOrder == "desc")
+                    query = query.OrderByDescending(c => c.CustomerId);
+                else
+                    query = query.OrderBy(c => c.CustomerId);
+            }
+            if (sortColumn == "NationalId")
+            {
+                if (sortOrder == "desc")
+                    query = query.OrderByDescending(c => c.NationalId);
+                else
+                    query = query.OrderBy(c => c.NationalId);
+            }
+            if (sortColumn == "Name")
+            {
+                if (sortOrder == "desc")
+                    query = query.OrderByDescending(c => c.Surname);
+                else
+                    query = query.OrderBy(c => c.Surname);
+            }
+            if (sortColumn == "Address")
+            {
+                if (sortOrder == "desc")
+                    query = query.OrderByDescending(c => c.Streetaddress);
+                else
+                    query = query.OrderBy(c => c.Streetaddress);
+            }
+            if (sortColumn == "City")
+            {
+                if (sortOrder == "desc")
+                    query = query.OrderByDescending(c => c.City);
+                else
+                    query = query.OrderBy(c => c.City);
+            }
+
+            // Pagination (afetr sorting)
+            if (page < 1) page = 1;
+
+            var firsPageIndex = (page - 1) * 50;
+
+            query = query.Skip(firsPageIndex);
+            query = query.Take(50);
+
+            return await query.ToListAsync();
+
+
+
         }
-
-
     }
 }
