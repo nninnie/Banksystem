@@ -8,7 +8,6 @@ namespace BankApp.Pages.Admin
 {
 
     // VeiwModel - for the customer list: handles searching, pagination, and displaying customers in the admin view
-
     public class CustomersModel : PageModel
     {
         private readonly ICustomerService _customerService;

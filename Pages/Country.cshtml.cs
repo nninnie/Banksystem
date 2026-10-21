@@ -6,7 +6,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BankApp.Pages
 {
+    // The page that shows the top customers in a given country
     [AllowAnonymous]
+
+    // Caches the response for 60 seconds, separately for each country (?country=...) so the database isn't hit on every page load
     [ResponseCache(Duration = 60, VaryByQueryKeys = new[] { "country" })]
     public class CountryModel : PageModel
     {
@@ -17,7 +20,8 @@ namespace BankApp.Pages
             _customerService = customerService;
             
         }
-
+        // The country comes from the URL, e.g. /Country?country=Sweden
+        // SupportsGet = true makes binding work on GET requests, not just POST
         [BindProperty(SupportsGet = true)]
         public string Country { get; set; } = "";
 
