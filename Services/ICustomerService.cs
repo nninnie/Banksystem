@@ -1,4 +1,5 @@
 ﻿using BankApp.Models;
+using BankApp.ViewModels;
 
 namespace BankApp.Services
 {
@@ -17,5 +18,6 @@ namespace BankApp.Services
             string? sortColumn,
             string? sortOrder,
             int page);
+        Task<List<CustomerViewModel>> GetTopCustomersByCountryAsync(string country, int v);
     }
 }

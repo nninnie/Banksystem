@@ -758,6 +758,7 @@ html body .navbar .navbar-menu-wrapper {
 .bank-btn-outline {
     display: inline-block;
     padding: 8px 18px;
+    margin-top: 0.5rem;
     background: transparent;
     color: var(--gold);
     font-weight: 600;

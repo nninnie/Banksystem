@@ -14,7 +14,7 @@ namespace BankApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Add services to the container
             builder.Services.AddRazorPages();
 
             // Register AutoMapper (loads MappingProfile automatically)
@@ -41,7 +41,8 @@ namespace BankApp
             builder.Services.AddScoped<IIndexService, IndexService>();
             builder.Services.AddScoped<ICustomerService, CustomerService>();
 
-
+            // Registers the Response Caching services in the DI container
+            builder.Services.AddResponseCaching();
 
             var app = builder.Build();
 
@@ -63,6 +64,9 @@ namespace BankApp
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // Enables the Response Caching middleware in the request pipeline
+            app.UseResponseCaching();
 
             app.UseAuthentication();
 

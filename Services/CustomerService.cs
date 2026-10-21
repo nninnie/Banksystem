@@ -1,5 +1,6 @@
 ﻿using BankApp.DTOs;
 using BankApp.Models;
+using BankApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankApp.Services
@@ -125,5 +126,24 @@ namespace BankApp.Services
 
             return await query.ToListAsync();
         }
+
+        public async Task<List<CustomerViewModel>> GetTopCustomersByCountryAsync(string country, int count)
+        {
+            return await _context.Customers
+        .Where(c => c.Country == country)
+        .Select(c => new CustomerViewModel
+        {
+            CustomerId = c.CustomerId,
+            FullName = c.Givenname + " " + c.Surname,
+            City = c.City,
+            Country = c.Country,
+            TotalBalance = c.Dispositions.Sum(d => d.Account.Balance)
+        })
+        .OrderByDescending(x => x.TotalBalance)
+        .Take(count)
+        .ToListAsync();
+
+        }
+
     }
 }
