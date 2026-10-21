@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankApp.Services
 {
-    public class IndexService
+    public class IndexService : IIndexService
     {
         private readonly BankAppContext _context;
 

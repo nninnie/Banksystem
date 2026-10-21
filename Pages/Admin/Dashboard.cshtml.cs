@@ -8,11 +8,11 @@ namespace BankApp.Pages.Admin
     // DashboardModel for the home page. Retrieves dashboard statistics via DashboardService and passes them to the view.
     public class DashboardModel : PageModel
     {
-        private readonly DashboardService _dashboardService;
+        private readonly IDashboardService _dashboardService;
 
         public DashboardDto Data { get; set; }
 
-        public DashboardModel(DashboardService dashboardService)
+        public DashboardModel(IDashboardService dashboardService)
         {
             _dashboardService = dashboardService;
         }

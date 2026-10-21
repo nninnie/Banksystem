@@ -9,13 +9,13 @@ namespace BankApp.Pages.Admin
     // PageModel – handles the logic for the Customer page
     public class CustomerModel : PageModel
     {
-        private readonly CustomerService _service;
+        private readonly ICustomerService _customerService;
         private readonly IMapper _mapper;
         public CustomerViewModel Customer { get; set; }
         
-        public CustomerModel(CustomerService service, IMapper mapper)
+        public CustomerModel(ICustomerService customerService, IMapper mapper)
         {
-            _service = service;
+            _customerService = customerService;
             _mapper = mapper;
         }
 
@@ -29,18 +29,18 @@ namespace BankApp.Pages.Admin
         // Returns the page with the filled ViewModel
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var customer = await _service.GetCustomerAsync(id);
+            var customer = await _customerService.GetCustomerAsync(id);
 
             if (customer == null)
                 return NotFound();
 
             Customer = _mapper.Map<CustomerViewModel>(customer);
 
-            var accounts = await _service.GetAccountsAsync(customer);
+            var accounts = await _customerService.GetAccountsAsync(customer);
 
             Customer.Accounts = _mapper.Map<List<AccountViewModel>>(accounts);
 
-            Customer.TotalBalance = await _service.GetTotalBalanceAsync(customer);
+            Customer.TotalBalance = await _customerService.GetTotalBalanceAsync(customer);
 
             return Page();
         }

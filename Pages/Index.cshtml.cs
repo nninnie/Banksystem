@@ -6,10 +6,10 @@ namespace BankApp.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly IndexService _indexService;
+        private readonly IIndexService _indexService;
         public List<CountryDashboardDto> Countries { get; set; } = new();
 
-        public IndexModel(IndexService indexService)
+        public IndexModel(IIndexService indexService)
         {
             _indexService = indexService;
         }

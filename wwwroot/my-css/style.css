@@ -389,7 +389,7 @@ html body .navbar .navbar-menu-wrapper {
 .mybank-table {
     width: 100%;
     background-color: var(--card);
-    color: var(--text);
+    color: var(--muted);
     border-radius: 8px;
 }
 
@@ -465,6 +465,11 @@ html body .navbar .navbar-menu-wrapper {
     .clickable-row td {
         color: var(--text) !important;
     }
+
+.customer-id,
+.national-id {
+    color: var(--muted) !important;
+}
 
         .clickable-row td a {
             color: var(--gold) !important;

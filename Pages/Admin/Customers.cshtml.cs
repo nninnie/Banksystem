@@ -11,14 +11,14 @@ namespace BankApp.Pages.Admin
 
     public class CustomersModel : PageModel
     {
-        private readonly CustomerService _service;
+        private readonly ICustomerService _customerService;
 
         private readonly IMapper _mapper;
 
 
-        public CustomersModel(CustomerService service, IMapper mapper)
+        public CustomersModel(ICustomerService customerService, IMapper mapper)
         {
-            _service = service;
+            _customerService = customerService;
             _mapper = mapper;
         }
 
@@ -40,7 +40,7 @@ namespace BankApp.Pages.Admin
             SortOrder = sortOrder;
             CurrentPage = pageNo;
 
-            var customers = await _service.SearchCustomersAsync(
+            var customers = await _customerService.SearchCustomersAsync(
         searchName, searchCity, sortColumn, sortOrder, pageNo);
 
             Customers = _mapper.Map<List<CustomerViewModel>>(customers);

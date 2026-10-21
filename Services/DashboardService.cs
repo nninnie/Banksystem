@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankApp.Services
 {
-    public class DashboardService
+    public class DashboardService : IDashboardService
     {
         private readonly BankAppContext _context;
 

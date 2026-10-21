@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BankApp.Services
 {
     // Service class – handles all customer-related data logic
-    public class CustomerService
+    public class CustomerService : ICustomerService
     {
         private readonly BankAppContext _context;
 

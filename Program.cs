@@ -37,9 +37,9 @@ namespace BankApp
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Registers Services so it can be injected into PageModels
-            builder.Services.AddScoped<DashboardService>();
-            builder.Services.AddScoped<IndexService>();
-            builder.Services.AddScoped<CustomerService>();
+            builder.Services.AddScoped<IDashboardService, DashboardService>();
+            builder.Services.AddScoped<IIndexService, IndexService>();
+            builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 
 
