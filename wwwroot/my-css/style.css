@@ -613,6 +613,88 @@ html body .navbar .navbar-menu-wrapper {
     display: block;
 }
 
+/* ==========================================================
+   DASHBOARD – recent transactions + customer per country
+   ========================================================== */
+
+/* Icon and title on the same row */
+.dashboard-card .card-title {
+    display: flex;
+    align-items: center;
+}
+
+.transaction-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+    .transaction-row:last-child {
+        border-bottom: none;
+    }
+
+.transaction-info,
+.transaction-amount-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.transaction-amount-wrap {
+    text-align: right;
+}
+
+.transaction-name {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.transaction-operation,
+.transaction-date {
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+.transaction-amount {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+    .transaction-amount.positive {
+        color: #4CAF50;
+    }
+
+    .transaction-amount.negative {
+        color: #E53935;
+    }
+
+.transaction-empty {
+    color: var(--muted);
+    margin: 0;
+}
+
+
+/* Two cards side by side, stacked on small screens */
+.dashboard-two-col {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 992px) {
+    .dashboard-two-col {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Chart needs a fixed height since the canvas is responsive */
+.chart-wrap {
+    position: relative;
+    height: 280px;
+}
 
 /* ==========================================================
    LOGOUT BUTTON

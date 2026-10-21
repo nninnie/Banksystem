@@ -1,5 +1,6 @@
 using BankApp.DTOs;
 using BankApp.Services;
+using BankApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -10,15 +11,20 @@ namespace BankApp.Pages.Admin
     {
         private readonly IDashboardService _dashboardService;
 
-        public DashboardDto Data { get; set; }
+        private readonly ITransactionService _transactionService;
 
-        public DashboardModel(IDashboardService dashboardService)
+        public DashboardDto Data { get; set; }
+        public List<TransactionViewModel> RecentTransactions { get; set; } = new();
+
+        public DashboardModel(IDashboardService dashboardService, ITransactionService transactionService)
         {
             _dashboardService = dashboardService;
+            _transactionService = transactionService;
         }
         public async Task OnGet()
         {
             Data = await _dashboardService.GetDashboardAsync();
+            RecentTransactions = await _transactionService.GetRecentTransactionsAsync(5);
         }
     }
 }

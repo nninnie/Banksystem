@@ -1,5 +1,5 @@
 ﻿@page
-@model IndexModel
+@model DashboardModel
 @{
     ViewData["Title"] = "Dashboard";
 }
@@ -11,8 +11,9 @@
     Quick access to customer management and bank operations.
 </p>
 
+<!-- Contry Cards -->
 <div class="dashboard-grid">
-    @foreach (var c in Model.Countries)
+    @foreach (var c in Model.Data.Countries)
     {
         <a href="/Country/@c.Country" class="dashboard-link">
             <div class="dashboard-card">
@@ -21,7 +22,7 @@
                     @c.Country
                 </h5>
 
-                <p class="card-text">
+                <div class="card-text">
                     <div class="data-row">
                         <i class="mdi mdi-account-group icon"></i>
                         <span class="label">Kunder</span>
@@ -39,8 +40,57 @@
                         <span class="label">Totalt saldo</span>
                         <span class="value">@c.TotalBalance.ToString("N2")</span>
                     </div>
-                </p>
+                </div>
             </div>
         </a>
     }
 </div>
+
+<div class="dashboard-two-col">
+
+
+
+    <!-- Customers per country -->
+    <div class="dashboard-card">
+        <h5 class="card-title">
+            <i class="mdi mdi-chart-donut icon"></i>
+            Customers per Country
+        </h5>
+        <div class="chart-wrap">
+            <canvas id="customersChart"
+                    data-labels="@System.Text.Json.JsonSerializer.Serialize(Model.Data.Countries.Select(c => c.Country))"
+                    data-values="@System.Text.Json.JsonSerializer.Serialize(Model.Data.Countries.Select(c => c.CustomerCount))">
+            </canvas>
+        </div>
+    </div>
+
+    <!-- Recent transactions -->
+    <div class="dashboard-card transactions-card">
+        <h5 class="card-title">
+            <i class="mdi mdi-swap-horizontal icon"></i>
+            Recent Transactions
+        </h5>
+
+        @foreach (var t in Model.RecentTransactions)
+        {
+            <div class="transaction-row">
+                <div class="transaction-info">
+                    <span class="transaction-name">@t.CustomerName</span>
+                    <span class="transaction-operation">
+                        @(string.IsNullOrWhiteSpace(t.Operation) ? t.Type : t.Operation)
+                    </span>
+                </div>
+                <div class="transaction-amount-wrap">
+                    <span class="transaction-amount @(t.IsDebit ? "negative" : "positive")">
+                        @(t.IsDebit ? "-" : "+")@t.Amount.ToString("N2") kr
+                    </span>
+                    <span class="transaction-date">@t.Date.ToString("yyyy-MM-dd")</span>
+                </div>
+            </div>
+        }
+
+        @if (!Model.RecentTransactions.Any())
+        {
+            <p class="transaction-empty">No transactions yet.</p>
+        }
+    </div>

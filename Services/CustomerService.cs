@@ -127,6 +127,7 @@ namespace BankApp.Services
             return await query.ToListAsync();
         }
 
+        // Returns the customers with the highest total balance in a country, limited to the given count
         public async Task<List<CustomerViewModel>> GetTopCustomersByCountryAsync(string country, int count)
         {
             return await _context.Customers

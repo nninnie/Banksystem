@@ -3,9 +3,9 @@ using BankApp.ViewModels;
 
 namespace BankApp.Services
 {
+    // Contract for everything the pages need to know about customers (lookup, search, balances, rankings).
     public interface ICustomerService
     {
-
         Task<Customer?> GetCustomerAsync(int id);
 
         Task<decimal> GetTotalBalanceAsync(Customer customer);

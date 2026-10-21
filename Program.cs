@@ -40,6 +40,7 @@ namespace BankApp
             builder.Services.AddScoped<IDashboardService, DashboardService>();
             builder.Services.AddScoped<IIndexService, IndexService>();
             builder.Services.AddScoped<ICustomerService, CustomerService>();
+            builder.Services.AddScoped<ITransactionService, TransactionService>();
 
             // Registers the Response Caching services in the DI container
             builder.Services.AddResponseCaching();

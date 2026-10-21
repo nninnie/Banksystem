@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankApp.Services
 {
+    // Calculates per-country statistics (customers, accounts, total balance) for the start page.
     public class IndexService : IIndexService
     {
         private readonly BankAppContext _context;
