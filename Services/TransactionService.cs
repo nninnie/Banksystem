@@ -14,27 +14,54 @@ namespace BankApp.Services
             _context = context;
         }
 
+        // Loads the 5 latest transactions and their owner names using separate, lightweight SQL queries to prevent timeouts; 
+        // it then maps the data using a standard in-memory .ToList() because the SQL database has already finished its work.
         public async Task<List<TransactionViewModel>> GetRecentTransactionsAsync(int count)
         {
-            return await _context.Transactions
-        .AsNoTracking()
-        .OrderByDescending(t => t.Date)
-        .ThenByDescending(t => t.TransactionId)
-        .Take(count)
-        .Select(t => new TransactionViewModel
-        {
-            TransactionId = t.TransactionId,
-            AccountId = t.AccountId,
-            CustomerName = t.AccountNavigation.Dispositions
-                .Select(d => d.Customer.Givenname + " " + d.Customer.Surname)
-                .FirstOrDefault() ?? "Unknown",
-            Type = t.Type,
-            Operation = t.Operation,
-            Amount = t.Amount,
-            Balance = t.Balance,
-            Date = t.Date.ToDateTime(TimeOnly.MinValue)
-        })
-        .ToListAsync();
+            var recent = await _context.Transactions
+    .AsNoTracking()
+    .OrderByDescending(t => t.TransactionId)
+    .Take(5)
+    .Select(t => new
+    {
+        t.TransactionId,
+        t.AccountId,
+        t.Type,
+        t.Operation,
+        t.Amount,
+        t.Balance,
+        t.Date
+    })
+    .ToListAsync();
+
+            var accountIds = recent.Select(r => r.AccountId).Distinct().ToList();
+
+            var owners = await _context.Dispositions
+                .AsNoTracking()
+                .Where(d => accountIds.Contains(d.AccountId))
+                .OrderBy(d => d.DispositionId)
+                .Select(d => new
+                {
+                    d.AccountId,
+                    Name = d.Customer.Givenname + " " + d.Customer.Surname
+                })
+                .ToListAsync();
+
+            var nameByAccount = owners
+                .GroupBy(o => o.AccountId)
+                .ToDictionary(g => g.Key, g => g.First().Name);
+
+            return recent.Select(t => new TransactionViewModel
+            {
+                TransactionId = t.TransactionId,
+                AccountId = t.AccountId,
+                CustomerName = nameByAccount.GetValueOrDefault(t.AccountId) ?? "Unknown",
+                Type = t.Type,
+                Operation = t.Operation,
+                Amount = t.Amount,
+                Balance = t.Balance,
+                Date = t.Date.ToDateTime(TimeOnly.MinValue)
+            }).ToList();
         }
     }
 }

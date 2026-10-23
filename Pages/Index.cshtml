@@ -12,6 +12,7 @@
 </p>
 
 
+
 <table class="mybank-table">
 
     <thead>
@@ -25,13 +26,13 @@
     <tbody>
         @foreach (var c in Model.Countries)
         {
-            <tr>
+            <tr class="clickable-row">
                 <td>
-                    <a asp-page="/Country" asp-route-country="@c.Country">@c.Country</a>
+                    <a asp-page="/Country" asp-route-country="@c.Country" class="stretched-link">@c.Country</a>
                 </td>
-                <td>@c.CustomerCount</td>
-                <td>@c.AccountCount</td>
-                <td>@c.TotalBalance.ToString("N2")</td>
+                <td>@c.CustomerCount.ToString("N0")</td>
+                <td>@c.AccountCount.ToString("N0")</td>
+                <td class="currency">@c.TotalBalance.ToString("N2")</td>
             </tr>
         }
     </tbody>

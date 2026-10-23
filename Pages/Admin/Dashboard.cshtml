@@ -1,44 +1,148 @@
 ﻿@page
 @model DashboardModel
+@functions {
+    static (string line, string area, double endY) BuildSpark(IReadOnlyList<decimal> v)
+    {
+        const double W = 192, H = 80, top = 14, bottom = 70;
+        var inv = System.Globalization.CultureInfo.InvariantCulture;
+        string F(double d) => d.ToString("0.#", inv);
+
+        var min = (double)v.Min();
+        var range = (double)v.Max() - min;
+        if (range == 0) range = 1;
+
+        var pts = v.Select((val, i) => (
+            x: i * W / (v.Count - 1),
+            y: bottom - ((double)val - min) / range * (bottom - top)
+        )).ToList();
+
+ 
+        var line = $"M{F(pts[0].x)} {F(pts[0].y)}";
+        for (int i = 1; i < pts.Count; i++)
+        {
+            var mx = (pts[i - 1].x + pts[i].x) / 2;
+            line += $" C{F(mx)} {F(pts[i - 1].y)} {F(mx)} {F(pts[i].y)} {F(pts[i].x)} {F(pts[i].y)}";
+        }
+
+        var area = line + $" L{F(W)} {H} L0 {H} Z";
+        return (line, area, pts[^1].y);
+    }
+}
+
 @{
     ViewData["Title"] = "Dashboard";
 }
 
-<h2>Admin Dashboard</h2>
 
-<p class="text-muted">
-    Overview of customer, account, and balance statistics across all countries.
-    Quick access to customer management and bank operations.
-</p>
+@{
+    var displayName = "User";
+
+    if (User.Identity?.Name != null)
+    {
+        var rawName = User.Identity.Name
+            .Split('@')[0]
+            .Replace(".", " ");
+
+        displayName = System.Globalization.CultureInfo
+            .CurrentCulture
+            .TextInfo
+            .ToTitleCase(rawName);
+    }
+}
+
+<div class="welcome-card">
+
+    <span class="welcome-kicker">
+        WELCOME BACK
+    </span>
+
+    <div class="welcome-header">
+
+        <div>
+            <h1 class="welcome-title">
+                @Model.Greeting, @displayName
+            </h1>
+
+            <p class="welcome-subtitle">
+                Here's what's happening in your bank today.
+            </p>
+        </div>
+
+        <div class="welcome-date">
+            <i class="mdi mdi-calendar-month"></i>
+            <div>
+                <span>Today</span>
+                <strong>@DateTime.Now.ToString("MMMM dd, yyyy", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</strong>
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
 <!-- Contry Cards -->
 <div class="dashboard-grid">
     @foreach (var c in Model.Data.Countries)
     {
-        <a href="/Country/@c.Country" class="dashboard-link">
-            <div class="dashboard-card">
+        var code = c.Country switch
+        {
+            "Sweden" => "se",
+            "Norway" => "no",
+            "Denmark" => "dk",
+            "Finland" => "fi",
+            _ => ""
+        };
+
+        <a href="/Country?country=@c.Country" class="dashboard-link">
+            <div class="dashboard-card"
+                 style="--flag: url('/vendors/flag-icon-css/flags/4x3/@(code).svg')">
+
+                @if (c.BalanceTrend != null && c.BalanceTrend.Count > 1)
+                {
+                    var (line, area, endY) = BuildSpark(c.BalanceTrend);
+                    var inv = System.Globalization.CultureInfo.InvariantCulture;
+
+                    <div class="spark-bg" aria-hidden="true">
+                        <svg viewBox="0 0 200 80" preserveAspectRatio="none">
+                            <defs>
+                                <linearGradient id="g-@code" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#2FA574" stop-opacity=".40" />
+                                    <stop offset="1" stop-color="#2FA574" stop-opacity="0" />
+                                </linearGradient>
+                            </defs>
+                            <path d="@area" fill="url(#g-@code)" />
+                            <path d="@line" fill="none" stroke="#63D097" stroke-width="1.75"
+                                  stroke-linecap="round" vector-effect="non-scaling-stroke" />
+                        </svg>
+                        <span class="spark-dot" style="top:@((endY / 80 * 100).ToString("0.#", inv))%"></span>
+                    </div>
+                }
+
                 <h5 class="card-title">
-                    <img src="/images/flags/@(c.Country.ToLower()).png" class="flag" />
                     @c.Country
                 </h5>
 
                 <div class="card-text">
                     <div class="data-row">
                         <i class="mdi mdi-account-group icon"></i>
-                        <span class="label">Kunder</span>
-                        <span class="value">@c.CustomerCount</span>
+                        <span class="label">Customers</span>
+                        <span class="value">@c.CustomerCount.ToString("N0")</span>
                     </div>
 
                     <div class="data-row">
                         <i class="mdi mdi-bank icon"></i>
-                        <span class="label">Konton</span>
-                        <span class="value">@c.AccountCount</span>
+                        <span class="label">Accounts</span>
+                        <span class="value">@c.AccountCount.ToString("N0")</span>
                     </div>
 
-                    <div class="data-row">
+                    <div class="data-row balance-row">
                         <i class="mdi mdi-cash-multiple icon"></i>
-                        <span class="label">Totalt saldo</span>
-                        <span class="value">@c.TotalBalance.ToString("N2")</span>
+                        <span class="label">Total balance</span>
+                        <span class="value">@c.TotalBalance.ToString("N2") kr</span>
+                    </div>
+
+                    <div class="country-footer">
+                        View top 10 customers →
                     </div>
                 </div>
             </div>
@@ -49,18 +153,44 @@
 <div class="dashboard-two-col">
 
 
-
     <!-- Customers per country -->
-    <div class="dashboard-card">
-        <h5 class="card-title">
-            <i class="mdi mdi-chart-donut icon"></i>
-            Customers per Country
-        </h5>
+    <div class="dashboard-card chart-card">
+        <div class="chart-header">
+
+            <h5 class="card-title mb-0">
+                <i class="mdi mdi-chart-bar icon"></i>
+                Customers per Country
+            </h5>
+
+            <span class="chart-pill">
+                Total: @Model.Data.Countries.Sum(c => c.CustomerCount).ToString("N0")
+            </span>
+
+        </div>
+
         <div class="chart-wrap">
             <canvas id="customersChart"
                     data-labels="@System.Text.Json.JsonSerializer.Serialize(Model.Data.Countries.Select(c => c.Country))"
                     data-values="@System.Text.Json.JsonSerializer.Serialize(Model.Data.Countries.Select(c => c.CustomerCount))">
             </canvas>
+        </div>
+
+        <div class="chart-flags">
+            @foreach (var c in Model.Data.Countries)
+            {
+                var flag = c.Country switch
+                {
+                    "Sweden" => "se",
+                    "Norway" => "no",
+                    "Denmark" => "dk",
+                    "Finland" => "fi",
+                    _ => ""
+                };
+                <div class="flag-item">
+                    <img src="/vendors/flag-icon-css/flags/1x1/@(flag).svg" alt="@c.Country" />
+                    <span>@c.Country</span>
+                </div>
+            }
         </div>
     </div>
 
@@ -94,3 +224,4 @@
             <p class="transaction-empty">No transactions yet.</p>
         }
     </div>
+</div>

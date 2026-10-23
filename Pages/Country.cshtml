@@ -32,12 +32,16 @@ else
             }
             @foreach (var c in Model.TopCustomers)
             {
-                <tr>
-                    <td>@(rank++)</td>
-                    <td><a asp-page="/Customer" asp-route-id="@c.CustomerId">@c.CustomerId</a></td>
+                <tr class="clickable-row">
+                    <td>@rank</td>
+                    <td class="customer-id">
+                        <a asp-page="/Admin/Customer" asp-route-id="@c.CustomerId" class="stretched-link">
+                            @c.CustomerId
+                        </a>
+                    </td>
                     <td>@c.FullName</td>
                     <td>@c.City</td>
-                    <td>@c.TotalBalance.ToString("N2")</td>
+                    <td class="currency">@c.TotalBalance.ToString("N2")</td>
                 </tr>
             }
         </tbody>

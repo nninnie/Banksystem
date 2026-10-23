@@ -60,85 +60,106 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+
 /* ==========================================================
-   DASHBOARD - CUSTOMER PER COUNTRY
+   DASHBOARD - CUSTOMER PER COUNTRY 
    ========================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
-    const canvas = document.getElementById("customersChart");
 
-    // Stop if the chart isn't on this page (script.js loads on every page)
+    const canvas = document.getElementById("customersChart");
     if (!canvas || typeof Chart === "undefined") return;
 
-    const names = JSON.parse(canvas.dataset.labels);
     const values = JSON.parse(canvas.dataset.values);
+    const labels = JSON.parse(canvas.dataset.labels);
+    const flagEls = canvas
+        .closest(".dashboard-card")
+        .querySelectorAll(".chart-flags .flag-item");
 
-    // Show the count in the legend, e.g. "Sweden (1234)"
-    const labels = names.map((name, i) => `${name} (${values[i]})`);
+    const fmt = (n) => Number(n).toLocaleString("sv-SE");
 
-    // Read the theme colors from CSS so the chart always matches the site
-    const css = getComputedStyle(document.documentElement);
-    const gold = css.getPropertyValue("--gold").trim();
-    const muted = css.getPropertyValue("--muted").trim();
-    const card = css.getPropertyValue("--card").trim();
+    Chart.defaults.global.defaultFontFamily = "Inter, system-ui, sans-serif";
 
-    // Draws the total number of customers in the middle of the doughnut
-    const centerText = {
-        beforeDraw: function (chart) {
-            // chart.ctx = Chart.js v3/v4, chart.chart.ctx = v2
-            const ctx = chart.ctx || chart.chart.ctx;
+    // Ritar staplar med rundade hörn upptill + värde ovanför
+    const roundedBars = {
+        afterDatasetsDraw: function (chart) {
+            const ctx = chart.ctx;
             const area = chart.chartArea;
-            if (!area) return;
+            const meta = chart.getDatasetMeta(0);
 
-            const x = (area.left + area.right) / 2;
-            const y = (area.top + area.bottom) / 2;
-            const total = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+            const gradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
+            gradient.addColorStop(0, "rgba(14,74,58,.35)");
+            gradient.addColorStop(1, "#2FA574");
 
-            ctx.save();
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
+            meta.data.forEach(function (bar, i) {
+                const m = bar._model;
+                const w = m.width;
+                const x = m.x - w / 2;
+                const top = m.y;
+                const bottom = m.base;
+                const r = Math.min(10, w / 2, (bottom - top) / 2);
 
-            ctx.fillStyle = gold;
-            ctx.font = "700 28px sans-serif";
-            ctx.fillText(total, x, y - 8);
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(x, bottom);
+                ctx.lineTo(x, top + r);
+                ctx.quadraticCurveTo(x, top, x + r, top);
+                ctx.lineTo(x + w - r, top);
+                ctx.quadraticCurveTo(x + w, top, x + w, top + r);
+                ctx.lineTo(x + w, bottom);
+                ctx.closePath();
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                ctx.restore();
 
-            ctx.fillStyle = muted;
-            ctx.font = "12px sans-serif";
-            ctx.fillText("customers", x, y + 16);
-            ctx.restore();
+                ctx.save();
+                ctx.fillStyle = "#F8FAFC";
+                ctx.font = "600 12px Inter, sans-serif";
+                ctx.textAlign = "center";
+                ctx.fillText(fmt(values[i]), m.x, top - 10);
+                ctx.restore();
+            });
+        },
+
+        // Flaggor centrerade under varje stapel
+        afterDraw: function (chart) {
+            chart.getDatasetMeta(0).data.forEach(function (bar, i) {
+                if (flagEls[i]) flagEls[i].style.left = bar._model.x + "px";
+            });
         }
     };
 
     new Chart(canvas, {
-        type: "doughnut",
-        plugins: [centerText],
+        type: "bar",
+        plugins: [roundedBars],
+
         data: {
-            labels: labels,
+            labels: Array(labels.length).fill(""),
             datasets: [{
+                label: "",
                 data: values,
-                backgroundColor: [gold, "#4CAF50", muted, "#2E7D5B", "#B8893B"],
-                borderColor: card,
-                borderWidth: 2
+                backgroundColor: "rgba(0,0,0,0)",
+                borderWidth: 0,
+                barPercentage: 0.8,
+                categoryPercentage: 0.7
             }]
         },
-        options: {
-            maintainAspectRatio: false,
 
-            // v2 syntax (Corona's bundled Chart.js)
-            cutoutPercentage: 70,
-            legend: {
-                position: "bottom",
-                labels: { fontColor: muted }
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: { padding: { top: 28 } },
+            legend: { display: false },
+
+            tooltips: {
+                callbacks: {
+                    label: function (item) {
+                        return " " + fmt(item.yLabel) + " customers";
+                    }
+                }
             },
 
-            // v3/v4 syntax (ignored by v2)
-            cutout: "70%",
-            plugins: {
-                legend: {
-                    position: "bottom",
-                    labels: { color: muted }
-                }
-            }
+
         }
     });
 });
