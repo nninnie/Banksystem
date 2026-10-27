@@ -57,8 +57,10 @@ namespace BankApp.Services
             // Search
             if (!string.IsNullOrWhiteSpace(searchName))
             {
-                query = query.Where(c => c.Givenname.Contains(searchName) ||
-                                         c.Surname.Contains(searchName));
+                query = query.Where(c =>
+                    c.CustomerId.ToString().Contains(searchName) ||
+                    c.Givenname.Contains(searchName) ||
+                    c.Surname.Contains(searchName));
             }
 
             if (!string.IsNullOrWhiteSpace(searchCity))

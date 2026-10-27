@@ -5,21 +5,48 @@
 }
 
 <div class="page-breadcrumb">
-    <i class="mdi mdi-home"></i>
-    <a asp-page="/Index">Home</a>
-    <span>></span>
-    <a asp-page="/Country" asp-route-country="@Model.Country">
-        @Model.Country
+    <a asp-page="/Index">
+        <i class="mdi mdi-home"></i>
     </a>
-    <span>></span>
+
+    <span>›</span>
+
+    <span>@Model.Country</span>
+
+    <span>›</span>
+
     <span>Top 10 Customers</span>
 </div>
 
-<h2>Top 10 customers in @Model.Country</h2>
+<div class="welcome-card">
 
-<p class="text-muted">
-    The ten customers with the highest total balance in this country.
-</p>
+    <span class="welcome-kicker">
+        @Model.Country.ToUpper()
+    </span>
+
+    <div class="country-header">
+
+        <img src="~/images/flags/@(Model.Country.ToLower()).png"
+             class="country-flag-large"
+             alt="@Model.Country Flag" />
+
+        <div>
+
+            <h1 class="welcome-title">
+                Top 10 Customers in @Model.Country
+            </h1>
+
+            <p class="welcome-subtitle">
+                Customers with the highest total balance in @Model.Country.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 
 @if (!Model.TopCustomers.Any())
 {
@@ -27,33 +54,133 @@
 }
 else
 {
+    /* KPI Cards */
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card stat-card">
+            <div class="stat-icon">
+                <i class="mdi mdi-account-group"></i>
+            </div>
+
+            <div class="stat-content">
+                <div class="stat-title">Top Customers</div>
+
+                <div class="stat-number">
+                    @Model.TopCustomers.Count
+                </div>
+
+                <div class="stat-subtitle">
+                    Highest ranked customers 
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-card stat-card">
+            <div class="stat-icon">
+                <i class="mdi mdi-cash-multiple"></i>
+            </div>
+
+            <div class="stat-content">
+                <div class="stat-title">Total Balance</div>
+
+                <div class="stat-number">
+                    @Model.TopCustomers.Sum(x => x.TotalBalance).ToString("N0")
+                </div>
+
+                <div class="stat-subtitle">
+                    Combined balance in @Model.Country
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-card stat-card">
+            <div class="stat-icon">
+                <i class="mdi mdi-trophy"></i>
+            </div>
+
+            <div class="stat-content">
+                <div class="stat-title">Average Balance</div>
+
+                <div class="stat-number">
+                    @Model.TopCustomers.Average(x => x.TotalBalance).ToString("N0")
+                </div>
+
+                <div class="stat-subtitle">
+                    Average per customer
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    /* Tabel */
     <table class="mybank-table">
         <thead>
             <tr>
+                <th>Rank</th>
                 <th>Customer ID</th>
                 <th>Name</th>
                 <th>City</th>
                 <th class="currency">Total Balance</th>
             </tr>
         </thead>
-        <tbody>
-            @{
-                var rank = 1;
-            }
-            @foreach (var c in Model.TopCustomers)
-            {
-                <tr class="clickable-row">
-                    <td class="customer-id">
-                        <a asp-page="/Admin/Customer" asp-route-id="@c.CustomerId" class="stretched-link">
-                            @c.CustomerId
-                        </a>
-                    </td>
-                    <td class="primary-value">@c.FullName</td>
-                    <td>@c.City</td>
-                    <td class="currency">@c.TotalBalance.ToString("N2")</td>
-                </tr>
-            }
-        </tbody>
+            <tbody>
+
+                @{
+                    var rank = 1;
+                }
+
+                @foreach (var c in Model.TopCustomers)
+                {
+                    <tr class="clickable-row">
+
+                        <td>
+                            @switch (rank)
+                            {
+                                case 1:
+                                    <span>🥇</span>
+                                    break;
+
+                                case 2:
+                                    <span>🥈</span>
+                                    break;
+
+                                case 3:
+                                    <span>🥉</span>
+                                    break;
+
+                                default:
+                                    <span>#@rank</span>
+                                    break;
+                            }
+                        </td>
+
+                        <td class="customer-id">
+                            <a asp-page="/Admin/Customer"
+                               asp-route-id="@c.CustomerId"
+                               class="stretched-link">
+                                @c.CustomerId
+                            </a>
+                        </td>
+
+                        <td class="primary-value">
+                            @c.FullName
+                        </td>
+
+                        <td>
+                            @c.City
+                        </td>
+
+                        <td class="currency">
+                            @c.TotalBalance.ToString("N2")
+                        </td>
+
+                    </tr>
+
+                    rank++;
+                }
+
+            </tbody>
     </table>
 }
 

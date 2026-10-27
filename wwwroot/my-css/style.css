@@ -625,6 +625,22 @@ html body .navbar .navbar-menu-wrapper {
     border-bottom: none;
 }
 
+/* country header welcome*/
+.country-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+/* country Flag in welcome card */
+.country-flag-large {
+    width: 65px;
+    height: auto;
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+
 /* ==========================================================
    HOME – cards
    ========================================================== */
