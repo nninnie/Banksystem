@@ -4,29 +4,60 @@
     ViewData["Title"] = "Login";
 }
 
-<div class="login-wrapper">
-    <h2>Login</h2>
+<div class="page-breadcrumb">
+    <a asp-page="/Index">
+        <i class="mdi mdi-home"></i>
+        </a>
+    <span>Login</span>
+</div>
 
-    <form method="post">
-        <div class="form-group">
-            <label asp-for="Input.Username"></label>
-            <input asp-for="Input.Username" class="form-control" />
-            <span asp-validation-for="Input.Username" class="text-danger"></span>
-        </div>
+<div class="login-page">
 
-        <div class="form-group">
-            <label asp-for="Input.Password"></label>
-            <input asp-for="Input.Password" type="password" class="form-control" />
-            <span asp-validation-for="Input.Password" class="text-danger"></span>
-        </div>
+    <div class="welcome-card">
 
-        <button type="submit" class="login-btn">Log In</button>
-    </form>
+        <span class="welcome-kicker">
+            MYBANK
+        </span>
 
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-    {
-        <div class="login-error">
-            @Model.ErrorMessage
-        </div>
-    }
+        <h2 class="welcome-title">
+            Welcome Back
+        </h2>
+
+        <p class="section-subtitle">
+            Access your accounts, transactions and customer management tools.
+        </p>
+
+    </div>
+
+    <div class="login-card">
+
+        <form method="post">
+
+            <div class="form-group">
+                <label asp-for="Input.Username"></label>
+                <input asp-for="Input.Username" class="form-control" />
+                <span asp-validation-for="Input.Username" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" type="password" class="form-control" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="login-btn">
+                Log In
+            </button>
+
+        </form>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="login-error">
+                @Model.ErrorMessage
+            </div>
+        }
+
+    </div>
+
 </div>

@@ -1,18 +1,110 @@
 ﻿@page
 @model IndexModel
+@functions {
+
+    private string Flag(string country) => country switch
+    {
+        "Sweden" => "/images/flags/sweden.png",
+        "Norway" => "/images/flags/norway.png",
+        "Finland" => "/images/flags/finland.png",
+        "Denmark" => "/images/flags/denmark.png",
+        _ => "/images/flags/default.png"
+    };
+}
 @{
     ViewData["Title"] = "Home";
 }
 
-<h2>Country Statistics</h2>
+<div class="page-breadcrumb">
+    <a asp-page="/Index">
+        <i class="mdi mdi-home"></i>
+    </a>
+    <span>Country Statistics</span>
+</div>
 
-<p class="text-muted">
-    Public overview of customers, accounts, and total balance grouped by country.
-    This information is available to all visitors and does not require login.
-</p>
+<div class="welcome-card">
+
+    <span class="welcome-kicker">
+        PUBLIC OVERVIEW
+    </span>
+
+    <h1 class="welcome-title">
+        Country Statistics
+    </h1>
+
+    <p class="welcome-subtitle">
+        Public overview of customers, accounts and total balance grouped by country.
+    </p>
+
+</div>
+
+<!--- KPI-card --->
+<div class="dashboard-grid">
+
+    <div class="dashboard-card stat-card">
+
+        <div class="stat-icon">
+            <i class="mdi mdi-account-group-outline"></i>
+        </div>
+
+        <div class="stat-content">
+            <div class="stat-title">Total Customers</div>
+
+            <div class="stat-number">
+                @Model.Countries.Sum(x => x.CustomerCount).ToString("N0")
+            </div>
+
+            <div class="stat-subtitle">
+                Across all countries
+            </div>
+        </div>
+
+    </div>
+
+    <div class="dashboard-card stat-card">
+
+        <div class="stat-icon">
+            <i class="mdi mdi-bank-outline"></i>
+        </div>
+
+        <div class="stat-content">
+            <div class="stat-title">Total Accounts</div>
+
+            <div class="stat-number">
+                @Model.Countries.Sum(x => x.AccountCount).ToString("N0")
+            </div>
+
+            <div class="stat-subtitle">
+                Across all countries
+            </div>
+        </div>
+
+    </div>
+
+    <div class="dashboard-card stat-card">
+
+        <div class="stat-icon">
+            <i class="mdi mdi-cash-multiple"></i>
+        </div>
+
+        <div class="stat-content">
+            <div class="stat-title">Total Balance</div>
+
+            <div class="stat-number">
+                @Model.Countries.Sum(x => x.TotalBalance).ToString("N2")
+            </div>
+
+            <div class="stat-subtitle">
+                Across all countries
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
 
-
+<!--- Table --->
 <table class="mybank-table">
 
     <thead>
@@ -20,7 +112,7 @@
             <th>Country</th>
             <th>Customers</th>
             <th>Accounts</th>
-            <th>Total Balance</th>
+            <th class="currency">Total Balance</th>
         </tr>
     </thead>
     <tbody>
@@ -28,11 +120,21 @@
         {
             <tr class="clickable-row">
                 <td>
-                    <a asp-page="/Country" asp-route-country="@c.Country" class="stretched-link">@c.Country</a>
+                    <a asp-page="/Country"
+                       asp-route-country="@c.Country"
+                       class="stretched-link country-link">
+
+                        <img src="@Flag(c.Country)"
+                             class="country-flag"
+                             alt="@c.Country" />
+
+                        @c.Country
+
+                    </a>
                 </td>
-                <td>@c.CustomerCount.ToString("N0")</td>
+                <td class="country-name">@c.CustomerCount.ToString("N0")</td>
                 <td>@c.AccountCount.ToString("N0")</td>
-                <td class="currency">@c.TotalBalance.ToString("N2")</td>
+                <td class="currency primary-value">@c.TotalBalance.ToString("N2")</td>
             </tr>
         }
     </tbody>

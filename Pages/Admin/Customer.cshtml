@@ -4,83 +4,154 @@
     ViewData["Title"] = "Customer";
 }
 
-<h2 class="section-title mb-4">Customer Profile</h2>
-<p class="section-subtitle">
-    View customer details, accounts and balances.
-</p>
+<div class="page-breadcrumb">
+    <a asp-page="/Index">
+        <i class="mdi mdi-home"></i>
+    </a>
 
-<!-- Customer info card -->
-<div class="dashboard-card mb-4">
-    <h3 class="card-title">Customer Details</h3>
+    <span>›</span>
 
-    <div class="data-row">
-        <span class="label">Customer Name</span>
+    <a asp-page="/Admin/Customers">
+        Customers
+    </a>
 
-        <span class="value customer-name">
-            @Model.Customer.FullName
-        </span>
-    </div>
+    <span>›</span>
 
-    <div class="data-row">
-        <span class="label">Address</span>
-        <span class="value">@Model.Customer.Streetaddress</span>
-    </div>
+    <span>Profile</span>
+</div>
 
-    <div class="data-row">
-        <span class="label">City</span>
-        <span class="value">@Model.Customer.Zipcode @Model.Customer.City</span>
-    </div>
+<!-- Page header -->
+<div class="welcome-card customer-hero">
+    <div class="customer-page-header">
 
-    <div class="data-row">
-        <span class="label">Country</span>
-        <span class="value">@Model.Customer.Country</span>
-    </div>
 
-    <div class="data-row">
-        <span class="label">Phone Number</span>
-        <span class="value">@Model.Customer.Telephone</span>
-    </div>
+        <div>
+            <h2 class="welcome-title">Customer Profile</h2>
+            <p class="section-subtitle">View customer details, accounts and balances.</p>
+        </div>
 
-    <div class="data-row">
-        <span class="label">Email Address</span>
-        <span class="value">@Model.Customer.Email</span>
+        @if (User.IsInRole("Cashier"))
+        {
+            <a class="bank-btn customer-edit-btn" asp-page="/Admin/EditCustomer" asp-route-id="@Model.Customer.CustomerId">
+                <i class="mdi mdi-pencil-outline"></i>&nbsp;Edit
+            </a>
+        }
     </div>
 </div>
 
-<!-- Total balance card -->
-<div class="dashboard-card balance-card mb-4">
-    <h3 class="card-title">Total Balance</h3>
+<div class="customer-profile-layout">
 
-    <div class="balance-value">
-        @($"{Model.Customer.TotalBalance:N2} SEK")
-    </div>
-</div>
-
-<!-- Accounts table -->
-<h3 class="section-title mb-3">
-    Customer Accounts (@Model.Customer.Accounts.Count)
+    <!-- Customer details -->
+    <div class="dashboard-card">
+        <h3 class="card-title">
+    <i class="mdi mdi-account-outline icon"></i>
+    Customer Overview
 </h3>
 
-<table class="mybank-table">
-    <thead>
-        <tr>
-            <th>Account Number</th>
-            <th>Balance</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var account in Model.Customer.Accounts)
-        {
-            <tr>
-                <td>
-                    <a asp-page="/Admin/Account" asp-route-id="@account.AccountId">
-                        @account.AccountId
-                    </a>
-                </td>
-                <td class="currency">
-                    @($"{account.Balance:N2} SEK")
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+        <div class="customer-details-grid">
+            <div class="customer-detail">
+                <span class="label">Customer Name</span>
+                <span class="value">@Model.Customer.FullName</span>
+            </div>
+            <div class="customer-detail">
+                <span class="label">Email Address</span>
+                <span class="value">@Model.Customer.Email</span>
+            </div>
+            <div class="customer-detail">
+                <span class="label">Customer ID</span>
+                <span class="value">@Model.Customer.CustomerId</span>
+            </div>
+            <div class="customer-detail">
+                <span class="label">Phone Number</span>
+                <span class="value">@Model.Customer.Telephone</span>
+            </div>
+            <div class="customer-detail">
+                <span class="label">Personal ID</span>
+                <span class="value">@Model.Customer.NationalId</span>
+            </div>
+            <div class="customer-detail">
+                <span class="label">Address</span>
+                <span class="value">@Model.Customer.Streetaddress</span>
+            </div>
+            <div class="customer-detail">
+                <span class="label">City</span>
+                <span class="value">@Model.Customer.Zipcode @Model.Customer.City</span>
+            </div>
+            <div class="customer-detail">
+                <span class="label">Country</span>
+                <span class="value">@Model.Customer.Country</span>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <!-- Total Balance -->
+    <div class="dashboard-card balance-card">
+        <h3 class="card-title">
+            <i class="mdi mdi-currency-usd icon"></i>
+            Total Balance
+        </h3>
+
+        <div class="balance-value">
+            @($"{Model.Customer.TotalBalance:N2} SEK")
+        </div>
+
+        <div class="balance-label">
+            Total balance across all accounts
+        </div>
+
+        <!-- Decorative balance line -->
+        <div class="balance-sparkline" aria-hidden="true">
+            <canvas id="balanceChart"></canvas>
+        </div>
+    </div>
+
+
+    <!-- Accounts -->
+    <div class="dashboard-card accounts-card">
+
+        <h3 class="card-title">
+            <i class="mdi mdi-wallet-outline icon"></i>
+            Customer Accounts (@Model.Customer.Accounts.Count)
+        </h3>
+
+        <table class="mybank-table">
+            <thead>
+                <tr>
+                    <th>Account Number</th>
+                    <th class="currency">Balance</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var account in Model.Customer.Accounts)
+                {
+                    <tr class="clickable-row"
+                        onclick="location.href='@Url.Page("/Admin/Account", new { id = account.AccountId })'">
+
+                        <td>
+                            <i class="mdi mdi-credit-card-outline account-icon"></i>
+
+                            <span class="account-number">
+                                Account: @account.AccountId
+                            </span>
+                        </td>
+
+                        <td class="currency">
+                            @($"{account.Balance:N2} SEK")
+                        </td>
+
+                        <td class="account-action">
+                            <i class="mdi mdi-chevron-right"></i>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
