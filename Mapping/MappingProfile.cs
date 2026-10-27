@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BankApp.Models;
+using BankApp.DataAccessLayer.Models;
 using BankApp.ViewModels;
 
 namespace BankApp.Mapping

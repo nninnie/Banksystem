@@ -1,5 +1,5 @@
-using BankApp.DTOs;
-using BankApp.Services;
+using BankApp.DataAccessLayer.DTOs;
+using BankApp.Services.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BankApp.Pages

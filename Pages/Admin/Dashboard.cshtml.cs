@@ -1,6 +1,7 @@
-using BankApp.DTOs;
-using BankApp.Services;
+using BankApp.DataAccessLayer.DTOs;
+using BankApp.Services.Services;
 using BankApp.ViewModels;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -28,7 +29,22 @@ namespace BankApp.Pages.Admin
         public async Task OnGet()
         {
             Data = await _dashboardService.GetDashboardAsync();
-            RecentTransactions = await _transactionService.GetRecentTransactionsAsync(5);
+
+
+            var transactions = await _transactionService.GetRecentTransactionsAsync(5);
+
+            RecentTransactions = transactions.Select(t => new TransactionViewModel
+            {
+                TransactionId = t.TransactionId,
+                AccountId = t.AccountId,
+                CustomerName = t.CustomerName,
+                Date = t.Date,
+                Type = t.Type,
+                Operation = t.Operation ?? "",
+                Amount = t.Amount,
+                Balance = t.Balance
+            }).ToList();
+
 
             var hour = DateTime.Now.Hour;
 
