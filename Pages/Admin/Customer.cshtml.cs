@@ -20,15 +20,9 @@ namespace BankApp.Pages.Admin
         }
 
         // Handles the GET request for the Customer page.
-        // Fetches the customer by ID
-        // Return notfound if customer is not found
-        // Maps the entity to a ViewModel
-        // Loads all accounts for the customer
-        // Maps accounts to AccountViewModels
-        // Calculates total balance
-        // Returns the page with the filled ViewModel
         public async Task<IActionResult> OnGetAsync(int id)
         {
+
             var customer = await _customerService.GetCustomerAsync(id);
 
             if (customer == null)

@@ -22,6 +22,13 @@ namespace BankApp.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            // If fields are empty or invalid, stop here and return the page with error messages
+            if (!ModelState.IsValid)
+            {
+                
+                return Page();
+            }
+
             TempData["LastLoginTime"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
 
             var result = await _signInManager.PasswordSignInAsync(

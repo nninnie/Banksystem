@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BankApp.Models;
 using BankApp.ViewModels;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BankApp.Mapping
 {
@@ -26,7 +25,9 @@ namespace BankApp.Mapping
 
             // Maps Account entity - AccountViewModel
             CreateMap<Account, AccountViewModel>();
-        }
 
+            // Maps Transaction entity - TransactionViewModel
+            CreateMap<Transaction, TransactionViewModel>();
+        }
     }
 }
