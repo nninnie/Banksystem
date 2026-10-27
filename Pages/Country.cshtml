@@ -75,23 +75,7 @@ else
             </div>
         </div>
 
-        <div class="dashboard-card stat-card">
-            <div class="stat-icon">
-                <i class="mdi mdi-cash-multiple"></i>
-            </div>
-
-            <div class="stat-content">
-                <div class="stat-title">Total Balance</div>
-
-                <div class="stat-number">
-                    @Model.TopCustomers.Sum(x => x.TotalBalance).ToString("N0")
-                </div>
-
-                <div class="stat-subtitle">
-                    Combined balance in @Model.Country
-                </div>
-            </div>
-        </div>
+        
 
         <div class="dashboard-card stat-card">
             <div class="stat-icon">
@@ -111,13 +95,31 @@ else
             </div>
         </div>
 
+        <div class="dashboard-card stat-card">
+            <div class="stat-icon">
+                <i class="mdi mdi-cash-multiple"></i>
+            </div>
+
+            <div class="stat-content">
+                <div class="stat-title">Total Balance</div>
+
+                <div class="stat-number">
+                    @Model.TopCustomers.Sum(x => x.TotalBalance).ToString("N0")
+                </div>
+
+                <div class="stat-subtitle">
+                    Combined balance in @Model.Country
+                </div>
+            </div>
+        </div>
+
     </div>
 
     /* Tabel */
     <table class="mybank-table">
         <thead>
             <tr>
-                <th>Rank</th>
+                <th class="rank-column">Rank</th>
                 <th>Customer ID</th>
                 <th>Name</th>
                 <th>City</th>
@@ -134,7 +136,7 @@ else
                 {
                     <tr class="clickable-row">
 
-                        <td>
+                    <td class="rank-column">
                             @switch (rank)
                             {
                                 case 1:
@@ -150,7 +152,7 @@ else
                                     break;
 
                                 default:
-                                    <span>#@rank</span>
+                                    <span>@rank</span>
                                     break;
                             }
                         </td>

@@ -1,24 +1,63 @@
-﻿/* ==========================================================
-   THEME – color variables
+/* ==========================================================
+   MYBANK – MAIN STYLESHEET
+   ----------------------------------------------------------
+   TABLE OF CONTENTS
+    1. Theme tokens
+    2. Base (background, typography)
+    3. Page layout
+    4. Sidebar – expanded
+    5. Sidebar – collapsed
+    6. Top navbar
+    7. App launcher
+    8. Shared components (logout, buttons, pagination, text, breadcrumb, icons)
+    9. Tables
+   10. Home page – country statistics
+   11. Dashboard cards
+   12. Customer page
+   13. Welcome hero
+   14. Dashboard activity and chart
+   15. Login page
+   16. Customer search form
+   17. Responsive design 
+   ========================================================== */
+
+
+/* ==========================================================
+   1. THEME TOKENS
+   Colors, rings and typography used everywhere.
    ========================================================== */
 :root {
+    /* Surfaces */
     --bg: #000805;
     --navbar: #021c14;
     --sidebar: #03261B;
     --card: #0A1A14;
-    --line: rgba(4, 35, 23, 0.12); /* subtle line color */
+    --line: rgba(4, 35, 23, 0.12);
+    /* Gold palette */
     --gold: #F2D675;
+    --gold-deep: #C9A24B;
+    --gold-dark: #A8812F;
+    --gold-bright: #E3C374;
     --gold-soft: #E8C766;
     --gold-line: rgba(212, 175, 55, 0.22);
+    --on-gold: #04120C;
+    /* Text */
     --text: #F8FAFC;
-    --muted: #A7B4C5; /* muted text color */
-
+    --muted: #A7B4C5;
     --font: "Inter", system-ui, -apple-system, sans-serif;
+    /* Green "depth" rings (sidebar icons, navbar buttons, avatars) */
+    --rail: 46px; /* size of icons/avatar in the collapsed sidebar */
+    --ring-border: rgba(47, 165, 116, .38);
+    --ring-border-hover: rgba(99, 208, 151, .65);
+    --ring-bg: radial-gradient(circle at 30% 25%, rgba(47, 165, 116, .22), rgba(3, 30, 21, .9) 70%);
+    --ring-shadow: 0 0 0 3px rgba(47, 165, 116, .08), 0 4px 12px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .06);
+    --ring-shadow-hover: 0 0 0 3px rgba(47, 165, 116, .14), 0 0 14px rgba(47, 165, 116, .35);
 }
 
 
 /* ==========================================================
-   BACKGROUND
+   2. BASE
+   Page background, font family and numeric alignment.
    ========================================================== */
 html body .container-scroller,
 html body .page-body-wrapper,
@@ -30,10 +69,6 @@ html body .content-wrapper {
 html body {
     background-color: var(--bg) !important;
 }
-
-/* ==========================================================
-   FONTS
-   ========================================================== */
 
     html body,
     html body h1, html body h2, html body h3,
@@ -55,55 +90,75 @@ html body {
 }
 
 
-    /* ==========================================================
-   SIDEBAR – background and layout
+/* ==========================================================
+   3. PAGE LAYOUT
+   Main content area.
    ========================================================== */
+.main-panel {
+    min-width: 0;
+}
+
+.content-wrapper {
+    max-width: clamp(900px, 70vw, 1300px);
+    margin: 0 auto;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+
+/* ==========================================================
+   4. SIDEBAR – EXPANDED
+   ========================================================== */
+
+/* ----- Container: grows with the page, never scrolls on its own ----- */
 html body .sidebar {
     background: linear-gradient(to bottom, var(--sidebar) 0%, rgba(3, 38, 27, 0.96) 50%, rgba(3, 38, 27, 0.5) 100%), url('/images/flags/pine-forest-sidebar.jpg') center bottom / cover no-repeat !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: space-between !important; 
-    padding-bottom: 0 !important;
+    justify-content: flex-start !important;
+    height: auto !important;
     min-height: 100vh !important;
+    max-height: none !important;
+    padding-bottom: 0 !important;
+    overflow: visible !important; /* visible so the profile dropdown is not clipped */
 }
 
+.sidebar > * {
+    flex-shrink: 0;
+}
 
-/* Menu list: a little space at the top */
 .sidebar .nav {
-    padding-top: 10px !important;
-    flex-grow: 1 !important;
+    flex: 0 0 auto !important;
     display: flex !important;
     flex-direction: column !important;
-
+    padding-top: 0 !important;
 }
 
     /* "Navigation" heading */
     .sidebar .nav .nav-item.nav-category .nav-link {
         color: var(--gold) !important;
-        font-size: 0.8rem;
+        font-size: .8rem;
         letter-spacing: 3px;
         text-transform: uppercase;
         min-height: 40px;
-        margin-top: 10px;
+        margin-top: 6px;
     }
 
-
-/* ==========================================================
-   SIDEBAR – logo
-   ========================================================== */
+/* ----- Branding: centered logo ----- */
 html body .sidebar .sidebar-brand-wrapper {
-    height: auto !important;
-    padding: 30px 0 !important;
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
+    align-items: center !important;
     width: 100% !important;
+    height: auto !important;
+    padding: 22px 0 18px 0 !important;
     background: transparent !important;
     border-bottom: none;
 }
 
-    /* Thin gold line under the logo */
+    /* Gold divider under the logo (hidden when collapsed) */
     html body .sidebar .sidebar-brand-wrapper::after {
         content: "";
         position: absolute;
@@ -112,10 +167,9 @@ html body .sidebar .sidebar-brand-wrapper {
         bottom: 0;
         height: 1px;
         background: linear-gradient(90deg, transparent, var(--gold), transparent);
-        opacity: 0.6;
+        opacity: .6;
     }
 
-/* Large logo */
 .sidebar-brand-wrapper .brand-logo img {
     width: 130px !important;
     height: auto !important;
@@ -124,111 +178,168 @@ html body .sidebar .sidebar-brand-wrapper {
 }
 
 .sidebar .sidebar-brand-wrapper .brand-logo {
-    margin-left: -8px;
+    margin-left: 0 !important;
 }
 
-/* Mini logo (collapsed sidebar) */
 .sidebar-brand-wrapper .brand-logo-mini img {
-    width: 70px !important;
+    width: 45px !important;
     height: auto !important;
     object-fit: contain !important;
 }
 
-.sidebar .sidebar-brand-wrapper .brand-logo-mini {
-    margin-top: 6px !important;
-    
-}
-
-
-/* ==========================================================
-   SIDEBAR – collapsed state (center mini logo)
-   ========================================================== */
-.sidebar-icon-only .sidebar-brand-wrapper {
-    width: 100% !important;
-    padding: 20px 0 10px 0 !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-}
-
-    .sidebar-icon-only .sidebar-brand-wrapper .brand-logo-mini {
-        display: flex !important;
-        justify-content: center;
-        align-items: center;
-        width: 100% !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-
-        .sidebar-icon-only .sidebar-brand-wrapper .brand-logo-mini img {
-            width: 45px !important;
-            margin: 0 auto !important;
-        }
-
-
-/* ==========================================================
-   SIDEBAR – profile
-   ========================================================== */
+/* ----- Profile (avatar, name, role, dropdown) ----- */
 .sidebar .nav .nav-item.profile {
     margin-top: 0 !important;
     padding-top: 0 !important;
 }
 
     .sidebar .nav .nav-item.profile .profile-desc {
-        padding-top: 0 !important;
+        position: relative;
+        padding: 14px 14px 16px 20px !important;
     }
 
-/* Role under the name in gold */
-.sidebar .profile-name span {
-    color: var(--gold-soft);
-    font-size: 0.75rem;
-    letter-spacing: 0.5px;
+.sidebar .profile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    text-decoration: none;
 }
 
-/* Gold border on profile picture */
+.sidebar .nav .nav-item.profile .profile-pic {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+/* Avatar with soft green ring (responsive size) */
+.sidebar .nav .nav-item.profile img {
+    width: clamp(44px, 3.4vw, 50px);
+    height: clamp(44px, 3.4vw, 50px);
+    object-fit: cover;
+}
+
 .sidebar .profile-desc img {
-    border: 1px solid var(--gold) !important;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.35) !important;
+    border: 1px solid var(--ring-border) !important;
+    box-shadow: 0 0 0 3px rgba(47, 165, 116, .10), 0 4px 12px rgba(0, 0, 0, .45) !important;
     border-radius: 50% !important;
 }
 
-
-/* ==========================================================
-   SIDEBAR – menu items and icons
-   ========================================================== */
-
-/* Icons without a box, larger */
-.sidebar .nav .nav-item .menu-icon,
-.sidebar .nav .nav-item .nav-link:hover .menu-icon,
-.sidebar .nav .nav-item.active .menu-icon {
-    background: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    width: auto;
-    height: auto;
-    margin-right: 16px;
+/* Online indicator */
+.sidebar .nav .nav-item.profile .count-indicator {
+    position: relative;
+    display: flex;
 }
 
-/* Equal spacing between all rows */
+.sidebar .profile-desc .count {
+    top: auto;
+    bottom: 1px;
+    right: 1px;
+    width: 11px;
+    height: 11px;
+    border: 2px solid var(--sidebar);
+}
+
+/* Name over role */
+.sidebar .profile-name {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    min-width: 0;
+    margin: 0;
+    text-align: left;
+    line-height: 1.2;
+}
+
+    .sidebar .profile-name h5 {
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(.74rem, .68rem + .2vw, .82rem);
+        font-weight: 600;
+        letter-spacing: 0;
+        white-space: nowrap;
+    }
+
+    /* Gold role label (!important beats Corona's gray) */
+    .sidebar .profile-name span {
+        color: var(--gold-soft) !important;
+        opacity: .85;
+        font-size: .58rem;
+        font-weight: 500;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+/* Gold chevron, rotates when the menu is open */
+.sidebar .profile-chevron {
+    flex-shrink: 0;
+    margin-right: 2px;
+    color: var(--gold) !important;
+    font-size: 1rem;
+    line-height: 1;
+    transition: transform .25s ease;
+}
+
+.sidebar .profile-toggle[aria-expanded="true"] .profile-chevron {
+    transform: rotate(180deg);
+}
+
+/* Profile dropdown (log in / log out) */
+.sidebar .sidebar-profile-menu {
+    min-width: 190px;
+    margin-top: 4px;
+    padding: 8px 0;
+    background: var(--navbar);
+    border: 1px solid var(--gold-line);
+    border-radius: 12px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .55);
+    z-index: 1050;
+}
+
+    .sidebar .sidebar-profile-menu .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 10px 16px;
+        color: var(--text);
+        background: none;
+        border: 0;
+    }
+
+        .sidebar .sidebar-profile-menu .dropdown-item i {
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+
+        .sidebar .sidebar-profile-menu .dropdown-item:hover {
+            color: var(--gold);
+            background: rgba(242, 214, 117, .08);
+        }
+
+/* ----- Menu rows (links and the logout button share these rules) ----- */
 .sidebar .nav .nav-item {
     margin-bottom: 6px;
 }
 
-.sidebar .nav .nav-item .nav-link {
-    display: flex;
-    align-items: center;
-    min-height: 52px;
-    margin: 0 12px;
-    padding: 0 14px;
-    border-left: 3px solid transparent;
-    border-radius: 10px;
+    .sidebar .nav .nav-item .nav-link {
+        display: flex;
+        align-items: center;
+        min-height: 52px;
+        margin: 0 12px;
+        padding: 0 14px;
+        border-left: 3px solid transparent;
+        border-radius: 10px;
+    }
+
+.sidebar .logout-form {
+    width: 100%;
 }
 
-/* Icon and text color */
-.sidebar .nav .nav-item .nav-link i,
-.sidebar .nav .nav-item .menu-icon i {
-    color: var(--gold-soft) !important;
-    opacity: 1;
-    font-size: 1.5rem;
+.sidebar .nav .nav-item .logout-btn {
+    width: calc(100% - 24px);
 }
 
 .sidebar .nav .nav-item .menu-title {
@@ -237,39 +348,75 @@ html body .sidebar .sidebar-brand-wrapper {
     font-weight: 500;
 }
 
-/* Hover and active */
 .sidebar .nav .nav-item .nav-link:hover .menu-title {
     color: var(--gold) !important;
 }
 
 /* Hover row */
 .sidebar .nav .nav-item.menu-items .nav-link:hover {
-    background: linear-gradient(90deg, rgba(212, 175, 55, 0.14), transparent) !important;
+    background: linear-gradient(90deg, rgba(212, 175, 55, .14), transparent) !important;
     border-left: 3px solid var(--gold);
-    border-radius: 10px;
 }
 
 /* Active row */
 .sidebar .nav .nav-item.active > .nav-link {
-    background: linear-gradient(90deg, rgba(47,165,116,.30), rgba(47,165,116,.06));
+    background: linear-gradient(90deg, rgba(47, 165, 116, .30), rgba(47, 165, 116, .06));
     border: 1px solid var(--gold-line);
     border-left: 3px solid var(--gold);
 }
 
-/* Text tagline sidebar */
+/* ----- Menu icons: green ring, gold icon, centered ----- */
+.sidebar .nav .nav-item.menu-items .menu-icon {
+    flex: 0 0 clamp(40px, 3vw, 46px) !important;
+    width: clamp(40px, 3vw, 46px) !important;
+    height: clamp(40px, 3vw, 46px) !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    margin: 0 14px 0 0 !important;
+    border: 1px solid var(--ring-border) !important;
+    border-radius: 50% !important;
+    background: var(--ring-bg) !important;
+    box-shadow: var(--ring-shadow) !important;
+}
+
+    .sidebar .nav .nav-item.menu-items .menu-icon i {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        color: var(--gold-bright) !important;
+        font-size: clamp(1.15rem, 1rem + .4vw, 1.35rem) !important;
+        line-height: 1 !important;
+        text-shadow: 0 0 4px rgba(242, 214, 117, .3);
+    }
+
+        .sidebar .nav .nav-item.menu-items .menu-icon i::before {
+            display: block;
+            line-height: 1;
+        }
+
+.sidebar .nav .nav-item.menu-items > .nav-link:hover .menu-icon,
+.sidebar .nav .nav-item.active > .nav-link .menu-icon {
+    border-color: var(--ring-border-hover) !important;
+    box-shadow: var(--ring-shadow-hover) !important;
+}
+
+/* ----- Tagline (sits right under the menu so it is always visible) ----- */
 .sidebar-tagline {
-    margin-top: auto !important;
-    margin-bottom: 52px !important;
-    padding: 24px 16px 0px !important;
-    font-size: clamp(0.5rem, 0.2vw + 0.3rem, 0.6rem);
+    flex-shrink: 0;
+    margin-top: 24px !important;
+    margin-bottom: 28px !important;
+    padding: 16px 16px 0 !important;
+    font-size: clamp(.5rem, .2vw + .3rem, .6rem);
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--gold);
     text-align: center;
-    opacity: 1;
 }
 
-    /* Gold line under the tagline */
     .sidebar-tagline::after {
         content: "";
         display: block;
@@ -281,14 +428,132 @@ html body .sidebar .sidebar-brand-wrapper {
 
 
 /* ==========================================================
-   NAVBAR
+   5. SIDEBAR – COLLAPSED (icon-only)
    ========================================================== */
+
+/* ----- Logo centered ----- */
+.sidebar-icon-only .sidebar .sidebar-brand-wrapper {
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 18px 0 10px 0 !important;
+}
+
+    .sidebar-icon-only .sidebar .sidebar-brand-wrapper::after {
+        display: none !important;
+    }
+
+    .sidebar-icon-only .sidebar .sidebar-brand-wrapper .brand-logo-mini {
+        display: flex !important;
+        justify-content: center;
+        width: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+        .sidebar-icon-only .sidebar .sidebar-brand-wrapper .brand-logo-mini img {
+            display: block;
+            width: 52px !important;
+            max-width: none !important;
+            margin: 0 auto !important;
+        }
+
+/* ----- Hide labels that do not fit ----- */
+.sidebar-icon-only .sidebar .nav .nav-item.profile .profile-name,
+.sidebar-icon-only .sidebar .nav .nav-item.nav-category,
+.sidebar-icon-only .sidebar .profile-chevron {
+    display: none !important;
+}
+
+/* ----- Profile: avatar only ----- */
+.sidebar-icon-only .sidebar .nav .nav-item.profile .profile-desc {
+    display: flex !important;
+    justify-content: center !important;
+    padding: 14px 0 16px 0 !important;
+}
+
+.sidebar-icon-only .sidebar .profile-toggle {
+    justify-content: center;
+}
+
+/* Avatar and icon rings share the same size (--rail) */
+.sidebar-icon-only .sidebar .nav .nav-item.profile img,
+.sidebar-icon-only .sidebar .nav .nav-item.menu-items .menu-icon {
+    width: var(--rail) !important;
+    height: var(--rail) !important;
+    object-fit: cover;
+}
+
+/* ----- Menu: circular items ----- */
+.sidebar-icon-only .sidebar .nav .nav-item.menu-items {
+    margin-bottom: 10px !important;
+}
+
+    .sidebar-icon-only .sidebar .nav .nav-item.menu-items .nav-link {
+        width: 46px !important;
+        height: 46px !important;
+        min-height: 46px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        justify-content: center !important;
+        border: 1px solid transparent !important;
+        border-radius: 50% !important;
+        background: transparent !important;
+    }
+
+    .sidebar-icon-only .sidebar .nav .nav-item.menu-items .menu-icon {
+        margin: 0 !important;
+    }
+
+    .sidebar-icon-only .sidebar .nav .nav-item.menu-items .logout-form {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* ----- Hover label (flyout) in the theme colors ----- */
+    .sidebar-icon-only .sidebar .nav .nav-item.menu-items:hover > .nav-link .menu-title,
+    .sidebar-icon-only .sidebar .nav .nav-item.menu-items.hover-open > .nav-link .menu-title {
+        background: var(--navbar) !important;
+        border: 1px solid var(--gold-line);
+        border-left: 0;
+        border-radius: 0 12px 12px 0;
+        color: var(--gold) !important;
+        padding: 0 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
+    }
+
+/* ----- Tagline: small, vertical, with divider ----- */
+.sidebar-icon-only .sidebar .sidebar-tagline {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 !important;
+    margin-bottom: 20px !important;
+}
+
+.sidebar-icon-only .sidebar-tagline span {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    font-size: .5rem;
+    letter-spacing: 2px;
+}
+
+.sidebar-icon-only .sidebar-tagline::after {
+    width: 24px;
+    margin-top: 14px;
+}
+
+
+/* ==========================================================
+   6. TOP NAVBAR
+   ========================================================== */
+
+/* ----- Surface and text ----- */
 html body .navbar,
 html body .navbar .navbar-menu-wrapper {
     background: var(--navbar) !important;
 }
 
-/* Text color and gold on hover */
 .navbar .navbar-brand,
 .navbar .navbar-menu-wrapper .nav-link {
     color: var(--text) !important;
@@ -298,86 +563,284 @@ html body .navbar .navbar-menu-wrapper {
     color: var(--gold) !important;
 }
 
-/* Search field */
-.navbar .search .form-control {
-    background: rgba(255, 255, 255, 0.04) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-radius: 12px;
-    color: var(--text);
-    padding-left: 14px;
-    transition: 0.25s ease;
-    box-shadow: inset 0 0 6px rgba(212, 175, 55, 0.12);
+.navbar .navbar-menu-wrapper i {
+    color: var(--text) !important;
+    transition: .2s ease;
 }
 
-    .navbar .search .form-control:focus {
-        border-color: var(--gold) !important;
-        box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.15) !important;
+/* ----- Hamburger: gold icon, soft green hover (no ring) ----- */
+.navbar .navbar-menu-wrapper .navbar-toggler {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin: 0 14px;
+    padding: 0;
+    border: 0 !important;
+    border-radius: 10px;
+    background: transparent !important;
+    box-shadow: none !important;
+    transition: background .2s ease;
+}
+
+    .navbar .navbar-menu-wrapper .navbar-toggler .mdi {
+        color: var(--gold-soft) !important;
+        font-size: 1.5rem;
+        line-height: 1;
+        transition: color .2s ease;
     }
 
-/* Profile picture with gold ring */
-.navbar .navbar-profile img {
-    border: 1px solid var(--gold) !important;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.35) !important;
+    .navbar .navbar-menu-wrapper .navbar-toggler:hover {
+        background: rgba(47, 165, 116, .16) !important;
+        box-shadow: none !important;
+    }
+
+        .navbar .navbar-menu-wrapper .navbar-toggler:hover .mdi {
+            color: var(--gold) !important;
+        }
+
+    /* Remove any extra pseudo-element drawn on top of the icon */
+    .navbar .navbar-menu-wrapper .navbar-toggler::before,
+    .navbar .navbar-menu-wrapper .navbar-toggler::after,
+    .navbar .navbar-menu-wrapper .navbar-toggler .mdi::after {
+        content: none !important;
+        display: none !important;
+    }
+
+/* ----- Search field ----- */
+.navbar .search {
+    flex: 0 1 600px !important;
+    width: min(600px, 45vw) !important;
+}
+
+    .navbar .search .form-control {
+        height: 42px;
+        padding-left: 14px;
+        background: rgba(8, 35, 26, .9) !important;
+        border: 1px solid rgba(232, 199, 102, .14) !important;
+        border-radius: 12px;
+        color: var(--text);
+        box-shadow: inset 0 0 6px rgba(212, 175, 55, 0.12);
+        transition: 0.25s ease;
+    }
+
+        .navbar .search .form-control:focus {
+            background: #124333 !important;
+            border-color: var(--gold-line) !important;
+            box-shadow: 0 0 0 3px rgba(242, 214, 117, .08) !important;
+        }
+
+        /* Prevent white browser autofill */
+        .navbar .search .form-control:-webkit-autofill,
+        .navbar .search .form-control:-webkit-autofill:hover,
+        .navbar .search .form-control:-webkit-autofill:focus {
+            -webkit-text-fill-color: var(--text) !important;
+            -webkit-box-shadow: 0 0 0 1000px #124333 inset !important;
+            box-shadow: 0 0 0 1000px #124333 inset !important;
+        }
+
+@media (max-width: 767px) {
+    .navbar .search {
+        flex: 1 1 auto !important;
+        width: auto !important;
+    }
+}
+
+/* ----- Right side: row layout ----- */
+html body .navbar .navbar-nav.navbar-nav-right {
+    align-items: center !important;
+    gap: 12px;
+    padding-right: 28px;
+}
+
+html body .navbar .navbar-nav-right .nav-item {
+    display: flex;
+    align-items: center;
+    height: auto !important;
+}
+
+html body .navbar .navbar-nav .nav-item.border-left {
+    border-left: 0 !important; /* removes Corona's vertical dividers */
+}
+
+/* ----- Round icon buttons (launcher, bell, mail) ----- */
+#app-launcher-btn,
+#notificationDropdown,
+#messageDropdown {
+    position: relative;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 38px !important;
+    height: 38px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    border: 1px solid var(--ring-border) !important;
     border-radius: 50% !important;
+    background: var(--ring-bg) !important;
+    box-shadow: var(--ring-shadow) !important;
+}
+
+    #app-launcher-btn i,
+    #notificationDropdown i,
+    #messageDropdown i {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        margin: 0 !important;
+        color: var(--gold-bright) !important;
+        font-size: 1.05rem !important;
+        line-height: 1 !important;
+        text-shadow: 0 0 4px rgba(242, 214, 117, .3);
+    }
+
+        #app-launcher-btn i::before,
+        #notificationDropdown i::before,
+        #messageDropdown i::before {
+            display: block;
+            line-height: 1;
+        }
+
+    #app-launcher-btn:hover,
+    #notificationDropdown:hover,
+    #messageDropdown:hover {
+        border-color: var(--ring-border-hover) !important;
+        box-shadow: var(--ring-shadow-hover) !important;
+    }
+
+    /* Notification dots */
+    #notificationDropdown .count,
+    #messageDropdown .count {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        width: 9px;
+        height: 9px;
+        border: 1.5px solid var(--navbar);
+    }
+
+/* ----- Profile (avatar, name over role, chevron) ----- */
+.navbar #profileDropdown {
+    display: flex;
+    align-items: center;
+    height: 46px;
+    margin-left: 10px;
+    padding: 0 0 0 22px !important;
+    border-left: 1px solid rgba(47, 165, 116, .25); /* subtle divider */
+}
+
+.navbar .navbar-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 0;
+}
+
+    .navbar .navbar-profile img {
+        width: 38px !important;
+        height: 38px !important;
+        object-fit: cover;
+        border: 1px solid var(--ring-border) !important;
+        box-shadow: 0 0 0 3px rgba(47, 165, 116, .10), 0 4px 12px rgba(0, 0, 0, .45) !important;
+        border-radius: 50% !important;
+    }
+
+.navbar .navbar-profile-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2px;
+    text-align: left;
+    line-height: 1.2;
+}
+
+.navbar .navbar-profile-name,
+.navbar .navbar-profile-role {
+    display: block;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left;
+    line-height: 1.15;
 }
 
 .navbar .navbar-profile-name {
-    color: var(--text) !important;
+    color: var(--muted) !important;
+    font-size: clamp(.8rem, .75rem + .2vw, .88rem);
+    font-weight: 600;
+    letter-spacing: .1px;
 }
 
-    .navbar .navbar-profile-name small {
-        color: var(--gold-soft) !important;
-        font-size: 0.75rem;
+/* Subtle role label */
+.navbar .navbar-profile-role {
+    color: var(--gold-soft);
+    opacity: .75;
+    font-size: .64rem;
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+/* Gold chevron in a small ring, turns when the menu is open */
+.navbar #profileDropdown .mdi-chevron-down {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    margin: 0 0 0 4px;
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--gold) !important;
+    background: none !important;
+    border: 1px solid var(--gold-line);
+    border-radius: 50%;
+    transition: transform .25s ease, border-color .2s ease;
+}
+
+    .navbar #profileDropdown .mdi-chevron-down::before {
+        display: block;
+        line-height: 1;
     }
 
-/* Navbar icons */
-.icon-white {
-    color: #ffffff;
+.navbar #profileDropdown:hover .mdi-chevron-down {
+    border-color: var(--gold);
 }
 
-/* Dropdown menus */
+.navbar #profileDropdown[aria-expanded="true"] .mdi-chevron-down {
+    transform: rotate(180deg);
+}
 
+/* ----- Dropdown menus ----- */
 .navbar .dropdown-menu {
     background: var(--navbar) !important;
     border: 1px solid var(--gold-line) !important;
     border-radius: 12px !important;
-    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55) !important;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .55) !important;
     padding: 10px 0 !important;
 }
 
     .navbar .dropdown-menu .dropdown-item i {
         color: var(--gold) !important;
-        transition: 0.2s ease;
     }
 
     .navbar .dropdown-menu .dropdown-item:hover {
         color: var(--gold) !important;
-        background: rgba(242, 214, 117, 0.08) !important;
-        border-radius: 6px;
-    }
-
-        .navbar .dropdown-menu .dropdown-item:hover i {
-            color: var(--gold-soft) !important;
-        }
-
-/* Icon hover */
-.navbar .navbar-menu-wrapper i {
-    color: var(--text) !important;
-    transition: 0.2s ease;
-}
-
-    .navbar .navbar-menu-wrapper i:hover {
-        color: var(--gold) !important;
-        background: rgba(242, 214, 117, 0.08) !important;
+        background: rgba(242, 214, 117, .08) !important;
         border-radius: 6px;
     }
 
 
 /* ==========================================================
-   APP LAUNCHER
+   7. APP LAUNCHER
+   Grid menu opened from the navbar.
    ========================================================== */
 
-/* Hidden and visible state */
+/* Hidden / visible states */
 .app-launcher.hidden {
     display: none !important;
 }
@@ -442,7 +905,11 @@ html body .navbar .navbar-menu-wrapper {
         background: none;
     }
 
-        /* Button looks like a launcher link */
+        .launcher-item.logout-form:hover {
+            color: var(--gold);
+            background: rgba(242, 214, 117, 0.08);
+        }
+
         .launcher-item.logout-form button {
             background: none;
             border: none;
@@ -455,7 +922,7 @@ html body .navbar .navbar-menu-wrapper {
             cursor: pointer;
             width: 100%;
             padding: 0;
-            font: inherit; 
+            font: inherit;
             transition: color .2s ease;
         }
 
@@ -469,23 +936,195 @@ html body .navbar .navbar-menu-wrapper {
             border-radius: 8px;
         }
 
-            /* Icon style */
-            .launcher-item.logout-form button i {
-                color: var(--gold);
-                font-size: 24px;
-            }
-
-        /* Hover, same as the other items */
-        .launcher-item.logout-form:hover {
+        .launcher-item.logout-form button i {
             color: var(--gold);
-            background: rgba(242, 214, 117, 0.08);
+            font-size: 24px;
         }
 
 
 /* ==========================================================
-   TABLE – All tabels
+   8. SHARED COMPONENTS
    ========================================================== */
 
+/* ----- Logout form / button base ----- */
+.logout-form {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    color: inherit;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+/* ----- Section subtitle ----- */
+.section-subtitle {
+    color: var(--muted);
+    font-size: .9rem;
+    margin-bottom: 24px;
+}
+
+/* ----- Breadcrumb ----- */
+.page-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.75rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+    .page-breadcrumb i {
+        color: var(--gold);
+    }
+
+    .page-breadcrumb a {
+        color: var(--gold);
+        text-decoration: none;
+        transition: .2s ease;
+    }
+
+        .page-breadcrumb a:hover {
+            color: #f5d77b;
+            text-decoration: none;
+        }
+
+    .page-breadcrumb span {
+        color: rgba(255, 255, 255, .4);
+    }
+
+/* ----- Generic gold icon, indicators ----- */
+.icon {
+    color: var(--gold);
+    margin-right: 6px;
+    font-size: 1.1rem;
+}
+
+.indicator {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+    .indicator.positive {
+        color: #4CAF50;
+    }
+
+    .indicator.negative {
+        color: #E53935;
+    }
+
+/* ----- Buttons ----- */
+.bank-btn,
+.bank-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 8px 17px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .2px;
+    line-height: 1.2;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, color .2s ease;
+}
+
+/* Primary gold button */
+.bank-btn {
+    background: linear-gradient(180deg, var(--gold-deep) 0%, var(--gold-dark) 100%);
+    color: var(--on-gold);
+    border: 1px solid rgba(255, 233, 170, .3);
+    box-shadow: 0 3px 10px rgba(168, 129, 47, .18), inset 0 1px 0 rgba(255, 255, 255, .2);
+}
+
+    .bank-btn:hover {
+        color: var(--on-gold);
+        background: linear-gradient(180deg, var(--gold-bright) 0%, var(--gold-deep) 100%);
+        box-shadow: 0 4px 12px rgba(201, 162, 75, .25), inset 0 1px 0 rgba(255, 255, 255, .3);
+        transform: translateY(-1px);
+        filter: brightness(1.1);
+    }
+
+    .bank-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px rgba(168, 129, 47, .2);
+    }
+
+/* Secondary outline button */
+.bank-btn-outline {
+    background: linear-gradient(180deg, rgba(47, 165, 116, .10), rgba(3, 38, 27, .55));
+    color: var(--gold);
+    font-weight: 500;
+    border: 1px solid var(--gold-line);
+    box-shadow: none;
+}
+
+    .bank-btn-outline:hover {
+        color: var(--gold-bright);
+        border-color: var(--gold-deep);
+        background: linear-gradient(180deg, rgba(47, 165, 116, .18), rgba(3, 38, 27, .7));
+        box-shadow: 0 3px 9px rgba(201, 162, 75, .12);
+        transform: translateY(-1px);
+    }
+
+    /* Keyboard accessibility */
+    .bank-btn:focus-visible,
+    .bank-btn-outline:focus-visible {
+        outline: 2px solid var(--gold-bright);
+        outline-offset: 2px;
+    }
+
+    /* Disabled */
+    .bank-btn:disabled,
+    .bank-btn-outline:disabled {
+        opacity: .5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+/* ----- Pagination ----- */
+.bank-pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+    .bank-page-info,
+    .bank-pagination .bank-btn-outline {
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+    }
+
+.bank-page-info {
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-weight: 700;
+}
+
+
+/* ==========================================================
+   9. TABLES
+   Shared table styling and clickable rows.
+   ========================================================== */
 .mybank-table {
     width: 100%;
     background-color: var(--card);
@@ -505,28 +1144,30 @@ html body .navbar .navbar-menu-wrapper {
         letter-spacing: 0.5px;
     }
 
-    /* Rows */
+    /* Rows (alternating) */
     .mybank-table tbody tr {
         background-color: var(--card);
         transition: background-color 0.2s ease, transform 0.15s ease;
     }
 
-        /* Zebra */
         .mybank-table tbody tr:nth-child(even) {
             background-color: #0C1F17;
+        }
+
+        .mybank-table tbody tr:hover {
+            background-color: var(--navbar);
+            color: var(--gold);
         }
 
     /* Cells */
     .mybank-table td {
         padding: 12px 14px;
-        border-bottom: 1px solid var(--line);
+        border-bottom: 1px solid rgba(242, 214, 117, 0.06);
         color: var(--muted);
     }
 
-    /* Hover */
-    .mybank-table tbody tr:hover {
-        background-color: var(--navbar);
-        color: var(--gold);
+    .mybank-table tbody tr:last-child td {
+        border-bottom: none;
     }
 
     /* Links */
@@ -541,26 +1182,60 @@ html body .navbar .navbar-menu-wrapper {
             text-decoration: underline;
         }
 
-.currency {
-    text-align: right;
-    font-variant-numeric: tabular-nums;
+    /* Right-aligned money columns */
+    .currency,
+    .mybank-table th.currency,
+    .mybank-table td.currency {
+        text-align: right;
+    }
+
+/* Accounts table sits directly under its heading */
+.accounts-heading + .mybank-table {
+    margin-top: 0;
 }
 
-.mybank-table th.currency,
-.mybank-table td.currency {
-    text-align: right;
-}
-
-/* Country Statistics index */
-.primary-value {
-    color: var(--text) !important;
-}
-
+/* Emphasized values */
+.primary-value,
 .clickable-row td.primary-value {
     color: var(--text) !important;
 }
 
-/* table flags */
+/* Clickable rows (stretched links) */
+.clickable-row {
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+    .clickable-row:hover {
+        background-color: rgba(242, 214, 117, 0.05) !important;
+    }
+
+    .clickable-row td {
+        color: var(--muted) !important;
+    }
+
+        /* Names on search, statistics and top-ten tables */
+        .clickable-row td.customer-name,
+        .clickable-row td.country-name {
+            color: var(--text) !important;
+        }
+
+/* Rank column in the top-ten country table */
+.mybank-table th.rank-column {
+    text-align: center !important;
+    width: 100px;
+    padding-right: 25px !important;
+}
+
+.mybank-table td.rank-column {
+    text-align: center !important;
+    vertical-align: middle !important;
+    padding-right: 25px !important;
+    font-size: 1.1rem;
+}
+
+/* Country flag in tables */
 .country-link {
     display: flex;
     align-items: center;
@@ -574,7 +1249,22 @@ html body .navbar .navbar-menu-wrapper {
     object-fit: cover;
     margin-right: 10px;
 }
-/* Balance*/
+
+/* Country header with large flag */
+.country-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.country-flag-large {
+    width: 65px;
+    height: auto;
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+/* Balance display (generic) */
 .balance-value {
     font-size: 2rem;
     font-weight: 700;
@@ -593,248 +1283,242 @@ html body .navbar .navbar-menu-wrapper {
 }
 
 
-/* Clickable rows (Stretched link) Customer page */
-.clickable-row {
-    position: relative; 
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-    .clickable-row:hover {
-        background-color: rgba(242, 214, 117, 0.05) !important; 
-    }
-
-    .clickable-row td {
-        color: var(--muted) !important;
-    }
-
-
-/* Customer name Search page + Statistics page + top 10 */
-        .clickable-row td.customer-name,
-        .clickable-row td.country-name {
-            color: var(--text) !important;
-        }
-
-
-
-/* Improve the table borders */
-.mybank-table tbody td {
-    border-bottom: 1px solid rgba(242, 214, 117, 0.06);
-}
-
-.mybank-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-/* country header welcome*/
-.country-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-}
-
-/* country Flag in welcome card */
-.country-flag-large {
-    width: 65px;
-    height: auto;
-    border-radius: 4px;
-    margin-top: 8px;
-}
-
-
 /* ==========================================================
-   HOME – cards
+   10. HOME PAGE – COUNTRY STATISTICS
+   Summary cards with country-level totals.
    ========================================================== */
-
 .stat-card {
     display: flex;
     align-items: center;
     gap: clamp(12px, 1.5vw, 24px);
     min-width: 0;
     padding: 20px;
-    background: linear-gradient( 145deg, rgba(20, 44, 34, 0.65), rgba(8, 16, 12, 0.55) ) !important;
+    background: linear-gradient(145deg, rgba(20, 44, 34, 0.65), rgba(8, 16, 12, 0.55)) !important;
 }
 
-.stat-car:hover {
+.stat-car:hover { /* NOTE: probably a typo for .stat-card:hover, kept as in the original */
     border-color: rgba(242, 214, 117, 0.25);
     transform: translateY(-2px);
 }
-    .stat-icon {
-        flex: 0 0 56px;
-        width: 56px;
-        height: 56px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 18px;
-        background: rgba(242,214,117,.06);
-        border: 1px solid var(--gold-line);
-        container-type: inline-size;
+
+.stat-icon {
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    background: rgba(242, 214, 117, .06);
+    border: 1px solid var(--gold-line);
+    container-type: inline-size;
+}
+
+    .stat-icon i {
+        font-size: 1.9rem;
+        line-height: 1;
+        color: var(--gold);
     }
 
-        .stat-icon i {
-            font-size: 1.9rem;
-            line-height: 1;
+.stat-content {
+    flex: 1 1 auto;
+    min-width: 0;
+    container-type: inline-size;
+}
+
+.stat-title {
+    color: var(--muted);
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stat-number {
+    color: var(--text);
+    font-size: clamp(1.1rem, 9cqw, 2.1rem);
+    font-weight: 700;
+    margin-top: 4px;
+    line-height: 1.1;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-subtitle {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 0.75rem;
+}
+
+
+/* ==========================================================
+   11. DASHBOARD CARDS
+   Grid, base card, country cards, data rows, sparklines.
+   ========================================================== */
+
+/* ----- Grid ----- */
+.dashboard-grid {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 1rem;
+    box-sizing: border-box;
+    justify-content: start;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+    gap: clamp(0.75rem, 0.5rem + 1vw, 1.5rem);
+}
+
+/* Two cards side by side, stacked on small screens */
+.dashboard-two-col {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 992px) {
+    .dashboard-two-col {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ----- Base card ----- */
+.dashboard-card {
+    position: relative;
+    min-width: 0;
+    box-sizing: border-box;
+    background: rgba(10, 18, 14, 0.55);
+    backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    padding: 18px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), inset 0 0 0.5px rgba(255, 255, 255, 0.12);
+    overflow: hidden;
+    transition: 0.25s ease;
+}
+
+    .dashboard-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, transparent, rgba(255, 255, 255, .02));
+        pointer-events: none;
+    }
+
+    .dashboard-card:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), 0 0 8px rgba(242, 214, 117, 0.25);
+    }
+
+    .dashboard-card .card-title {
+        color: var(--text);
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        margin-bottom: 10px;
+        font-size: clamp(1rem, 0.9rem + 0.5vw, 1.2rem);
+        display: flex;
+        align-items: center;
+    }
+
+        .dashboard-card .card-title .icon {
+            color: var(--gold);
+            font-size: 24px;
+        }
+
+    .dashboard-card .card-text {
+        font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+    }
+
+        .dashboard-card .card-text strong {
+            font-size: 1.1rem;
             color: var(--gold);
         }
 
-    .stat-content {
-        flex: 1 1 auto;
-        min-width: 0;
-        container-type: inline-size;
+/* Whole card as a link */
+.dashboard-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* ----- Country cards (inside .dashboard-grid) ----- */
+.dashboard-grid .dashboard-card {
+    padding: 20px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--card), var(--bg));
+    border: 1px solid rgba(99, 208, 151, 0.12);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .dashboard-grid .dashboard-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--gold-line);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 18px rgba(242, 214, 117, 0.1);
     }
 
-    .stat-title {
-        color: var(--muted);
-        font-size: 0.95rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+/* Round flag to the left of the country name */
+.dashboard-card[style*="--flag"] {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
 
-    .stat-number {
-        color: var(--text);
-        font-size: clamp(1.1rem, 9cqw, 2.1rem);
-        font-weight: 700;
-        margin-top: 4px;
-        line-height: 1.1;
-        white-space: nowrap;
-        font-variant-numeric: tabular-nums;
-    }
-
-    .stat-subtitle {
-        margin-top: 6px;
-        color: var(--muted);
-        font-size: 0.75rem;
-    }
-    /* ==========================================================
-   DASHBOARD – layout and cards
-   ========================================================== */
-    /* Page layout */
-    .main-panel {
-        min-width: 0;
-    }
-
-    .content-wrapper {
-        max-width: clamp(900px, 70vw, 1300px);
-        margin: 0 auto;
-        width: 100%;
-        min-width: 0;
-        box-sizing: border-box;
-    }
-    /* Card grid */
-    .dashboard-grid {
-        width: 100%;
-        max-width: 100%;
-        margin-left: 0;
-        margin-right: 0;
-        box-sizing: border-box;
-        justify-content: start;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
-        gap: clamp(0.75rem, 0.5rem + 1vw, 1.5rem);
-        margin-top: 1rem;
-    }
-    /* Card */
-    .dashboard-card {
-        position: relative;
-        min-width: 0;
-        box-sizing: border-box;
-        background: rgba(10, 18, 14, 0.55);
-        backdrop-filter: blur(14px) saturate(140%);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: 6px;
-        padding: 18px;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), inset 0 0 0.5px rgba(255, 255, 255, 0.12);
-        overflow: hidden;
-        transition: 0.25s ease;
-    }
-
-        .dashboard-card::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient( 135deg, transparent, rgba(255,255,255,.02) );
-            pointer-events: none;
-        }
-
-        .dashboard-card .card-title {
-            color: var(--text);
-            font-weight: 600;
-            letter-spacing: 0.4px;
-            margin-bottom: 10px;
-            font-size: clamp(1rem, 0.9rem + 0.5vw, 1.2rem);
-            display: flex;
-            align-items: center;
-        }
-
-        .dashboard-card .card-text {
-            font-size: clamp(0.8rem, 0.9vw, 0.9rem);
-        }
-
-            .dashboard-card .card-text strong {
-                font-size: 1.1rem;
-                color: var(--gold);
-            }
-
-        .dashboard-card:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), 0 0 8px rgba(242, 214, 117, 0.25);
-        }
-    /* flags */
-    .chart-header {
-        display: flex;
-        justify-content: space-between;
+    .dashboard-card[style*="--flag"] .card-title {
+        min-height: 34px;
+        padding-left: 46px;
+        padding-right: 0;
         align-items: center;
-        margin-bottom: 1rem;
+        margin-bottom: 18px;
     }
 
-    .chart-pill {
-        padding: 8px 14px;
-        border-radius: 999px;
-        border: 1px solid var(--gold-line);
-        background: rgba(255,255,255,.03);
-        color: var(--gold);
-        font-size: .75rem;
-        font-weight: 600;
-    }
-
-    .chart-pill-label {
-        color: var(--muted);
-        font-weight: 500;
-        margin-right: 6px;
-    }
-    /* Flaggor positioneras av JS under varje stapel */
-    .chart-flags {
-        position: relative;
-        width: 100%;
-        height: 48px;
-        margin-top: 6px;
-        padding: 0;
-    }
-
-    .flag-item {
+    .dashboard-card[style*="--flag"]::before {
+        content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        transform: translateX(-50%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 5px;
+        top: 18px;
+        left: 20px;
+        right: auto;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--flag) center / cover no-repeat;
+        opacity: 1;
+        z-index: -1;
+    }
+
+/* "View details" link at the bottom of a card */
+.country-footer {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--gold-line);
+    color: var(--gold);
+    font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+}
+
+/* ----- Data rows ----- */
+.data-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+    .data-row .label {
+        flex: 1;
+        margin-left: 8px;
+        color: var(--muted);
+    }
+
+    .data-row .value {
+        font-weight: 500;
+        color: var(--muted);
+        margin-left: 12px;
+        text-align: right;
+        min-width: 0;
         white-space: nowrap;
     }
 
-        .flag-item img {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .flag-item span {
-            color: var(--muted);
-            font-size: .7rem;
-        }
-    /* Total balance */
+    /* Total balance row (centered, with divider) */
     .data-row.balance-row {
         flex-wrap: wrap;
         margin-bottom: 0;
@@ -858,180 +1542,152 @@ html body .navbar .navbar-menu-wrapper {
             font-variant-numeric: tabular-nums;
             letter-spacing: 0.3px;
         }
-    /* Icons, indicators and flags */
-    .icon {
-        color: var(--gold);
-        margin-right: 6px;
-        font-size: 1.1rem;
-    }
 
-    .indicator {
-        font-size: 0.9rem;
-        font-weight: 600;
-        margin-left: 6px;
-    }
-
-        .indicator.positive {
-            color: #4CAF50;
-        }
-
-        .indicator.negative {
-            color: #E53935;
-        }
-    /* Flag: round, to the left of the country name */
-    .dashboard-card[style*="--flag"] {
-        position: relative;
-        overflow: hidden;
-        isolation: isolate;
-    }
-
-        .dashboard-card[style*="--flag"] .card-title {
-            min-height: 34px;
-            padding-left: 46px;
-            padding-right: 0;
-            align-items: center;
-            margin-bottom: 18px;
-        }
-
-        .dashboard-card[style*="--flag"]::before {
-            content: "";
-            position: absolute;
-            top: 18px;
-            left: 20px;
-            right: auto;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: var(--flag) center / cover no-repeat;
-            opacity: 1;
-            z-index: -1;
-        }
-    /* Data rows */
-    .data-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 16px;
-    }
-
-        .data-row .label {
-            flex: 1;
-            margin-left: 8px;
-            color: var(--muted);
-        }
-
-        .data-row .value {
-            font-weight: 500;
-            color: var(--muted);
-            margin-left: 12px;
-            text-align: right;
-            min-width: 0px;
-            white-space: nowrap;
-        }
-    /* Clickable card link */
-    .dashboard-link {
-        text-decoration: none;
-        color: inherit;
-        display: block;
-    }
-    /* veiw details */
-.country-footer {
-    margin-top: 16px;
-    padding-top: 12px;
-    border-top: 1px solid var(--gold-line);
-    color: var(--gold);
-    font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+/* Inside country cards: label above value, no icons, left aligned */
+.dashboard-grid .data-row {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 12px;
 }
-    /* Landskort */
-    .dashboard-grid .dashboard-card {
-        padding: 20px;
-        border-radius: 14px;
-        background: linear-gradient(135deg, var(--card), var(--bg));
-        border: 1px solid rgba(99, 208, 151, 0.12);
-        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+
+    .dashboard-grid .data-row .icon {
+        display: none;
     }
 
-        .dashboard-grid .dashboard-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--gold-line);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 18px rgba(242, 214, 117, 0.1);
-        }
-    /* Etikett ovanför värdet, utan ikoner */
-    .dashboard-grid .data-row {
-        flex-direction: column;
+    .dashboard-grid .data-row .label {
+        margin: 0;
+        font-size: .78rem;
+        flex: none;
+    }
+
+    .dashboard-grid .data-row .value {
+        margin: 2px 0 0 0;
+        text-align: left;
+        color: var(--text);
+        font-weight: 600;
+        font-size: 1.05rem;
+    }
+
+    .dashboard-grid .data-row.balance-row {
+        position: relative;
+        border-top: none;
+        padding-top: 0;
         align-items: flex-start;
-        margin-bottom: 12px;
+        justify-content: flex-start;
     }
 
-        .dashboard-grid .data-row .icon {
-            display: none;
+        .dashboard-grid .data-row.balance-row .label {
+            white-space: normal;
         }
 
-        .dashboard-grid .data-row .label {
-            margin: 0;
-            font-size: .78rem;
+        .dashboard-grid .data-row.balance-row .value {
             flex: none;
-        }
-
-        .dashboard-grid .data-row .value {
             margin: 2px 0 0 0;
             text-align: left;
-            color: var(--text);
-            font-weight: 600;
             font-size: 1.05rem;
-        }
-        /* Total balance: ingen centrering/linje, mini-graf till höger */
-        .dashboard-grid .data-row.balance-row {
-            position: relative;
-            border-top: none;
-            padding-top: 0;
-            align-items: flex-start;
-            justify-content: flex-start;
+            color: var(--text);
         }
 
-            .dashboard-grid .data-row.balance-row .label {
-                white-space: normal;
-            }
+/* ----- Sparkline on country cards ----- */
+.spark-bg {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 55%;
+    z-index: -1;
+    pointer-events: none;
+}
 
-            .dashboard-grid .data-row.balance-row .value {
-                flex: none;
-                margin: 2px 0 0 0;
-                text-align: left;
-                font-size: 1.05rem;
-                color: var(--text);
-            }
-    /* Kurva i bakgrunden på landskorten */
-    .spark-bg {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 55%;
-        z-index: -1;
-        pointer-events: none;
+    .spark-bg svg {
+        display: block;
+        width: 100%;
+        height: 100%;
     }
 
-        .spark-bg svg {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-    /* Glödande punkt i kurvans slut */
-    .spark-dot {
-        position: absolute;
-        left: 96%;
-        width: 8px;
-        height: 8px;
-        transform: translate(-50%, -50%);
+/* Glowing endpoint */
+.spark-dot {
+    position: absolute;
+    left: 96%;
+    width: 8px;
+    height: 8px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: #63D097;
+    box-shadow: 0 0 0 3px rgba(99, 208, 151, .18), 0 0 12px rgba(99, 208, 151, .8);
+}
+
+/* ----- Chart header, pills and flags under bars ----- */
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.chart-pill {
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--gold-line);
+    background: rgba(255, 255, 255, .03);
+    color: var(--gold);
+    font-size: .75rem;
+    font-weight: 600;
+}
+
+.chart-pill-label {
+    color: var(--muted);
+    font-weight: 500;
+    margin-right: 6px;
+}
+
+/* Flags are positioned below each chart bar by JavaScript */
+.chart-flags {
+    position: relative;
+    width: 100%;
+    height: 48px;
+    margin-top: 6px;
+    padding: 0;
+}
+
+.flag-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+    .flag-item img {
+        width: 22px;
+        height: 22px;
         border-radius: 50%;
-        background: #63D097;
-        box-shadow: 0 0 0 3px rgba(99,208,151,.18), 0 0 12px rgba(99,208,151,.8);
+        object-fit: cover;
     }
+
+    .flag-item span {
+        color: var(--muted);
+        font-size: .7rem;
+    }
+
+/* Chart needs a fixed height since the canvas is responsive */
+.chart-wrap {
+    position: relative;
+    height: 260px;
+    width: 100%;
+}
+
 
 /* ==========================================================
-   Customer Card 
+   12. CUSTOMER PAGE
+   Header, profile layout, balance card and accounts.
    ========================================================== */
-/* Page header (reuses .welcome-card) */
+
+/* ----- Page header (reuses the welcome card) ----- */
 .customer-hero {
     padding: 28px 32px;
     margin-bottom: 0;
@@ -1039,6 +1695,7 @@ html body .navbar .navbar-menu-wrapper {
 
 .customer-page-header {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 24px;
 }
@@ -1051,31 +1708,24 @@ html body .navbar .navbar-menu-wrapper {
     margin-left: auto;
 }
 
-    /* Balance card */
-.customer-profile-layout .balance-card .balance-value {
-    text-align: left;
-    margin-top: 16px;
-
+.customer-name {
+    color: var(--text);
+    font-weight: 700;
 }
 
-.balance-card {
-    position: relative;
+.customer-id {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 0.9rem;
 }
 
-
-/* Accounts table directly under its heading */
-.accounts-heading + .mybank-table {
-    margin-top: 0;
-}
-
-/* Customer profile: follow the existing dashboard card template */
+/* ----- Profile layout: details + balance ----- */
 .customer-profile-layout {
     display: grid;
     grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr);
     gap: 24px;
     align-items: stretch;
     margin: 24px 0 32px;
-    margin-top: 24px;
 }
 
     .customer-profile-layout .dashboard-card {
@@ -1089,19 +1739,12 @@ html body .navbar .navbar-menu-wrapper {
         transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-        .customer-profile-layout .dashboard-card:hover {;
+        .customer-profile-layout .dashboard-card:hover {
             border-color: var(--gold-line);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 18px rgba(242, 214, 117, 0.1);
         }
 
-    /* Total balance card: center content vertically */
-    .customer-profile-layout .balance-card {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-
-/* Customer header (optional avatar + name) */
+/* Customer header (avatar + name) */
 .customer-header {
     display: flex;
     align-items: center;
@@ -1120,7 +1763,7 @@ html body .navbar .navbar-menu-wrapper {
         object-fit: cover;
     }
 
-/* Customer details: label above value, two columns */
+/* Details: label above value, two columns */
 .customer-details-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1147,64 +1790,9 @@ html body .navbar .navbar-menu-wrapper {
         letter-spacing: 1.5px;
     }
 
-
-/* Accounts heading above the accounts table */
-.accounts-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    margin: 32px 0 12px;
-}
-
-    .accounts-heading h3 {
-        margin: 0;
-        color: var(--text);
-        font-size: 1.2rem;
-        font-weight: 600;
-    }
-
-/* Responsive layout */
-@media (max-width: 900px) {
-    .customer-profile-layout {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 600px) {
-    .customer-details-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .customer-profile-layout {
-        gap: 16px;
-    }
-
-    .accounts-heading {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-}
-
-.customer-page-header {
-    flex-wrap: wrap;
-}
-
-/* Namn */
-.customer-name {
-    color: var(--text);
-    font-weight: 700;
-}
-
-.customer-id {
-    margin-top: 4px;
-    color: var(--muted);
-    font-size: 0.9rem;
-}
-
-
-/* ===== TOTAL BALANCES CARD ===== */
+/* ----- Total balance card ----- */
 .balance-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -1217,19 +1805,19 @@ html body .navbar .navbar-menu-wrapper {
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
 }
 
-.balance-card .card-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0;
-    padding-bottom: 18px;
-    border-bottom: 1px solid rgba(242, 214, 117, 0.14);
-}
-
-    .balance-card .card-title .icon {
-        color: var(--gold);
-        font-size: 24px;
+    .balance-card .card-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
+        padding-bottom: 18px;
+        border-bottom: 1px solid rgba(242, 214, 117, 0.14);
     }
+
+        .balance-card .card-title .icon {
+            color: var(--gold);
+            font-size: 24px;
+        }
 
     .balance-card .balance-value {
         margin: 14px 0 4px;
@@ -1240,14 +1828,20 @@ html body .navbar .navbar-menu-wrapper {
         text-align: left;
     }
 
-    .balance-card .balance-label {
-        margin: 0;
-        color: var(--muted);
-        font-size: 0.85rem;
-        letter-spacing: 0.3px;
-        text-align: left;
-        text-transform: none;
-    }
+/* On the customer profile page the value sits a bit lower */
+.customer-profile-layout .balance-card .balance-value {
+    text-align: left;
+    margin-top: 16px;
+}
+
+.balance-card .balance-label {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.3px;
+    text-align: left;
+    text-transform: none;
+}
 
 .balance-sparkline {
     width: 100%;
@@ -1278,16 +1872,22 @@ html body .navbar .navbar-menu-wrapper {
         font-size: 18px;
     }
 
-@media (max-width: 600px) {
-    .balance-card {
-        min-height: 250px;
-        padding: 20px;
-    }
+/* ----- Accounts card and table ----- */
+.accounts-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0 12px;
 }
 
+    .accounts-heading h3 {
+        margin: 0;
+        color: var(--text);
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
 
-/* ===== CUSTOMER ACCOUNTS CARD ===== */
-/* Account card – preserve existing classes */
 .accounts-card {
     margin-top: 24px;
     padding: 20px;
@@ -1297,41 +1897,43 @@ html body .navbar .navbar-menu-wrapper {
     grid-column: 1 / -1;
 }
 
-    .accounts-card .card-title .icon,
-    .account-icon,
-    .account-action {
-        color: var(--gold);
-    }
-
     .accounts-card .card-title .icon {
         margin-right: 10px;
         font-size: 24px;
+        color: var(--gold);
+    }
+
+    .accounts-card .mybank-table tbody tr {
+        width: 100%;
+        transition: background 0.2s ease;
+    }
+
+        .accounts-card .mybank-table tbody tr:hover {
+            background: rgba(242, 214, 117, 0.05);
+        }
+
+    .accounts-card .mybank-table tbody td {
+        width: 100%;
+        padding-top: 17px;
+        padding-bottom: 17px;
+    }
+
+    .accounts-card .currency {
+        white-space: nowrap;
+        color: var(--text);
+        font-weight: 600;
     }
 
 .account-icon {
+    color: var(--gold);
     margin-right: 10px;
-    font-size: 21px;
+    font-size: 20px;
     vertical-align: middle;
 }
 
-.accounts-card .mybank-table tbody tr {
-    transition: background 0.2s ease;
-    width: 100%;
-}
-
-    .accounts-card .mybank-table tbody tr:hover {
-        background: rgba(242, 214, 117, 0.05);
-    }
-
-.accounts-card .mybank-table tbody td {
-    padding-top: 17px;
-    padding-bottom: 17px;
-    width: 100%;
-}
-
-.account-action {
-    text-align: right;
-    font-size: 20px;
+.account-number {
+    color: var(--text);
+    font-weight: 600;
 }
 
 .account-subtitle {
@@ -1340,40 +1942,44 @@ html body .navbar .navbar-menu-wrapper {
     margin-top: 2px;
 }
 
-.account-number {
-    color: var(--text);
-    font-weight: 600;
-}
-
-.accounts-card .currency {
-    white-space: nowrap;
-    color: var(--text);
-    font-weight: 600;
-}
-
 .account-action {
     width: 40px;
     text-align: right;
-    color: var(--gold);
-}
-
-.clickable-row {
-    cursor: pointer;
-}
-
-.accounts-card .mybank-table tbody tr:hover {
-    background: rgba(242, 214, 117, 0.05);
-}
-
-.account-icon {
-    color: var(--gold);
-    margin-right: 10px;
     font-size: 20px;
+    color: var(--gold);
+}
+
+/* ----- Responsive ----- */
+@media (max-width: 900px) {
+    .customer-profile-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .customer-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .customer-profile-layout {
+        gap: 16px;
+    }
+
+    .accounts-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .balance-card {
+        min-height: 250px;
+        padding: 20px;
+    }
 }
 
 
 /* ==========================================================
-   DASHBOARD – welcome hero 
+   13. WELCOME HERO
+   Page introduction card with background image and date.
    ========================================================== */
 .welcome-card {
     position: relative;
@@ -1382,287 +1988,250 @@ html body .navbar .navbar-menu-wrapper {
     padding: 42px;
     border-radius: 18px;
     border: 1px solid var(--gold-line);
-    background: radial-gradient(circle at 15% 0%, rgba(47,165,116,.25), transparent 55%), linear-gradient(rgba(3,38,27,.55), rgba(0,0,0,.75)), url('/images/flags/pine-forest.jpg') center / cover;
-    box-shadow: 0 18px 50px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.04);
+    background: radial-gradient(circle at 15% 0%, rgba(47, 165, 116, .25), transparent 55%), linear-gradient(rgba(3, 38, 27, .55), rgba(0, 0, 0, .75)), url('/images/flags/pine-forest.jpg') center / cover;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .5), inset 0 0 0 1px rgba(255, 255, 255, .04);
 }
 
-    .welcome-kicker {
-        display: inline-block;
+.welcome-kicker {
+    display: inline-block;
+    color: var(--gold);
+    font-size: .7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.welcome-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.welcome-title {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.5rem, 1vw + 1.2rem, 2rem);
+    line-height: 1.05;
+    font-weight: 700;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, .5);
+}
+
+.welcome-subtitle {
+    margin-top: .5rem;
+    color: var(--muted);
+}
+
+    /* Gold divider below the text */
+    .welcome-subtitle::after {
+        content: "";
+        display: block;
+        width: 70px;
+        height: 1px;
+        margin-top: 22px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+.welcome-date {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+    color: var(--gold-soft);
+}
+
+    .welcome-date i {
         color: var(--gold);
-        font-size: .7rem;
-        letter-spacing: 3px;
+        font-size: 1.3rem;
+    }
+
+    .welcome-date span {
+        display: block;
+        font-size: .75rem;
+        letter-spacing: 2px;
         text-transform: uppercase;
-        margin-bottom: 10px;
     }
 
-    .welcome-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 24px;
-    }
-
-    .welcome-title {
-        margin: 0;
-        color: var(--text);
-        font-size: clamp(1.5rem, 1vw + 1.2rem, 2rem);
-        line-height: 1.05;
-        font-weight: 700;
-        text-shadow: 0 2px 20px rgba(0,0,0,.5);
-    }
-
-    .welcome-subtitle {
-        margin-top: .5rem;
-        color: var(--muted);
-    }
-        /* Gul linje under texten */
-        .welcome-subtitle::after {
-            content: "";
-            display: block;
-            width: 70px;
-            height: 1px;
-            margin-top: 22px;
-            background: linear-gradient(90deg, transparent, var(--gold), transparent);
-        }
-
-    .welcome-date {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        text-align: left;
-        color: var(--gold-soft);
-    }
-
-        .welcome-date i {
-            color: var(--gold);
-            font-size: 1.3rem;
-        }
-
-        .welcome-date span {
-            display: block;
-            font-size: .75rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .welcome-date strong {
-            color: var(--gold);
-            font-size: 1rem;
-        }
-
-    @media (max-width: 768px) {
-        .welcome-header {
-            flex-direction: column;
-        }
-
-        .welcome-title {
-            font-size: 1.8rem;
-        }
-    }
-    /* ==========================================================
-   DASHBOARD – recent transactions + customer per country
-   ========================================================== */
- 
-    /* "View all" link in the card header */
-    .transactions-card .chart-header a {
+    .welcome-date strong {
         color: var(--gold);
-        font-size: .8rem;
-        text-decoration: none;
+        font-size: 1rem;
     }
 
-        .transactions-card .chart-header a:hover {
-            color: var(--gold-soft);
-        }
-
-    .transaction-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 12px 8px;
-        border-radius: 8px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        transition: background .2s ease;
-    }
-
-        .transaction-row:hover {
-            background: rgba(255,255,255,.03);
-        }
-
-        .transaction-row:last-child {
-            border-bottom: none;
-        }
-        /* Round arrow icon before each row (credit = gold, debit = red) */
-        .transaction-row::before {
-            content: "↗";
-            flex-shrink: 0;
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            color: var(--gold);
-            font-size: 1.1rem;
-            border: 1px solid var(--gold-line);
-            background: rgba(242,214,117,.06);
-        }
-
-        .transaction-row:has(.negative)::before {
-            content: "↙";
-            color: #E53935;
-            border-color: rgba(229,57,53,.35);
-            background: rgba(229,57,53,.08);
-        }
-
-    .transaction-info,
-    .transaction-amount-wrap {
-        display: flex;
+@media (max-width: 768px) {
+    .welcome-header {
         flex-direction: column;
     }
 
-    .transaction-info {
-        flex: 1;
+    .welcome-title {
+        font-size: 1.8rem;
     }
+}
 
-    .transaction-amount-wrap {
-        text-align: right;
-    }
 
-    .transaction-name {
-        color: var(--text);
-        font-weight: 600;
-    }
-
-    .transaction-operation,
-    .transaction-date {
-        color: var(--muted);
-        font-size: 0.8rem;
-    }
-
-    .transaction-amount {
-        font-weight: 600;
-        font-variant-numeric: tabular-nums;
-    }
-
-        .transaction-amount.positive {
-            color: #4CAF50;
-        }
-
-        .transaction-amount.negative {
-            color: #E53935;
-        }
-
-    .transaction-empty {
-        color: var(--muted);
-        margin: 0;
-    }
-    /* Two cards side by side, stacked on small screens */
-    .dashboard-two-col {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.5rem;
-        margin-top: 1.5rem;
-    }
-
-    @media (max-width: 992px) {
-        .dashboard-two-col {
-            grid-template-columns: 1fr;
-        }
-    }
-    /* Chart needs a fixed height since the canvas is responsive */
-    .chart-wrap {
-        position: relative;
-        height: 260px;
-        width: 100%;
-    }
-    /* ==========================================================
-   LOGOUT BUTTON
-   ========================================================== */
-    .logout-form {
-        margin: 0;
-        padding: 0;
-        background: none;
-        border: none;
-        color: inherit;
-    }
-
-    .logout-btn {
-        background: none;
-        border: none;
-        color: inherit;
-        width: 100%;
-        text-align: left;
-        padding: 0;
-        cursor: pointer;
-    }
-    /* ==========================================================
-   LOGIN PAGE
+/* ==========================================================
+   14. DASHBOARD ACTIVITY
+   Recent transactions list.
    ========================================================== */
 
-    .login-page {
-        max-width: 700px;
-        margin: 80px auto;
-        padding: 0 20px;
+/* "View all" link in the card header */
+.transactions-card .chart-header a {
+    color: var(--gold);
+    font-size: .8rem;
+    text-decoration: none;
+}
+
+    .transactions-card .chart-header a:hover {
+        color: var(--gold-soft);
     }
-        /* Welcome card */
 
-        .login-page .welcome-card {
-            text-align: center;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-        }
+.transaction-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 8px;
+    border-radius: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    transition: background .2s ease;
+}
 
-        .login-page .welcome-title {
-            color: var(--gold);
-            margin-top: .5rem;
-            margin-bottom: 1rem;
-            font-size: 2rem;
-            font-weight: 700;
-        }
+    .transaction-row:hover {
+        background: rgba(255, 255, 255, .03);
+    }
 
-        .login-page .section-subtitle {
-            max-width: 460px;
-            margin: 0 auto;
-        }
-    /* Login card */
+    .transaction-row:last-child {
+        border-bottom: none;
+    }
 
-    .login-card {
-        padding: 2rem;
-        background: rgba(10, 18, 14, 0.55);
+    /* Round arrow icon before each row (credit is gold, debit is red) */
+    .transaction-row::before {
+        content: "↗";
+        flex-shrink: 0;
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: var(--gold);
+        font-size: 1.1rem;
         border: 1px solid var(--gold-line);
-        border-radius: 16px;
-        box-shadow: 0 18px 50px rgba(0,0,0,.55);
-        backdrop-filter: blur(14px) saturate(140%);
+        background: rgba(242, 214, 117, .06);
     }
-        /* Labels */
 
-        .login-card label {
-            color: var(--gold-soft);
-            font-size: .9rem;
-            margin-bottom: .5rem;
+    .transaction-row:has(.negative)::before {
+        content: "↙";
+        color: #E53935;
+        border-color: rgba(229, 57, 53, .35);
+        background: rgba(229, 57, 53, .08);
+    }
+
+.transaction-info,
+.transaction-amount-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.transaction-info {
+    flex: 1;
+}
+
+.transaction-amount-wrap {
+    text-align: right;
+}
+
+.transaction-name {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.transaction-operation,
+.transaction-date {
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+.transaction-amount {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+    .transaction-amount.positive {
+        color: #4CAF50;
+    }
+
+    .transaction-amount.negative {
+        color: #E53935;
+    }
+
+.transaction-empty {
+    color: var(--muted);
+    margin: 0;
+}
+
+
+/* ==========================================================
+   15. LOGIN PAGE
+   Layout, fields, button and error state.
+   ========================================================== */
+.login-page {
+    max-width: 700px;
+    margin: 80px auto;
+    padding: 0 20px;
+}
+
+    /* Welcome card */
+    .login-page .welcome-card {
+        text-align: center;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .login-page .welcome-title {
+        color: var(--gold);
+        margin-top: .5rem;
+        margin-bottom: 1rem;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .login-page .section-subtitle {
+        max-width: 460px;
+        margin: 0 auto;
+    }
+
+/* Login card */
+.login-card {
+    padding: 2rem;
+    background: rgba(10, 18, 14, 0.55);
+    border: 1px solid var(--gold-line);
+    border-radius: 16px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .55);
+    backdrop-filter: blur(14px) saturate(140%);
+}
+
+    .login-card label {
+        color: var(--gold-soft);
+        font-size: .9rem;
+        margin-bottom: .5rem;
+    }
+
+    .login-card .form-control {
+        background: rgba(255, 255, 255, .04);
+        border: 1px solid rgba(255, 255, 255, .08);
+        border-radius: 10px;
+        color: var(--text);
+        padding: 12px 14px;
+        box-shadow: inset 0 0 6px rgba(212, 175, 55, .12);
+    }
+
+        .login-card .form-control:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 1px rgba(212, 175, 55, .25);
         }
-        /* Inputs */
 
-        .login-card .form-control {
-            background: rgba(255,255,255,.04);
-            border: 1px solid rgba(255,255,255,.08);
-            border-radius: 10px;
-            color: var(--text);
-            padding: 12px 14px;
-            box-shadow: inset 0 0 6px rgba(212,175,55,.12);
-        }
-
-            .login-card .form-control:focus {
-                border-color: var(--gold);
-                box-shadow: 0 0 0 1px rgba(212,175,55,.25);
-            }
-/* Button */
+/* Login button */
 .login-btn {
-    --gold-deep: #C9A24B;
-    --gold-dark: #A8812F;
-    --gold-bright: #E3C374;
-    --on-gold: #04120C;
     width: 100%;
     margin-top: 1rem;
     padding: 14px;
@@ -1698,31 +2267,33 @@ html body .navbar .navbar-menu-wrapper {
         cursor: not-allowed;
         transform: none;
     }
-    /* Error */
 
-    .login-error {
-        margin-top: 1rem;
-        padding: .9rem;
-        border-radius: 10px;
-        background: rgba(229,57,53,.15);
-        border: 1px solid rgba(229,57,53,.35);
-        color: #ffb3b3;
-        text-align: center;
-    }
-    /* ==========================================================
-   SEARCH FORM 
+/* Error message */
+.login-error {
+    margin-top: 1rem;
+    padding: .9rem;
+    border-radius: 10px;
+    background: rgba(229, 57, 53, .15);
+    border: 1px solid rgba(229, 57, 53, .35);
+    color: #ffb3b3;
+    text-align: center;
+}
+
+
+/* ==========================================================
+   16. CUSTOMER SEARCH FORM
+   Search card, input fields with icons.
    ========================================================== */
-
 .search-card {
     padding: 30px 32px;
     margin: 20px 0 30px;
-    background: linear-gradient( 135deg, #073526 0%, #03261B 100% );
+    background: linear-gradient(135deg, #073526 0%, #03261B 100%);
     border: 1px solid rgba(201, 162, 75, .25);
     border-radius: 16px;
     box-shadow: 0 12px 30px rgba(0, 0, 0, .18), inset 0 1px 0 rgba(255, 255, 255, .035);
 }
 
-/* Search fields */
+/* Fields */
 .bank-search .form-control {
     height: 44px;
     padding: 10px 14px 10px 43px;
@@ -1734,29 +2305,27 @@ html body .navbar .navbar-menu-wrapper {
     transition: border-color .2s ease, box-shadow .2s ease;
 }
 
-/* Placeholder */
-.bank-search .form-control::placeholder {
-    color: var(--muted);
-    opacity: 1;
-}
+    .bank-search .form-control::placeholder {
+        color: var(--muted);
+        opacity: 1;
+    }
 
-/* Focus */
-.bank-search .form-control:focus {
-    background: #0b2b20 !important;
-    color: #f0f3ef !important;
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(201, 162, 75, .10);
-    outline: none;
-}
+    .bank-search .form-control:focus {
+        background: #0b2b20 !important;
+        color: #f0f3ef !important;
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(201, 162, 75, .10);
+        outline: none;
+    }
 
-/* Prevent white browser autofill */
-.bank-search .form-control:-webkit-autofill,
-.bank-search .form-control:-webkit-autofill:hover,
-.bank-search .form-control:-webkit-autofill:focus {
-    -webkit-text-fill-color: #f0f3ef !important;
-    -webkit-box-shadow: 0 0 0 1000px #0b2b20 inset !important;
-    box-shadow: 0 0 0 1000px #0b2b20 inset !important;
-}
+    /* Prevent white browser autofill */
+    .bank-search .form-control:-webkit-autofill,
+    .bank-search .form-control:-webkit-autofill:hover,
+    .bank-search .form-control:-webkit-autofill:focus {
+        -webkit-text-fill-color: #f0f3ef !important;
+        -webkit-box-shadow: 0 0 0 1000px #124333 inset !important;
+        box-shadow: 0 0 0 1000px #124333 inset !important;
+    }
 
 /* Form layout */
 .bank-search .row {
@@ -1764,188 +2333,26 @@ html body .navbar .navbar-menu-wrapper {
     align-items: center;
 }
 
-/* Search icons */
+/* Icons inside the fields */
 .bank-search .input-icon {
     position: relative;
 }
 
-.bank-search .input-icon i {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--gold);
-    font-size: 17px;
-    opacity: .95;
-    z-index: 2;
-    pointer-events: none;
-}
+    .bank-search .input-icon i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--gold);
+        font-size: 17px;
+        opacity: .95;
+        z-index: 2;
+        pointer-events: none;
+    }
 
-/* Mobile */
 @media (max-width: 767px) {
     .search-card {
         padding: 18px;
     }
 }
 
-
-    /* ==========================================================
-   BUTTONS
-   ========================================================== */
-
-.bank-btn,
-.bank-btn-outline {
-    --gold-deep: #C9A24B;
-    --gold-dark: #A8812F;
-    --gold-bright: #E3C374;
-    --on-gold: #04120C;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 38px;
-    padding: 8px 17px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: .2px;
-    line-height: 1.2;
-    white-space: nowrap;
-    text-decoration: none;
-    cursor: pointer;
-    transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, color .2s ease;
-}
-
-/* Primary gold button */
-.bank-btn {
-    background: linear-gradient( 180deg, var(--gold-deep) 0%, var(--gold-dark) 100% );
-    color: var(--on-gold);
-    border: 1px solid rgba(255, 233, 170, .3);
-    box-shadow: 0 3px 10px rgba(168, 129, 47, .18), inset 0 1px 0 rgba(255, 255, 255, .2);
-}
-
-    .bank-btn:hover {
-        color: var(--on-gold);
-        background: linear-gradient( 180deg, var(--gold-bright) 0%, var(--gold-deep) 100% );
-        box-shadow: 0 4px 12px rgba(201, 162, 75, .25), inset 0 1px 0 rgba(255, 255, 255, .3);
-        transform: translateY(-1px);
-        filter: brightness(1.1)
-    }
-
-    .bank-btn:active {
-        transform: translateY(0);
-        box-shadow: 0 2px 6px rgba(168, 129, 47, .2);
-    }
-
-/* Secondary outline button */
-.bank-btn-outline {
-    background: linear-gradient( 180deg, rgba(47, 165, 116, .10), rgba(3, 38, 27, .55) );
-    color: var(--gold);
-    font-weight: 500;
-    border: 1px solid var(--gold-line);
-    box-shadow: none;
-}
-
-    .bank-btn-outline:hover {
-        color: var(--gold-bright);
-        border-color: var(--gold-deep);
-        background: linear-gradient( 180deg, rgba(47, 165, 116, .18), rgba(3, 38, 27, .7) );
-        box-shadow: 0 3px 9px rgba(201, 162, 75, .12);
-        transform: translateY(-1px);
-    }
-
-    /* Keyboard accessibility */
-    .bank-btn:focus-visible,
-    .bank-btn-outline:focus-visible {
-        outline: 2px solid var(--gold-bright);
-        outline-offset: 2px;
-    }
-
-    /* Disabled buttons */
-    .bank-btn:disabled,
-    .bank-btn-outline:disabled {
-        opacity: .5;
-        cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
-    }
-
-
-    /* ==========================================================
-   PAGINATION
-   ========================================================== */
-    .bank-pagination {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 10px;
-    }
-
-.bank-page-info {
-    background: rgba(212, 175, 55, 0.12);
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    font-weight: 700;
-}
-
-    .bank-pagination .bank-btn-outline {
-        width: 38px;
-        height: 38px;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-.bank-page-info,
-.bank-pagination .bank-btn-outline {
-    width: 38px;
-    height: 38px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-}
-
-    /* ==========================================================
-   SECTION TITLES & SUBTITLES
-   ========================================================== */
-
-    .section-subtitle {
-        color: var(--muted);
-        font-size: .9rem;
-        margin-bottom: 24px;
-    }
-
-    /* ==========================================================
-   PAGE BREADCRUMB 
-   ========================================================== */
-
-    .page-breadcrumb {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 0.75rem;
-        color: var(--muted);
-        font-size: 0.85rem;
-        letter-spacing: 0.5px;
-    }
-
-        .page-breadcrumb i {
-            color: var(--gold);
-        }
-
-        .page-breadcrumb a {
-            color: var(--gold);
-            text-decoration: none;
-            transition: .2s ease;
-        }
-
-            .page-breadcrumb a:hover {
-                color: #f5d77b;
-                text-decoration: none;
-            }
-
-        .page-breadcrumb span {
-            color: rgba(255,255,255,.4);
-        }

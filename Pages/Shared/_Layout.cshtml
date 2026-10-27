@@ -43,43 +43,51 @@
             <ul class="nav">
 
                 <!-- PROFILE -->
+                @{
+                    var roleSidebar = User.IsInRole("Admin") ? "Admin"
+                                    : User.IsInRole("Cashier") ? "Cashier" : "Visitor";
+                    var nameSidebar = "Guest";
+                    if (User.Identity?.Name != null)
+                    {
+                        var rawSidebar = User.Identity.Name.Split('@')[0].Replace(".", " ");
+                        nameSidebar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawSidebar);
+                    }
+                }
                 <li class="nav-item profile">
-                    <div class="profile-desc">
-                        <div class="profile-pic">
-                            <div class="count-indicator">
-                                <img class="img-xs rounded-circle"
-                                     src="@(User.Identity?.IsAuthenticated == true
-                                     ? Url.Content("~/images/faces/face16.jpg")
-                                     : Url.Content("~/images/faces-clipart/pic-1.png"))"
-                                     alt="Profile image">
+                    <div class="profile-desc dropdown">
+                        <a href="#" class="profile-toggle" id="sidebarProfileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="profile-pic">
+                                <div class="count-indicator">
+                                    <img class="img-xs rounded-circle"
+                                         src="@(User.Identity?.IsAuthenticated == true
+                                         ? Url.Content("~/images/faces/face16.jpg")
+                                         : Url.Content("~/images/faces-clipart/pic-1.png"))"
+                                         alt="Profile image">
+                                    <span class="count bg-success"></span>
+                                </div>
+                                <div class="profile-name">
+                                    <h5>@nameSidebar</h5>
+                                    <span>@roleSidebar</span>
+                                </div>
+                            </div>
+                            <i class="mdi mdi-chevron-down profile-chevron"></i>
+                        </a>
 
-                                <span class="count bg-success"></span>
-                            </div>
-                            <div class="profile-name">
-                                @{
-                                    var nameSidebar = "Guest";
-                                    if (User.Identity?.Name != null)
-                                    {
-                                        var rawSidebar = User.Identity.Name.Split('@')[0].Replace(".", " ");
-                                        nameSidebar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawSidebar);
-                                    }
-                                }
-                                <h5 class="mb-0 font-weight-normal">@nameSidebar</h5>
-                                <span>
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        @:Admin
-                                    }
-                                    else if (User.IsInRole("Cashier"))
-                                    {
-                                        @:Cashier
-                                    }
-                                    else
-                                    {
-                                        @:Visitor
-                                    }
-                                </span>
-                            </div>
+                        <div class="dropdown-menu sidebar-profile-menu" aria-labelledby="sidebarProfileDropdown">
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <form method="post" asp-page="/Logout">
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="mdi mdi-logout"></i> Log out
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a class="dropdown-item" asp-page="/Login">
+                                    <i class="mdi mdi-login"></i> Log in
+                                </a>
+                            }
                         </div>
                     </div>
                 </li>
@@ -154,7 +162,7 @@
             </ul>
 
             <div class="sidebar-tagline">
-                TRUST • SECURITY • GROWTH
+                <span>TRUST • SECURITY • GROWTH</span>
             </div>
 
         </nav>
@@ -183,6 +191,9 @@
                     <ul class="navbar-nav navbar-nav-right">
 
                         @{
+                            var roleNavbar = User.IsInRole("Admin") ? "Admin"
+               : User.IsInRole("Cashier") ? "Cashier" : "Visitor";
+
                             var nameNavbar = "Guest";
                             if (User.Identity?.Name != null)
                             {
@@ -276,8 +287,12 @@
                                          : Url.Content("~/images/faces-clipart/pic-1.png"))"
                                          alt="Profile image">
 
-                                    <p class="mb-0 d-none d-sm-block navbar-profile-name">@nameNavbar</p>
-                                    <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                                    <div class="navbar-profile-text d-none d-sm-flex">
+                                        <span class="navbar-profile-name">@nameNavbar</span>
+                                        <span class="navbar-profile-role">@roleNavbar</span>
+                                    </div>
+
+                                    <i class="mdi mdi-chevron-down d-none d-sm-block"></i>
                                 </div>
                             </a>
 
