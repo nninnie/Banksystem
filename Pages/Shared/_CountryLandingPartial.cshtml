@@ -1,0 +1,47 @@
+﻿@model IEnumerable<BankApp.DataAccessLayer.DTOs.CountryDashboardDto>
+
+@functions {
+    private string Flag(string country) => country switch
+    {
+        "Sweden" => "/images/flags/sweden.png",
+        "Norway" => "/images/flags/norway.png",
+        "Finland" => "/images/flags/finland.png",
+        "Denmark" => "/images/flags/denmark.png",
+        _ => "/images/flags/default.png"
+    };
+}
+
+<table class="mybank-table">
+    <thead>
+        <tr>
+            <th>Country</th>
+            <th>Customers</th>
+            <th>Accounts</th>
+            <th class="currency">Total Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var country in Model)
+        {
+            <tr class="clickable-row">
+                <td>
+                    <a asp-page="/Country"
+                       asp-route-country="@country.Country"
+                       class="stretched-link country-link">
+                        <img src="@Flag(country.Country)"
+                             class="country-flag"
+                             alt="@country.Country" />
+                        @country.Country
+                    </a>
+                </td>
+                <td class="country-name">
+                    @country.CustomerCount.ToString("N0")
+                </td>
+                <td>@country.AccountCount.ToString("N0")</td>
+                <td class="currency primary-value">
+                    @country.TotalBalance.ToString("N2")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

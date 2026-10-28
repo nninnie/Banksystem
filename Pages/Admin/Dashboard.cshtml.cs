@@ -1,13 +1,15 @@
 using BankApp.DataAccessLayer.DTOs;
 using BankApp.Services.Services;
 using BankApp.ViewModels;
-using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Linq;
 
 namespace BankApp.Pages.Admin
 {
     // DashboardModel for the home page. Retrieves dashboard statistics via DashboardService and passes them to the view.
+    [Authorize(Roles = "Admin")]
     public class DashboardModel : PageModel
     {
         private readonly IDashboardService _dashboardService;

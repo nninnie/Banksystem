@@ -1,16 +1,5 @@
 ﻿@page
 @model IndexModel
-@functions {
-
-    private string Flag(string country) => country switch
-    {
-        "Sweden" => "/images/flags/sweden.png",
-        "Norway" => "/images/flags/norway.png",
-        "Finland" => "/images/flags/finland.png",
-        "Denmark" => "/images/flags/denmark.png",
-        _ => "/images/flags/default.png"
-    };
-}
 @{
     ViewData["Title"] = "Home";
 }
@@ -104,38 +93,5 @@
 </div>
 
 
-<!--- Table --->
-<table class="mybank-table">
-
-    <thead>
-        <tr>
-            <th>Country</th>
-            <th>Customers</th>
-            <th>Accounts</th>
-            <th class="currency">Total Balance</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var c in Model.Countries)
-        {
-            <tr class="clickable-row">
-                <td>
-                    <a asp-page="/Country"
-                       asp-route-country="@c.Country"
-                       class="stretched-link country-link">
-
-                        <img src="@Flag(c.Country)"
-                             class="country-flag"
-                             alt="@c.Country" />
-
-                        @c.Country
-
-                    </a>
-                </td>
-                <td class="country-name">@c.CustomerCount.ToString("N0")</td>
-                <td>@c.AccountCount.ToString("N0")</td>
-                <td class="currency primary-value">@c.TotalBalance.ToString("N2")</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<!-- Country table -->
+<partial name="_CountryLandingPartial" model="Model.Countries" />

@@ -1,6 +1,7 @@
+using AutoMapper;
 using BankApp.Services.Services;
 using BankApp.ViewModels;
-using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -8,6 +9,7 @@ namespace BankApp.Pages.Admin
 {
 
     // VeiwModel - for the customer list: handles searching, pagination, and displaying customers in the admin view
+    [Authorize(Roles = "Admin,Cashier")]
     public class CustomersModel : PageModel
     {
         private readonly ICustomerService _customerService;

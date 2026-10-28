@@ -3,10 +3,12 @@ using BankApp.Services.Services;
 using BankApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BankApp.Pages.Admin
 {
     // PageModel – handles the logic for the Customer page
+    [Authorize(Roles = "Admin,Cashier")]
     public class CustomerModel : PageModel
     {
         private readonly ICustomerService _customerService;
