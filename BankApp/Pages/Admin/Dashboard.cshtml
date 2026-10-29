@@ -1,33 +1,5 @@
 ﻿@page
 @model DashboardModel
-@functions {
-    static (string line, string area, double endY) BuildSpark(IReadOnlyList<decimal> v)
-    {
-        const double W = 192, H = 80, top = 14, bottom = 70;
-        var inv = System.Globalization.CultureInfo.InvariantCulture;
-        string F(double d) => d.ToString("0.#", inv);
-
-        var min = (double)v.Min();
-        var range = (double)v.Max() - min;
-        if (range == 0) range = 1;
-
-        var pts = v.Select((val, i) => (
-            x: i * W / (v.Count - 1),
-            y: bottom - ((double)val - min) / range * (bottom - top)
-        )).ToList();
-
- 
-        var line = $"M{F(pts[0].x)} {F(pts[0].y)}";
-        for (int i = 1; i < pts.Count; i++)
-        {
-            var mx = (pts[i - 1].x + pts[i].x) / 2;
-            line += $" C{F(mx)} {F(pts[i - 1].y)} {F(mx)} {F(pts[i].y)} {F(pts[i].x)} {F(pts[i].y)}";
-        }
-
-        var area = line + $" L{F(W)} {H} L0 {H} Z";
-        return (line, area, pts[^1].y);
-    }
-}
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -92,39 +64,9 @@
 <div class="dashboard-grid">
     @foreach (var c in Model.Data.Countries)
     {
-        var code = c.Country switch
-        {
-            "Sweden" => "se",
-            "Norway" => "no",
-            "Denmark" => "dk",
-            "Finland" => "fi",
-            _ => ""
-        };
-
         <a href="/Country?country=@c.Country" class="dashboard-link">
             <div class="dashboard-card"
-                 style="--flag: url('/vendors/flag-icon-css/flags/4x3/@(code).svg')">
-
-                @if (c.BalanceTrend != null && c.BalanceTrend.Count > 1)
-                {
-                    var (line, area, endY) = BuildSpark(c.BalanceTrend);
-                    var inv = System.Globalization.CultureInfo.InvariantCulture;
-
-                    <div class="spark-bg" aria-hidden="true">
-                        <svg viewBox="0 0 200 80" preserveAspectRatio="none">
-                            <defs>
-                                <linearGradient id="g-@code" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0" stop-color="#2FA574" stop-opacity=".40" />
-                                    <stop offset="1" stop-color="#2FA574" stop-opacity="0" />
-                                </linearGradient>
-                            </defs>
-                            <path d="@area" fill="url(#g-@code)" />
-                            <path d="@line" fill="none" stroke="#63D097" stroke-width="1.75"
-                                  stroke-linecap="round" vector-effect="non-scaling-stroke" />
-                        </svg>
-                        <span class="spark-dot" style="top:@((endY / 80 * 100).ToString("0.#", inv))%"></span>
-                    </div>
-                }
+                 style="--flag: url('@CountryFlags.Wide(c.Country)')">
 
                 <h5 class="card-title">
                     @c.Country
@@ -186,16 +128,8 @@
         <div class="chart-flags">
             @foreach (var c in Model.Data.Countries)
             {
-                var flag = c.Country switch
-                {
-                    "Sweden" => "se",
-                    "Norway" => "no",
-                    "Denmark" => "dk",
-                    "Finland" => "fi",
-                    _ => ""
-                };
                 <div class="flag-item">
-                    <img src="/vendors/flag-icon-css/flags/1x1/@(flag).svg" alt="@c.Country" />
+                    <img src="@CountryFlags.Square(c.Country)" alt="@c.Country" />
                     <span>@c.Country</span>
                 </div>
             }

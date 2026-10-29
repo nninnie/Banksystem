@@ -8,7 +8,5 @@
         public int AccountCount { get; set; }
         public decimal TotalBalance { get; set; }
 
-        public List<decimal> BalanceTrend { get; set; } = new();
-
     }
 }
