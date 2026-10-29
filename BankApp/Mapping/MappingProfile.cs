@@ -24,7 +24,10 @@ namespace BankApp.Mapping
                     opt => opt.MapFrom(src => src.Emailaddress));
 
             // Maps Account entity - AccountViewModel
-            CreateMap<Account, AccountViewModel>();
+            // Created is DateOnly in the database and DateTime in the ViewModel
+            CreateMap<Account, AccountViewModel>()
+                .ForMember(dest => dest.Created,
+                    opt => opt.MapFrom(src => src.Created.ToDateTime(TimeOnly.MinValue)));
 
             // Maps Transaction entity - TransactionViewModel
             CreateMap<Transaction, TransactionViewModel>();

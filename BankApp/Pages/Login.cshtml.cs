@@ -42,7 +42,7 @@ namespace BankApp.Pages
                 return RedirectToPage("/Index");
             }
 
-            ErrorMessage = "Fel användarnamn eller lösenord.";
+            ErrorMessage = "Invalid username or password.";
             return Page();
         }
     }

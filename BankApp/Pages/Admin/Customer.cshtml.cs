@@ -1,9 +1,9 @@
 using AutoMapper;
-using BankApp.Services.Services;
 using BankApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
+using BankApp.Services.Interfaces;
 
 namespace BankApp.Pages.Admin
 {

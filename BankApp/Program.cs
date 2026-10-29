@@ -5,6 +5,7 @@ using BankApp.Mapping;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using BankApp.Services.Interfaces;
 
 namespace BankApp
 {
@@ -38,9 +39,9 @@ namespace BankApp
 
             // Registers Services so it can be injected into PageModels
             builder.Services.AddScoped<IDashboardService, DashboardService>();
-            builder.Services.AddScoped<IIndexService, IndexService>();
             builder.Services.AddScoped<ICustomerService, CustomerService>();
             builder.Services.AddScoped<ITransactionService, TransactionService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
 
             // Registers the Response Caching services in the DI container
             builder.Services.AddResponseCaching();

@@ -1,5 +1,5 @@
 
-using BankApp.Services.Services;
+using BankApp.Services.Interfaces;
 using BankApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
