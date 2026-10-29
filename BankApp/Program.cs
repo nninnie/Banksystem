@@ -48,10 +48,15 @@ namespace BankApp
 
             var app = builder.Build();
 
-            // Seeds roles and default users at application startup
+            // Applies Identity migrations and seeds roles and default users at application startup
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
+
+                // Creates the Identity tables if they are missing (does nothing if they already exist)
+                var identityDb = services.GetRequiredService<ApplicationDbContext>();
+                await identityDb.Database.MigrateAsync();
+
                 await SeedData.InitializeAsync(services);
             }
 
