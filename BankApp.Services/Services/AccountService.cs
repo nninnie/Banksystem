@@ -39,8 +39,8 @@ namespace BankApp.Services.Services
                 .Where(t => t.AccountId == accountId)
                 .OrderByDescending(t => t.Date)
                 .ThenByDescending(t => t.TransactionId)
-                .Skip(skip) // Needs for AJAX
-                .Take(take) // Needs for AJAX
+                .Skip(skip) // Needed for AJAX
+                .Take(take) // Needed for AJAX
                 .ToListAsync();
 
             return rows.Select(t => new TransactionDto

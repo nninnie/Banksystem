@@ -5,23 +5,6 @@
     ViewData["Title"] = "Dashboard";
 }
 
-
-@{
-    var displayName = "User";
-
-    if (User.Identity?.Name != null)
-    {
-        var rawName = User.Identity.Name
-            .Split('@')[0]
-            .Replace(".", " ");
-
-        displayName = System.Globalization.CultureInfo
-            .CurrentCulture
-            .TextInfo
-            .ToTitleCase(rawName);
-    }
-}
-
 <div class="page-breadcrumb">
     <a asp-page="/Index">
         <i class="mdi mdi-home"></i>
@@ -40,7 +23,7 @@
 
         <div>
             <h1 class="welcome-title">
-                @Model.Greeting, @displayName
+                @Model.Greeting, @Model.DisplayName
             </h1>
 
             <p class="welcome-subtitle">

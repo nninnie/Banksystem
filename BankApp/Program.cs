@@ -2,7 +2,6 @@ using BankApp.DataAccessLayer.Data;
 using BankApp.DataAccessLayer.Models;
 using BankApp.Services.Services;
 using BankApp.Mapping;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BankApp.Services.Interfaces;

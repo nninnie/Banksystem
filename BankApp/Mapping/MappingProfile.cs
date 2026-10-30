@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
+using BankApp.DataAccessLayer.DTOs;
 using BankApp.DataAccessLayer.Models;
 using BankApp.ViewModels;
 
 namespace BankApp.Mapping
 {
-    // MappingProfile – defines how entities are converted into ViewModels
+    // MappingProfile – defines how entities and DTOs are converted into ViewModels
     public class MappingProfile : Profile
     {
         public MappingProfile()
@@ -29,8 +30,14 @@ namespace BankApp.Mapping
                 .ForMember(dest => dest.Created,
                     opt => opt.MapFrom(src => src.Created.ToDateTime(TimeOnly.MinValue)));
 
-            // Maps Transaction entity - TransactionViewModel
-            CreateMap<Transaction, TransactionViewModel>();
+            // Maps CustomerDto - CustomerViewModel (Top 10 per country)
+            CreateMap<CustomerDto, CustomerViewModel>();
+
+            // Maps AccountDto - AccountViewModel (account page)
+            CreateMap<AccountDto, AccountViewModel>();
+
+            // Maps TransactionDto - TransactionViewModel (account page and dashboard)
+            CreateMap<TransactionDto, TransactionViewModel>();
         }
     }
 }

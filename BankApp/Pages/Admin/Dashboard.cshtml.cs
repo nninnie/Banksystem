@@ -3,7 +3,7 @@ using BankApp.Services.Interfaces;
 using BankApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Linq;
+using BankApp.Helpers;
 
 namespace BankApp.Pages.Admin
 {
@@ -55,6 +55,8 @@ namespace BankApp.Pages.Admin
                 >= 12 and < 18 => "Good afternoon",
                 _ => "Good evening"
             };
+
+            DisplayName = UserDisplay.Name(User);
         }
     }
 }

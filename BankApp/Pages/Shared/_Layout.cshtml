@@ -9,10 +9,6 @@
     <!-- Corona Template CSS (vendors/) -->
     <link rel="stylesheet" href="~/vendors/mdi/css/materialdesignicons.min.css" />
     <link rel="stylesheet" href="~/vendors/css/vendor.bundle.base.css" />
-    <link rel="stylesheet" href="~/vendors/jvectormap/jquery-jvectormap.css" />
-    <link rel="stylesheet" href="~/vendors/flag-icon-css/css/flag-icon.min.css" />
-    <link rel="stylesheet" href="~/vendors/owl-carousel-2/owl.carousel.min.css" />
-    <link rel="stylesheet" href="~/vendors/owl-carousel-2/owl.theme.default.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -24,13 +20,22 @@
 </head>
 
 <body>
+    @{
+        // Calculated once and reused in the sidebar, navbar and app launcher
+        var isLoggedIn = User.Identity?.IsAuthenticated == true;
+        var displayName = UserDisplay.Name(User);
+        var role = UserDisplay.Role(User);
+        var avatar = isLoggedIn
+            ? Url.Content("~/images/faces/face16.jpg")
+            : Url.Content("~/images/faces-clipart/pic-1.png");
+    }
+
     <div class="container-scroller">
 
         <!-- SIDEBAR -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
 
             <!-- SIDEBAR LOGO -->
-
             <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center">
                 <a class="sidebar-brand brand-logo" asp-page="/Index">
                     <img src="~/images/logo/mybank-logo.png" alt="logo" />
@@ -43,51 +48,19 @@
             <ul class="nav">
 
                 <!-- PROFILE -->
-                @{
-                    var roleSidebar = User.IsInRole("Admin") ? "Admin"
-                                    : User.IsInRole("Cashier") ? "Cashier" : "Visitor";
-                    var nameSidebar = "Guest";
-                    if (User.Identity?.Name != null)
-                    {
-                        var rawSidebar = User.Identity.Name.Split('@')[0].Replace(".", " ");
-                        nameSidebar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawSidebar);
-                    }
-                }
                 <li class="nav-item profile">
-                    <div class="profile-desc dropdown">
-                        <a href="#" class="profile-toggle" id="sidebarProfileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="profile-desc">
+                        <div class="profile-toggle" id="sidebarProfile">
                             <div class="profile-pic">
                                 <div class="count-indicator">
-                                    <img class="img-xs rounded-circle"
-                                         src="@(User.Identity?.IsAuthenticated == true
-                                         ? Url.Content("~/images/faces/face16.jpg")
-                                         : Url.Content("~/images/faces-clipart/pic-1.png"))"
-                                         alt="Profile image">
+                                    <img class="img-xs rounded-circle" src="@avatar" alt="Profile image">
                                     <span class="count bg-success"></span>
                                 </div>
                                 <div class="profile-name">
-                                    <h5>@nameSidebar</h5>
-                                    <span>@roleSidebar</span>
+                                    <h5>@displayName</h5>
+                                    <span>@role</span>
                                 </div>
                             </div>
-                            <i class="mdi mdi-chevron-down profile-chevron"></i>
-                        </a>
-
-                        <div class="dropdown-menu sidebar-profile-menu" aria-labelledby="sidebarProfileDropdown">
-                            @if (User.Identity?.IsAuthenticated == true)
-                            {
-                                <form method="post" asp-page="/Logout">
-                                    <button type="submit" class="dropdown-item">
-                                        <i class="mdi mdi-logout"></i> Log out
-                                    </button>
-                                </form>
-                            }
-                            else
-                            {
-                                <a class="dropdown-item" asp-page="/Login">
-                                    <i class="mdi mdi-login"></i> Log in
-                                </a>
-                            }
                         </div>
                     </div>
                 </li>
@@ -105,7 +78,7 @@
                     </a>
                 </li>
 
-                <!-- Admin and Cashier -->
+                <!-- Admin only -->
                 @if (User.IsInRole("Admin"))
                 {
                     <li class="nav-item menu-items">
@@ -115,7 +88,8 @@
                         </a>
                     </li>
                 }
-                
+
+                <!-- Admin and Cashier -->
                 @if (User.IsInRole("Admin") || User.IsInRole("Cashier"))
                 {
                     <li class="nav-item menu-items">
@@ -138,7 +112,7 @@
                 }
 
                 <!-- Log in / Log out -->
-                @if (User.Identity?.IsAuthenticated == true)
+                @if (isLoggedIn)
                 {
                     <li class="nav-item menu-items">
                         <form method="post" asp-page="/Logout" class="logout-form">
@@ -191,18 +165,6 @@
                     <ul class="navbar-nav navbar-nav-right">
 
                         @{
-                            var roleNavbar = User.IsInRole("Admin") ? "Admin"
-               : User.IsInRole("Cashier") ? "Cashier" : "Visitor";
-
-                            var nameNavbar = "Guest";
-                            if (User.Identity?.Name != null)
-                            {
-                                var rawNavbar = User.Identity.Name.Split('@')[0].Replace(".", " ");
-                                nameNavbar = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rawNavbar);
-                            }
-                        }
-
-                        @{
                             var notifications = new List<string>();
 
                             if (TempData["NewCustomer"] != null)
@@ -217,13 +179,11 @@
                             notifications.Add("System running normally");
                         }
 
-
-                  
                         <li class="nav-item nav-settings d-none d-lg-block">
                             <button type="button"
                                     id="app-launcher-btn"
                                     class="nav-link btn btn-link"
-                                    aria-label="Öppna appmenyn"
+                                    aria-label="Open app menu"
                                     aria-controls="app-launcher"
                                     aria-expanded="false">
                                 <i class="mdi mdi-view-grid icon-white"></i>
@@ -264,7 +224,7 @@
 
                                 <a class="dropdown-item">
                                     <i class="mdi mdi-email-open text-info me-2"></i>
-                                    Welcome back, @nameNavbar!
+                                    Welcome back, @displayName!
                                 </a>
 
                                 <a class="dropdown-item">
@@ -277,19 +237,14 @@
                             </div>
                         </li>
 
-
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">
                                 <div class="navbar-profile">
-                                    <img class="img-xs rounded-circle"
-                                         src="@(User.Identity?.IsAuthenticated == true
-                                         ? Url.Content("~/images/faces/face16.jpg")
-                                         : Url.Content("~/images/faces-clipart/pic-1.png"))"
-                                         alt="Profile image">
+                                    <img class="img-xs rounded-circle" src="@avatar" alt="Profile image">
 
                                     <div class="navbar-profile-text d-none d-sm-flex">
-                                        <span class="navbar-profile-name">@nameNavbar</span>
-                                        <span class="navbar-profile-role">@roleNavbar</span>
+                                        <span class="navbar-profile-name">@displayName</span>
+                                        <span class="navbar-profile-role">@role</span>
                                     </div>
 
                                     <i class="mdi mdi-chevron-down d-none d-sm-block"></i>
@@ -297,7 +252,7 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
-                                @if (User.Identity?.IsAuthenticated == true)
+                                @if (isLoggedIn)
                                 {
                                     <form method="post" asp-page="/Logout">
                                         <button type="submit" class="dropdown-item preview-item">
@@ -307,7 +262,7 @@
                                                 </div>
                                             </div>
                                             <div class="preview-item-content">
-                                                <p class="preview-subject mb-1">Logga ut</p>
+                                                <p class="preview-subject mb-1">Log out</p>
                                             </div>
                                         </button>
                                     </form>
@@ -321,7 +276,7 @@
                                             </div>
                                         </div>
                                         <div class="preview-item-content">
-                                            <p class="preview-subject mb-1">Logga in</p>
+                                            <p class="preview-subject mb-1">Log in</p>
                                         </div>
                                     </a>
                                 }
@@ -335,43 +290,34 @@
             <!-- APP-LAUNCHER -->
             <div id="app-launcher" class="app-launcher hidden">
                 <div class="launcher-grid">
-                    <a href="/Admin/Dashboard" class="launcher-item">
-                        <i class="mdi mdi-view-dashboard"></i>
-                        <span>Dashboard</span>
-                    </a>
 
-                    <a href="/Admin/Customers" class="launcher-item">
-                        <i class="mdi mdi-account-group"></i>
-                        <span>Customers</span>
-                    </a>
-
-                    <a href="/Admin/UserAdmin" class="launcher-item">
-                        <i class="mdi mdi-chart-line"></i>
-                        <span>User Admin</span>
-                    </a>
-
-                    @if (User.Identity?.IsAuthenticated == true)
+                    @if (User.IsInRole("Admin"))
                     {
-                        <form method="post" asp-page="/Logout" class="launcher-item logout-form">
-                            <button type="submit">
-                                <i class="mdi mdi-logout"></i>
-                                <span>Log Out</span>
-                            </button>
-                        </form>
-                    }
-                    else
-                    {
-                        <a asp-page="/Login" class="launcher-item">
-                            <i class="mdi mdi-login"></i>
-                            <span>Log In</span>
+                        <a href="/Admin/Dashboard" class="launcher-item">
+                            <i class="mdi mdi-view-dashboard"></i>
+                            <span>Dashboard</span>
                         </a>
                     }
 
+                    @if (User.IsInRole("Admin") || User.IsInRole("Cashier"))
+                    {
+                        <a href="/Admin/Customers" class="launcher-item">
+                            <i class="mdi mdi-account-group"></i>
+                            <span>Customers</span>
+                        </a>
+                    }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="/Admin/UserAdmin" class="launcher-item">
+                            <i class="mdi mdi-shield-account"></i>
+                            <span>User Admin</span>
+                        </a>
+                    }
 
                 </div>
             </div>
 
-            
             <!-- MAIN CONTENT -->
             <div class="main-panel">
                 <div class="content-wrapper">
@@ -385,16 +331,10 @@
     <!-- JS (vendors/) -->
     <script src="~/vendors/js/vendor.bundle.base.js"></script>
     <script src="~/vendors/chart.js/Chart.min.js"></script>
-    <script src="~/vendors/progressbar.js/progressbar.min.js"></script>
-    <script src="~/vendors/jvectormap/jquery-jvectormap.min.js"></script>
-    <script src="~/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-    <script src="~/vendors/owl-carousel-2/owl.carousel.min.js"></script>
 
     <script src="~/js/off-canvas.js"></script>
     <script src="~/js/hoverable-collapse.js"></script>
     <script src="~/js/misc.js"></script>
-    <script src="~/js/settings.js"></script>
-    <script src="~/js/todolist.js"></script>
 
     <!-- My javascript -->
     <script src="~/my-js/script.js"></script>
