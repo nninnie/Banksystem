@@ -29,13 +29,23 @@ namespace BankApp
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
 
-            // Configures ASP.NET Core Identity with roles and EF Core as the storage provider
-            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            // Configures ASP.NET Core Identity with roles, without the built-in UI pages (no public registration)
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
+
+                // Same key length as my existing migration (AddDefaultIdentity used 128)
+                options.Stores.MaxLengthForKeys = 128;
             })
-            .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
+            // Sends users who are not logged in to my own login page
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Login";
+                options.AccessDeniedPath = "/Index";
+            });
 
             // Registers Services so it can be injected into PageModels
             builder.Services.AddScoped<IDashboardService, DashboardService>();
