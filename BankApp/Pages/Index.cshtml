@@ -92,6 +92,39 @@
 
 </div>
 
+<!-- Country table and map, side by side -->
+<div class="country-overview">
+    <!-- Country table - _CountryLandingPartial -->
+    <partial name="_CountryLandingPartial" model="Model.Countries" />
 
-<!-- Country table -->
-<partial name="_CountryLandingPartial" model="Model.Countries" />
+
+    <!-- Country map -->
+    <div class="dashboard-card map-card">
+       <h3 class="card-title">
+          <i class="mdi mdi-map-marker-radius icon"></i>
+            Our Countries
+      </h3>
+
+      <div id="countryMap"
+             data-countries="@(System.Text.Json.JsonSerializer.Serialize(Model.Countries.Select(c => new
+            {
+                 name = c.Country,
+                 code = CountryFlags.IsoCode(c.Country),
+                 customers = c.CustomerCount,
+                 accounts = c.AccountCount,
+                 balance = c.TotalBalance
+                 })))">
+        </div>
+
+        <p class="map-hint">Click a country to see its top 10 customers.</p>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/vendors/jvectormap/jquery-jvectormap.css" />
+}
+
+@section Scripts {
+    <script src="~/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="~/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+}

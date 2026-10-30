@@ -3,28 +3,27 @@
    ----------------------------------------------------------
    TABLE OF CONTENTS
     1. Theme tokens
-    2. Base (background, typography)
+    2. Base
     3. Page layout
-    4. Sidebar – expanded
-    5. Sidebar – collapsed
+    4. Sidebar expanded
+    5. Sidebar collapsed
     6. Top navbar
     7. App launcher
-    8. Shared components (logout, buttons, pagination, text, breadcrumb, icons)
+    8. Shared components
     9. Tables
-   10. Home page – country statistics
+   10. Home page stats
    11. Dashboard cards
    12. Customer page
    13. Welcome hero
-   14. Dashboard activity and chart
+   14. Dashboard activity
    15. Login page
    16. Customer search form
-   17. Responsive design 
+   17. Country map
    ========================================================== */
 
 
 /* ==========================================================
    1. THEME TOKENS
-   Colors, rings and typography used everywhere.
    ========================================================== */
 :root {
     /* Surfaces */
@@ -45,8 +44,12 @@
     --text: #F8FAFC;
     --muted: #A7B4C5;
     --font: "Inter", system-ui, -apple-system, sans-serif;
-    /* Green "depth" rings (sidebar icons, navbar buttons, avatars) */
-    --rail: 46px; /* size of icons/avatar in the collapsed sidebar */
+    /* Money in / money out */
+    --positive: #85BB65;
+    --negative: #E2948D;
+
+    /* Rings */
+    --rail: 46px; /* collapsed icon size */
     --ring-border: rgba(47, 165, 116, .38);
     --ring-border-hover: rgba(99, 208, 151, .65);
     --ring-bg: radial-gradient(circle at 30% 25%, rgba(47, 165, 116, .22), rgba(3, 30, 21, .9) 70%);
@@ -57,7 +60,6 @@
 
 /* ==========================================================
    2. BASE
-   Page background, font family and numeric alignment.
    ========================================================== */
 html body .container-scroller,
 html body .page-body-wrapper,
@@ -81,7 +83,7 @@ html body {
         font-family: var(--font) !important;
     }
 
-/* Equal-width digits so amounts line up */
+/* Aligned numbers */
 .data-row .value,
 .transaction-amount,
 .mybank-table td,
@@ -92,7 +94,6 @@ html body {
 
 /* ==========================================================
    3. PAGE LAYOUT
-   Main content area.
    ========================================================== */
 .main-panel {
     min-width: 0;
@@ -108,10 +109,10 @@ html body {
 
 
 /* ==========================================================
-   4. SIDEBAR – EXPANDED
+   4. SIDEBAR EXPANDED
    ========================================================== */
 
-/* ----- Container: grows with the page, never scrolls on its own ----- */
+/* ----- Container ----- */
 html body .sidebar {
     background: linear-gradient(to bottom, var(--sidebar) 0%, rgba(3, 38, 27, 0.96) 50%, rgba(3, 38, 27, 0.5) 100%), url('/images/flags/pine-forest-sidebar.jpg') center bottom / cover no-repeat !important;
     display: flex !important;
@@ -121,7 +122,7 @@ html body .sidebar {
     min-height: 100vh !important;
     max-height: none !important;
     padding-bottom: 0 !important;
-    overflow: visible !important; /* visible so the profile dropdown is not clipped */
+    overflow: visible !important; /* keeps dropdown visible */
 }
 
 .sidebar > * {
@@ -141,11 +142,12 @@ html body .sidebar {
         font-size: .8rem;
         letter-spacing: 3px;
         text-transform: uppercase;
-        min-height: 40px;
-        margin-top: 6px;
+        min-height: 32px;
+        margin-top: 0;
+        margin-bottom: 8px;
     }
 
-/* ----- Branding: centered logo ----- */
+/* ----- Logo ----- */
 html body .sidebar .sidebar-brand-wrapper {
     position: relative;
     display: flex;
@@ -158,7 +160,7 @@ html body .sidebar .sidebar-brand-wrapper {
     border-bottom: none;
 }
 
-    /* Gold divider under the logo (hidden when collapsed) */
+    /* Divider under logo */
     html body .sidebar .sidebar-brand-wrapper::after {
         content: "";
         position: absolute;
@@ -187,7 +189,7 @@ html body .sidebar .sidebar-brand-wrapper {
     object-fit: contain !important;
 }
 
-/* ----- Profile (avatar, name, role, dropdown) ----- */
+/* ----- Profile ----- */
 .sidebar .nav .nav-item.profile {
     margin-top: 0 !important;
     padding-top: 0 !important;
@@ -195,7 +197,9 @@ html body .sidebar .sidebar-brand-wrapper {
 
     .sidebar .nav .nav-item.profile .profile-desc {
         position: relative;
-        padding: 14px 14px 16px 20px !important;
+        margin: 0 12px;
+        padding: 24px 14px 24px !important;
+        border-left: 3px solid transparent;
     }
 
 .sidebar .profile-toggle {
@@ -209,60 +213,45 @@ html body .sidebar .sidebar-brand-wrapper {
 .sidebar .nav .nav-item.profile .profile-pic {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 14px;
     min-width: 0;
 }
 
-/* Avatar with soft green ring (responsive size) */
+/* Avatar */
 .sidebar .nav .nav-item.profile img {
-    width: clamp(44px, 3.4vw, 50px);
-    height: clamp(44px, 3.4vw, 50px);
+    width: clamp(40px, 3vw, 46px);
+    height: clamp(40px, 3vw, 46px);
     object-fit: cover;
 }
 
 .sidebar .profile-desc img {
     border: 1px solid var(--ring-border) !important;
-    box-shadow: 0 0 0 3px rgba(47, 165, 116, .10), 0 4px 12px rgba(0, 0, 0, .45) !important;
+    box-shadow: var(--ring-shadow) !important;
     border-radius: 50% !important;
 }
 
-/* Online indicator */
-.sidebar .nav .nav-item.profile .count-indicator {
-    position: relative;
-    display: flex;
-}
-
-.sidebar .profile-desc .count {
-    top: auto;
-    bottom: 1px;
-    right: 1px;
-    width: 11px;
-    height: 11px;
-    border: 2px solid var(--sidebar);
-}
-
-/* Name over role */
+/* Name and role */
 .sidebar .profile-name {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 2px;
     min-width: 0;
-    margin: 0;
+    margin: 0 !important;
     text-align: left;
     line-height: 1.2;
 }
 
     .sidebar .profile-name h5 {
         margin: 0;
-        color: var(--muted);
+        color: var(--text);
         font-size: clamp(.74rem, .68rem + .2vw, .82rem);
         font-weight: 600;
         letter-spacing: 0;
         white-space: nowrap;
     }
 
-    /* Gold role label (!important beats Corona's gray) */
+    /* Role */
     .sidebar .profile-name span {
         color: var(--gold-soft) !important;
         opacity: .85;
@@ -272,7 +261,7 @@ html body .sidebar .sidebar-brand-wrapper {
         text-transform: uppercase;
     }
 
-/* Gold chevron, rotates when the menu is open */
+/* Chevron */
 .sidebar .profile-chevron {
     flex-shrink: 0;
     margin-right: 2px;
@@ -286,7 +275,7 @@ html body .sidebar .sidebar-brand-wrapper {
     transform: rotate(180deg);
 }
 
-/* Profile dropdown (log in / log out) */
+/* Profile dropdown */
 .sidebar .sidebar-profile-menu {
     min-width: 190px;
     margin-top: 4px;
@@ -319,7 +308,7 @@ html body .sidebar .sidebar-brand-wrapper {
             background: rgba(242, 214, 117, .08);
         }
 
-/* ----- Menu rows (links and the logout button share these rules) ----- */
+/* ----- Menu rows ----- */
 .sidebar .nav .nav-item {
     margin-bottom: 6px;
 }
@@ -328,8 +317,8 @@ html body .sidebar .sidebar-brand-wrapper {
         display: flex;
         align-items: center;
         min-height: 52px;
-        margin: 0 12px;
-        padding: 0 14px;
+        margin: 0 12px !important;
+        padding: 0 14px !important;
         border-left: 3px solid transparent;
         border-radius: 10px;
     }
@@ -352,20 +341,20 @@ html body .sidebar .sidebar-brand-wrapper {
     color: var(--gold) !important;
 }
 
-/* Hover row */
+/* Hover */
 .sidebar .nav .nav-item.menu-items .nav-link:hover {
     background: linear-gradient(90deg, rgba(212, 175, 55, .14), transparent) !important;
     border-left: 3px solid var(--gold);
 }
 
-/* Active row */
+/* Active */
 .sidebar .nav .nav-item.active > .nav-link {
     background: linear-gradient(90deg, rgba(47, 165, 116, .30), rgba(47, 165, 116, .06));
     border: 1px solid var(--gold-line);
     border-left: 3px solid var(--gold);
 }
 
-/* ----- Menu icons: green ring, gold icon, centered ----- */
+/* ----- Menu icons ----- */
 .sidebar .nav .nav-item.menu-items .menu-icon {
     flex: 0 0 clamp(40px, 3vw, 46px) !important;
     width: clamp(40px, 3vw, 46px) !important;
@@ -404,11 +393,11 @@ html body .sidebar .sidebar-brand-wrapper {
     box-shadow: var(--ring-shadow-hover) !important;
 }
 
-/* ----- Tagline (sits right under the menu so it is always visible) ----- */
+/* ----- Tagline ----- */
 .sidebar-tagline {
     flex-shrink: 0;
-    margin-top: 24px !important;
-    margin-bottom: 28px !important;
+    margin-top: auto !important;
+    margin-bottom: 32px !important;
     padding: 16px 16px 0 !important;
     font-size: clamp(.5rem, .2vw + .3rem, .6rem);
     letter-spacing: 2px;
@@ -428,10 +417,10 @@ html body .sidebar .sidebar-brand-wrapper {
 
 
 /* ==========================================================
-   5. SIDEBAR – COLLAPSED (icon-only)
+   5. SIDEBAR COLLAPSED
    ========================================================== */
 
-/* ----- Logo centered ----- */
+/* ----- Logo ----- */
 .sidebar-icon-only .sidebar .sidebar-brand-wrapper {
     align-items: center !important;
     justify-content: center !important;
@@ -457,14 +446,14 @@ html body .sidebar .sidebar-brand-wrapper {
             margin: 0 auto !important;
         }
 
-/* ----- Hide labels that do not fit ----- */
+/* ----- Hidden labels ----- */
 .sidebar-icon-only .sidebar .nav .nav-item.profile .profile-name,
 .sidebar-icon-only .sidebar .nav .nav-item.nav-category,
 .sidebar-icon-only .sidebar .profile-chevron {
     display: none !important;
 }
 
-/* ----- Profile: avatar only ----- */
+/* ----- Profile ----- */
 .sidebar-icon-only .sidebar .nav .nav-item.profile .profile-desc {
     display: flex !important;
     justify-content: center !important;
@@ -475,7 +464,7 @@ html body .sidebar .sidebar-brand-wrapper {
     justify-content: center;
 }
 
-/* Avatar and icon rings share the same size (--rail) */
+/* Same size as icons */
 .sidebar-icon-only .sidebar .nav .nav-item.profile img,
 .sidebar-icon-only .sidebar .nav .nav-item.menu-items .menu-icon {
     width: var(--rail) !important;
@@ -483,7 +472,7 @@ html body .sidebar .sidebar-brand-wrapper {
     object-fit: cover;
 }
 
-/* ----- Menu: circular items ----- */
+/* ----- Menu ----- */
 .sidebar-icon-only .sidebar .nav .nav-item.menu-items {
     margin-bottom: 10px !important;
 }
@@ -509,7 +498,7 @@ html body .sidebar .sidebar-brand-wrapper {
         justify-content: center;
     }
 
-    /* ----- Hover label (flyout) in the theme colors ----- */
+    /* ----- Hover label ----- */
     .sidebar-icon-only .sidebar .nav .nav-item.menu-items:hover > .nav-link .menu-title,
     .sidebar-icon-only .sidebar .nav .nav-item.menu-items.hover-open > .nav-link .menu-title {
         background: var(--navbar) !important;
@@ -521,7 +510,7 @@ html body .sidebar .sidebar-brand-wrapper {
         box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
     }
 
-/* ----- Tagline: small, vertical, with divider ----- */
+/* ----- Tagline ----- */
 .sidebar-icon-only .sidebar .sidebar-tagline {
     display: flex !important;
     flex-direction: column;
@@ -548,7 +537,7 @@ html body .sidebar .sidebar-brand-wrapper {
    6. TOP NAVBAR
    ========================================================== */
 
-/* ----- Surface and text ----- */
+/* ----- Background ----- */
 html body .navbar,
 html body .navbar .navbar-menu-wrapper {
     background: var(--navbar) !important;
@@ -568,7 +557,7 @@ html body .navbar .navbar-menu-wrapper {
     transition: .2s ease;
 }
 
-/* ----- Hamburger: gold icon, soft green hover (no ring) ----- */
+/* ----- Hamburger ----- */
 .navbar .navbar-menu-wrapper .navbar-toggler {
     display: inline-flex;
     align-items: center;
@@ -600,7 +589,7 @@ html body .navbar .navbar-menu-wrapper {
             color: var(--gold) !important;
         }
 
-    /* Remove any extra pseudo-element drawn on top of the icon */
+    /* Hide extra icon */
     .navbar .navbar-menu-wrapper .navbar-toggler::before,
     .navbar .navbar-menu-wrapper .navbar-toggler::after,
     .navbar .navbar-menu-wrapper .navbar-toggler .mdi::after {
@@ -631,7 +620,7 @@ html body .navbar .navbar-menu-wrapper {
             box-shadow: 0 0 0 3px rgba(242, 214, 117, .08) !important;
         }
 
-        /* Prevent white browser autofill */
+        /* Autofill */
         .navbar .search .form-control:-webkit-autofill,
         .navbar .search .form-control:-webkit-autofill:hover,
         .navbar .search .form-control:-webkit-autofill:focus {
@@ -647,7 +636,7 @@ html body .navbar .navbar-menu-wrapper {
     }
 }
 
-/* ----- Right side: row layout ----- */
+/* ----- Right side ----- */
 html body .navbar .navbar-nav.navbar-nav-right {
     align-items: center !important;
     gap: 12px;
@@ -661,10 +650,10 @@ html body .navbar .navbar-nav-right .nav-item {
 }
 
 html body .navbar .navbar-nav .nav-item.border-left {
-    border-left: 0 !important; /* removes Corona's vertical dividers */
+    border-left: 0 !important; /* no dividers */
 }
 
-/* ----- Round icon buttons (launcher, bell, mail) ----- */
+/* ----- Icon buttons ----- */
 #app-launcher-btn,
 #notificationDropdown,
 #messageDropdown {
@@ -721,16 +710,18 @@ html body .navbar .navbar-nav .nav-item.border-left {
         width: 9px;
         height: 9px;
         border: 1.5px solid var(--navbar);
+        background: var(--gold) !important;
+        box-shadow: 0 0 6px rgba(242, 214, 117, .6);
     }
 
-/* ----- Profile (avatar, name over role, chevron) ----- */
+/* ----- Profile ----- */
 .navbar #profileDropdown {
     display: flex;
     align-items: center;
     height: 46px;
     margin-left: 10px;
     padding: 0 0 0 22px !important;
-    border-left: 1px solid rgba(47, 165, 116, .25); /* subtle divider */
+    border-left: 1px solid rgba(47, 165, 116, .25); /* divider */
 }
 
 .navbar .navbar-profile {
@@ -769,13 +760,13 @@ html body .navbar .navbar-nav .nav-item.border-left {
 }
 
 .navbar .navbar-profile-name {
-    color: var(--muted) !important;
+    color: var(--text) !important;
     font-size: clamp(.8rem, .75rem + .2vw, .88rem);
     font-weight: 600;
     letter-spacing: .1px;
 }
 
-/* Subtle role label */
+/* Role */
 .navbar .navbar-profile-role {
     color: var(--gold-soft);
     opacity: .75;
@@ -785,7 +776,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     text-transform: uppercase;
 }
 
-/* Gold chevron in a small ring, turns when the menu is open */
+/* Chevron */
 .navbar #profileDropdown .mdi-chevron-down {
     display: flex !important;
     align-items: center;
@@ -815,7 +806,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     transform: rotate(180deg);
 }
 
-/* ----- Dropdown menus ----- */
+/* ----- Dropdowns ----- */
 .navbar .dropdown-menu {
     background: var(--navbar) !important;
     border: 1px solid var(--gold-line) !important;
@@ -834,13 +825,58 @@ html body .navbar .navbar-nav .nav-item.border-left {
         border-radius: 6px;
     }
 
+/* Profile menu icons */
+.navbar .preview-list .preview-icon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--ring-border);
+    border-radius: 50%;
+    background: var(--ring-bg);
+    box-shadow: var(--ring-shadow);
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+    .navbar .preview-list .preview-icon i {
+        color: var(--gold-bright) !important;
+        font-size: 1.1rem;
+        text-shadow: 0 0 4px rgba(242, 214, 117, .3);
+    }
+
+/* Profile menu hover */
+.navbar .preview-list .preview-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: auto;
+    margin: 0 8px;
+    padding: 10px 12px;
+    color: var(--text);
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    box-shadow: none;
+    transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+
+    .navbar .preview-list .preview-item:hover {
+        color: var(--gold) !important;
+        background: rgba(242, 214, 117, 0.08) !important;
+        border-color: var(--gold-line);
+        box-shadow: none !important;
+    }
+
+        .navbar .preview-list .preview-item:hover .preview-subject {
+            color: var(--gold);
+        }
 
 /* ==========================================================
    7. APP LAUNCHER
-   Grid menu opened from the navbar.
    ========================================================== */
 
-/* Hidden / visible states */
+/* Open / closed */
 .app-launcher.hidden {
     display: none !important;
 }
@@ -859,7 +895,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
 }
 
-/* Grid and items */
+/* Grid */
 .launcher-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -890,7 +926,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         background: rgba(242, 214, 117, 0.08);
     }
 
-    /* Logout form styled as a launcher item */
+    /* Logout */
     .launcher-item.logout-form {
         display: flex;
         flex-direction: column;
@@ -946,7 +982,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
    8. SHARED COMPONENTS
    ========================================================== */
 
-/* ----- Logout form / button base ----- */
+/* ----- Logout ----- */
 .logout-form {
     margin: 0;
     padding: 0;
@@ -963,7 +999,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     cursor: pointer;
 }
 
-/* ----- Section subtitle ----- */
+/* ----- Subtitle ----- */
 .section-subtitle {
     color: var(--muted);
     font-size: .9rem;
@@ -1000,7 +1036,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         color: rgba(255, 255, 255, .4);
     }
 
-/* ----- Generic gold icon, indicators ----- */
+/* ----- Icons ----- */
 .icon {
     color: var(--gold);
     margin-right: 6px;
@@ -1014,12 +1050,37 @@ html body .navbar .navbar-nav .nav-item.border-left {
 }
 
     .indicator.positive {
-        color: #4CAF50;
+        color: var(--positive);
     }
 
     .indicator.negative {
-        color: #E53935;
+        color: var(--negative);
     }
+
+/* ----- Online dot ----- */
+.avatar-wrap {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.online-dot {
+    position: absolute;
+    right: -1px;
+    bottom: -1px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #63D097;
+    border: 2px solid var(--sidebar); /* dot outline */
+    box-shadow: 0 0 6px rgba(99, 208, 151, .7);
+}
+
+.navbar .online-dot {
+    width: 10px;
+    height: 10px;
+    border-color: var(--navbar);
+}
 
 /* ----- Buttons ----- */
 .bank-btn,
@@ -1040,7 +1101,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, color .2s ease;
 }
 
-/* Primary gold button */
+/* Primary */
 .bank-btn {
     background: linear-gradient(180deg, var(--gold-deep) 0%, var(--gold-dark) 100%);
     color: var(--on-gold);
@@ -1061,7 +1122,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         box-shadow: 0 2px 6px rgba(168, 129, 47, .2);
     }
 
-/* Secondary outline button */
+/* Secondary */
 .bank-btn-outline {
     background: linear-gradient(180deg, rgba(47, 165, 116, .10), rgba(3, 38, 27, .55));
     color: var(--gold);
@@ -1078,7 +1139,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         transform: translateY(-1px);
     }
 
-    /* Keyboard accessibility */
+    /* Focus */
     .bank-btn:focus-visible,
     .bank-btn-outline:focus-visible {
         outline: 2px solid var(--gold-bright);
@@ -1123,7 +1184,6 @@ html body .navbar .navbar-nav .nav-item.border-left {
 
 /* ==========================================================
    9. TABLES
-   Shared table styling and clickable rows.
    ========================================================== */
 .mybank-table {
     width: 100%;
@@ -1144,7 +1204,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         letter-spacing: 0.5px;
     }
 
-    /* Rows (alternating) */
+    /* Rows */
     .mybank-table tbody tr {
         background-color: var(--card);
         transition: background-color 0.2s ease, transform 0.15s ease;
@@ -1182,25 +1242,25 @@ html body .navbar .navbar-nav .nav-item.border-left {
             text-decoration: underline;
         }
 
-    /* Right-aligned money columns */
+    /* Money columns */
     .currency,
     .mybank-table th.currency,
     .mybank-table td.currency {
         text-align: right;
     }
 
-/* Accounts table sits directly under its heading */
+/* Accounts table */
 .accounts-heading + .mybank-table {
     margin-top: 0;
 }
 
-/* Emphasized values */
+/* Bold values */
 .primary-value,
 .clickable-row td.primary-value {
     color: var(--text) !important;
 }
 
-/* Clickable rows (stretched links) */
+/* Clickable rows */
 .clickable-row {
     position: relative;
     cursor: pointer;
@@ -1215,13 +1275,13 @@ html body .navbar .navbar-nav .nav-item.border-left {
         color: var(--muted) !important;
     }
 
-        /* Names on search, statistics and top-ten tables */
+        /* Names */
         .clickable-row td.customer-name,
         .clickable-row td.country-name {
             color: var(--text) !important;
         }
 
-/* Rank column in the top-ten country table */
+/* Rank */
 .mybank-table th.rank-column {
     text-align: center !important;
     width: 100px;
@@ -1235,7 +1295,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     font-size: 1.1rem;
 }
 
-/* Country flag in tables */
+/* Flag */
 .country-link {
     display: flex;
     align-items: center;
@@ -1250,7 +1310,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     margin-right: 10px;
 }
 
-/* Country header with large flag */
+/* Country header */
 .country-header {
     display: flex;
     align-items: flex-start;
@@ -1264,7 +1324,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     margin-top: 8px;
 }
 
-/* Balance display (generic) */
+/* Balance */
 .balance-value {
     font-size: 2rem;
     font-weight: 700;
@@ -1284,8 +1344,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
 
 
 /* ==========================================================
-   10. HOME PAGE – COUNTRY STATISTICS
-   Summary cards with country-level totals.
+   10. HOME PAGE STATS
    ========================================================== */
 .stat-card {
     display: flex;
@@ -1353,7 +1412,6 @@ html body .navbar .navbar-nav .nav-item.border-left {
 
 /* ==========================================================
    11. DASHBOARD CARDS
-   Grid, base card, country cards, data rows, sparklines.
    ========================================================== */
 
 /* ----- Grid ----- */
@@ -1370,7 +1428,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     gap: clamp(0.75rem, 0.5rem + 1vw, 1.5rem);
 }
 
-/* Two cards side by side, stacked on small screens */
+/* Two columns */
 .dashboard-two-col {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1435,14 +1493,14 @@ html body .navbar .navbar-nav .nav-item.border-left {
             color: var(--gold);
         }
 
-/* Whole card as a link */
+/* Card link */
 .dashboard-link {
     text-decoration: none;
     color: inherit;
     display: block;
 }
 
-/* ----- Country cards (inside .dashboard-grid) ----- */
+/* ----- Country cards ----- */
 .dashboard-grid .dashboard-card {
     padding: 20px;
     border-radius: 14px;
@@ -1457,7 +1515,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 18px rgba(242, 214, 117, 0.1);
     }
 
-/* Round flag to the left of the country name */
+/* Flag */
 .dashboard-card[style*="--flag"] {
     position: relative;
     overflow: hidden;
@@ -1486,7 +1544,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         z-index: -1;
     }
 
-/* "View details" link at the bottom of a card */
+/* View details */
 .country-footer {
     margin-top: 16px;
     padding-top: 12px;
@@ -1518,7 +1576,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         white-space: nowrap;
     }
 
-    /* Total balance row (centered, with divider) */
+    /* Total row */
     .data-row.balance-row {
         flex-wrap: wrap;
         margin-bottom: 0;
@@ -1543,7 +1601,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
             letter-spacing: 0.3px;
         }
 
-/* Inside country cards: label above value, no icons, left aligned */
+/* Country card rows */
 .dashboard-grid .data-row {
     flex-direction: column;
     align-items: flex-start;
@@ -1588,7 +1646,9 @@ html body .navbar .navbar-nav .nav-item.border-left {
             color: var(--text);
         }
 
-/* ----- Sparkline on country cards ----- */
+
+
+/* ----- Sparkline ----- */
 .spark-bg {
     position: absolute;
     left: 0;
@@ -1605,7 +1665,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         height: 100%;
     }
 
-/* Glowing endpoint */
+/* Endpoint */
 .spark-dot {
     position: absolute;
     left: 96%;
@@ -1617,7 +1677,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     box-shadow: 0 0 0 3px rgba(99, 208, 151, .18), 0 0 12px rgba(99, 208, 151, .8);
 }
 
-/* ----- Chart header, pills and flags under bars ----- */
+/* ----- Chart ----- */
 .chart-header {
     display: flex;
     justify-content: space-between;
@@ -1641,7 +1701,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     margin-right: 6px;
 }
 
-/* Flags are positioned below each chart bar by JavaScript */
+/* Flags under bars */
 .chart-flags {
     position: relative;
     width: 100%;
@@ -1674,7 +1734,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         font-size: .7rem;
     }
 
-/* Chart needs a fixed height since the canvas is responsive */
+/* Chart height */
 .chart-wrap {
     position: relative;
     height: 260px;
@@ -1684,10 +1744,9 @@ html body .navbar .navbar-nav .nav-item.border-left {
 
 /* ==========================================================
    12. CUSTOMER PAGE
-   Header, profile layout, balance card and accounts.
    ========================================================== */
 
-/* ----- Page header (reuses the welcome card) ----- */
+/* ----- Header ----- */
 .customer-hero {
     padding: 28px 32px;
     margin-bottom: 0;
@@ -1719,7 +1778,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     font-size: 0.9rem;
 }
 
-/* ----- Profile layout: details + balance ----- */
+/* ----- Layout ----- */
 .customer-profile-layout {
     display: grid;
     grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr);
@@ -1744,7 +1803,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 18px rgba(242, 214, 117, 0.1);
         }
 
-/* Customer header (avatar + name) */
+/* Name */
 .customer-header {
     display: flex;
     align-items: center;
@@ -1763,7 +1822,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         object-fit: cover;
     }
 
-/* Details: label above value, two columns */
+/* Details */
 .customer-details-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1790,7 +1849,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         letter-spacing: 1.5px;
     }
 
-/* ----- Total balance card ----- */
+/* ----- Balance card ----- */
 .balance-card {
     position: relative;
     display: flex;
@@ -1828,7 +1887,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         text-align: left;
     }
 
-/* On the customer profile page the value sits a bit lower */
+/* Profile balance */
 .customer-profile-layout .balance-card .balance-value {
     text-align: left;
     margin-top: 16px;
@@ -1872,7 +1931,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         font-size: 18px;
     }
 
-/* ----- Accounts card and table ----- */
+/* ----- Accounts ----- */
 .accounts-heading {
     display: flex;
     justify-content: space-between;
@@ -1979,13 +2038,12 @@ html body .navbar .navbar-nav .nav-item.border-left {
 
 /* ==========================================================
    13. WELCOME HERO
-   Page introduction card with background image and date.
    ========================================================== */
 .welcome-card {
     position: relative;
     overflow: hidden;
     margin-bottom: 24px;
-    padding: 42px;
+    padding: 28px 36px;
     border-radius: 18px;
     border: 1px solid var(--gold-line);
     background: radial-gradient(circle at 15% 0%, rgba(47, 165, 116, .25), transparent 55%), linear-gradient(rgba(3, 38, 27, .55), rgba(0, 0, 0, .75)), url('/images/flags/pine-forest.jpg') center / cover;
@@ -2022,7 +2080,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     color: var(--muted);
 }
 
-    /* Gold divider below the text */
+    /* Divider */
     .welcome-subtitle::after {
         content: "";
         display: block;
@@ -2070,10 +2128,9 @@ html body .navbar .navbar-nav .nav-item.border-left {
 
 /* ==========================================================
    14. DASHBOARD ACTIVITY
-   Recent transactions list.
    ========================================================== */
 
-/* "View all" link in the card header */
+/* View all */
 .transactions-card .chart-header a {
     color: var(--gold);
     font-size: .8rem;
@@ -2103,27 +2160,36 @@ html body .navbar .navbar-nav .nav-item.border-left {
         border-bottom: none;
     }
 
-    /* Round arrow icon before each row (credit is gold, debit is red) */
+    /* Arrow icon */
     .transaction-row::before {
         content: "↗";
         flex-shrink: 0;
-        width: 38px;
-        height: 38px;
+        width: 46px;
+        height: 46px;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        color: var(--gold);
-        font-size: 1.1rem;
-        border: 1px solid var(--gold-line);
-        background: rgba(242, 214, 117, .06);
+        color: var(--gold-bright);
+        font-size: 1.3rem;
+        text-shadow: 0 0 4px rgba(242, 214, 117, .3);
+        border: 1px solid var(--ring-border);
+        background: var(--ring-bg);
+        box-shadow: var(--ring-shadow);
+        transition: border-color .2s ease, box-shadow .2s ease;
     }
 
+    /* Hover */
+    .transaction-row:hover::before {
+        border-color: var(--ring-border-hover);
+        box-shadow: var(--ring-shadow-hover);
+    }
+
+    /* Withdrawals */
     .transaction-row:has(.negative)::before {
         content: "↙";
         color: #E53935;
-        border-color: rgba(229, 57, 53, .35);
-        background: rgba(229, 57, 53, .08);
+        text-shadow: 0 0 4px rgba(229, 57, 53, .35);
     }
 
 .transaction-info,
@@ -2157,11 +2223,11 @@ html body .navbar .navbar-nav .nav-item.border-left {
 }
 
     .transaction-amount.positive {
-        color: #4CAF50;
+        color: var(--positive);
     }
 
     .transaction-amount.negative {
-        color: #E53935;
+        color: var(--negative);
     }
 
 .transaction-empty {
@@ -2172,7 +2238,6 @@ html body .navbar .navbar-nav .nav-item.border-left {
 
 /* ==========================================================
    15. LOGIN PAGE
-   Layout, fields, button and error state.
    ========================================================== */
 .login-page {
     max-width: 700px;
@@ -2180,7 +2245,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
     padding: 0 20px;
 }
 
-    /* Welcome card */
+    /* Welcome */
     .login-page .welcome-card {
         text-align: center;
         padding: 2rem;
@@ -2200,7 +2265,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         margin: 0 auto;
     }
 
-/* Login card */
+/* Card */
 .login-card {
     padding: 2rem;
     background: rgba(10, 18, 14, 0.55);
@@ -2230,7 +2295,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
             box-shadow: 0 0 0 1px rgba(212, 175, 55, .25);
         }
 
-/* Login button */
+/* Button */
 .login-btn {
     width: 100%;
     margin-top: 1rem;
@@ -2268,7 +2333,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         transform: none;
     }
 
-/* Error message */
+/* Error */
 .login-error {
     margin-top: 1rem;
     padding: .9rem;
@@ -2282,7 +2347,6 @@ html body .navbar .navbar-nav .nav-item.border-left {
 
 /* ==========================================================
    16. CUSTOMER SEARCH FORM
-   Search card, input fields with icons.
    ========================================================== */
 .search-card {
     padding: 30px 32px;
@@ -2318,7 +2382,7 @@ html body .navbar .navbar-nav .nav-item.border-left {
         outline: none;
     }
 
-    /* Prevent white browser autofill */
+    /* Autofill */
     .bank-search .form-control:-webkit-autofill,
     .bank-search .form-control:-webkit-autofill:hover,
     .bank-search .form-control:-webkit-autofill:focus {
@@ -2327,13 +2391,13 @@ html body .navbar .navbar-nav .nav-item.border-left {
         box-shadow: 0 0 0 1000px #124333 inset !important;
     }
 
-/* Form layout */
+/* Layout */
 .bank-search .row {
     justify-content: flex-start;
     align-items: center;
 }
 
-/* Icons inside the fields */
+/* Field icons */
 .bank-search .input-icon {
     position: relative;
 }
@@ -2356,3 +2420,103 @@ html body .navbar .navbar-nav .nav-item.border-left {
     }
 }
 
+/* ==========================================================
+   17. COUNTRY MAP
+   ========================================================== */
+
+/* Layout */
+.country-overview {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 24px;
+    margin-top: 24px;
+    align-items: stretch;
+}
+
+    /* spacing via gap */
+    .country-overview .mybank-table {
+        margin-top: 0;
+    }
+
+/* Map card */
+.map-card {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    background: var(--card) !important;
+    border-radius: 16px;
+    padding: 16px 18px 12px;
+}
+
+    /* Header */
+    .map-card .card-title {
+        margin: -16px -18px 10px; /* full width */
+        padding: 14px 18px;
+        background: var(--sidebar); /* like table header */
+        border-bottom: 2px solid var(--gold-line);
+        color: var(--gold);
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+        .map-card .card-title .icon {
+            font-size: 1.1rem;
+        }
+
+/* Map */
+#countryMap {
+    flex: 1;
+    min-height: 200px;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 60%, transparent 100%);
+    mask-image: radial-gradient(ellipse at center, #000 60%, transparent 100%);
+}
+
+/* Hint */
+.map-hint {
+    margin: 6px 0 0;
+    font-size: .75rem;
+    font-style: italic;
+    color: var(--muted);
+    opacity: .8;
+    text-align: right;
+}
+
+/* Country hover */
+#countryMap path[data-code="SE"],
+#countryMap path[data-code="NO"],
+#countryMap path[data-code="DK"],
+#countryMap path[data-code="FI"] {
+    cursor: pointer;
+    transition: fill .2s ease;
+}
+
+    #countryMap path[data-code="SE"]:hover,
+    #countryMap path[data-code="NO"]:hover,
+    #countryMap path[data-code="DK"]:hover,
+    #countryMap path[data-code="FI"]:hover {
+        fill: var(--gold) !important;
+    }
+
+/* Markers */
+#countryMap circle {
+    filter: drop-shadow(0 0 4px rgba(242, 214, 117, .8));
+}
+
+/* Tooltip */
+.jvectormap-tip {
+    background: var(--navbar);
+    border: 1px solid var(--gold-line);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: .85rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .45);
+}
+
+@media (max-width: 1100px) {
+    .country-overview {
+        grid-template-columns: 1fr;
+    }
+}

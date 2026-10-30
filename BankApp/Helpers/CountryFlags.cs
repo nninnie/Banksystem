@@ -20,5 +20,9 @@
         // Square flag (1:1), used under the dashboard chart
         public static string Square(string country) =>
             $"/vendors/flag-icon-css/flags/1x1/{Code(country)}.svg";
+
+        // Two-letter ISO code in upper case (SE, NO, DK, FI), used by the country map
+        public static string IsoCode(string country) =>
+            Code(country).ToUpper();
     }
 }

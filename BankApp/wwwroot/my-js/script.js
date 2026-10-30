@@ -292,3 +292,110 @@ document.addEventListener("DOMContentLoaded", () => {
     // Rita om kurvan när fönstrets storlek ändras
     window.addEventListener("resize", drawChart);
 });
+
+
+/* ==========================================================
+   START PAGE - COUNTRY MAP
+   ========================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+
+    const mapEl = document.getElementById("countryMap");
+
+    // Only runs on the start page, where the map and its library are loaded
+    if (!mapEl || typeof jQuery === "undefined" || !jQuery.fn.vectorMap) return;
+
+    const countries = JSON.parse(mapEl.dataset.countries);
+    const fmt = (n) => Number(n).toLocaleString("sv-SE");
+
+    // Marker position per country (the capital city)
+    const capitals = {
+        SE: [59.33, 18.07],
+        NO: [59.91, 10.75],
+        DK: [55.68, 12.57],
+        FI: [60.17, 24.94]
+    };
+
+    // Look up a country by its code, e.g. byCode["SE"]
+    const byCode = {};
+    countries.forEach(c => byCode[c.code] = c);
+
+    // Countries the bank has customers in are highlighted
+    const activeRegions = {};
+    countries.forEach(c => activeRegions[c.code] = "active");
+
+    const markers = countries
+        .filter(c => capitals[c.code])
+        .map(c => ({ latLng: capitals[c.code], name: c.name, code: c.code }));
+
+    // Tooltip text for one country
+    const tipText = (c) =>
+        `<strong>${c.name}</strong><br>` +
+        `Customers: ${fmt(c.customers)}<br>` +
+        `Accounts: ${fmt(c.accounts)}<br>` +
+        `Balance: ${fmt(c.balance)} SEK`;
+
+    // Goes to the Top 10 page for a country
+    const openCountry = (c) =>
+        window.location.href = "/Country?country=" + encodeURIComponent(c.name);
+
+    // A fixed view centred on the Nordics. Used both when the map loads
+    // and when the window is resized, so the Nordics always stay in the middle.
+    const focus = { lat: 63.5, lng: 17, scale: 5.5, animate: false };
+
+    jQuery(mapEl).vectorMap({
+        map: "world_mill_en",
+        backgroundColor: "transparent",
+
+        // A still view, zoomed in on the Nordics (see focus above)
+        focusOn: focus,
+        zoomButtons: false,
+        zoomOnScroll: false,
+        panOnDrag: false,
+
+        // Other countries are barely visible, the bank's countries stand out
+        regionStyle: {
+            initial: { fill: "#10221B", stroke: "#2A4A3D", "stroke-width": 0.4 },
+            hover: { "fill-opacity": 1 }
+        },
+        series: {
+            regions: [{ values: activeRegions, scale: { active: "#2FA574" } }]
+        },
+
+        // Small gold dots on the capitals
+        markerStyle: {
+            initial: { fill: "#F2D675", stroke: "#04120C", "stroke-width": 1.5, r: 5 },
+            hover: { fill: "#FFE9A8", cursor: "pointer" }
+        },
+        markers: markers,
+
+        // Tooltips only for the bank's countries
+        onRegionTipShow: function (e, tip, code) {
+            const c = byCode[code];
+            if (c) tip.html(tipText(c));
+            else e.preventDefault();
+        },
+        onMarkerTipShow: function (e, tip, index) {
+            tip.html(tipText(byCode[markers[index].code]));
+        },
+
+        // Click a country or a dot -> Top 10 page
+        onRegionClick: function (e, code) {
+            if (byCode[code]) openCountry(byCode[code]);
+        },
+        onMarkerClick: function (e, index) {
+            openCountry(byCode[markers[index].code]);
+        }
+    });
+
+    // Keep the Nordics in the middle when the window changes size
+    const map = jQuery(mapEl).vectorMap("get", "mapObject");
+    let resizeTimer;
+
+    window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+            map.updateSize();
+            map.setFocus(focus);
+        }, 150); // waits until the user has stopped resizing
+    });
+});
