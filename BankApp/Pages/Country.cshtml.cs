@@ -4,6 +4,7 @@ using BankApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace BankApp.Pages
@@ -25,12 +26,15 @@ namespace BankApp.Pages
         // The country comes from the URL, e.g. /Country?country=Sweden
         // SupportsGet = true makes binding work on GET requests, not just POST
         [BindProperty(SupportsGet = true)]
+        [StringLength(50)]
         public string Country { get; set; } = "";
 
         public List<CustomerViewModel> TopCustomers { get; set; } = new();
 
         public async Task OnGetAsync()
         {
+            if (!ModelState.IsValid) return;
+
             var customers = await _customerService
                 .GetTopCustomersByCountryAsync(Country, 10);
 

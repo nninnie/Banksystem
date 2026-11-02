@@ -39,6 +39,8 @@ namespace BankApp.Pages.Admin
         // AJAX handler – returns 20 transactions per page as JSON
         public async Task<IActionResult> OnGetShowMoreAsync(int id, int pageNo)
         {
+            if (pageNo < 1) pageNo = 1; // Protects against negative Skip
+
             var transactions = await _accountService.GetTransactionsAsync(id, (pageNo - 1) * 20, 20);
 
             var result = _mapper.Map<List<TransactionViewModel>>(transactions);

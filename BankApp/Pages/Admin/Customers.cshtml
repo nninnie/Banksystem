@@ -45,30 +45,26 @@
         <input type="hidden" name="sortColumn" value="@Model.SortColumn" />
         <input type="hidden" name="sortOrder" value="@Model.SortOrder" />
 
-        <div class="row g-3 align-items-center">
+        <div class="row g-3 align-items-start">
 
             <div class="col-md-3">
                 <div class="input-icon">
                     <i class="mdi mdi-account-outline"></i>
-
-                    <input type="text"
-                           name="searchName"
-                           value="@Model.SearchName"
+                    <input asp-for="SearchName"
                            class="form-control"
                            placeholder="Search by customer ID or name" />
                 </div>
+                <span asp-validation-for="SearchName" class="text-danger"></span>
             </div>
 
             <div class="col-md-7">
                 <div class="input-icon">
                     <i class="mdi mdi-map-marker-outline"></i>
-
-                    <input type="text"
-                           name="searchCity"
-                           value="@Model.SearchCity"
+                    <input asp-for="SearchCity"
                            class="form-control"
                            placeholder="Search by city" />
                 </div>
+                <span asp-validation-for="SearchCity" class="text-danger"></span>
             </div>
 
             <div class="col-md-2">
@@ -183,3 +179,7 @@
 
 </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
