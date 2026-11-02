@@ -1,0 +1,119 @@
+﻿@page "{id:int}"
+@model BankApp.Pages.Admin.AccountModel
+@{
+    ViewData["Title"] = "Account Details";
+}
+
+<div class="page-breadcrumb">
+    <a asp-page="/Index">
+        <i class="mdi mdi-home"></i>
+    </a>
+    <span>›</span>
+    <a asp-page="/Admin/Customers">Customers</a>
+    <span>›</span>
+    <a asp-page="/Admin/Customer" asp-route-id="@Model.Account.CustomerId">@Model.Account.CustomerName</a>
+    <span>›</span>
+    <span>Account @Model.Account.AccountId</span>
+</div>
+
+<!-- Page header -->
+<div class="welcome-card customer-hero">
+    <div class="customer-page-header">
+        <div>
+            <h2 class="welcome-title">Account Details</h2>
+            <p class="section-subtitle">View account information, balance and transactions.</p>
+        </div>
+
+        @if (User.IsInRole("Cashier"))
+        {
+            <div class="customer-edit-btn">
+                <a class="bank-btn" asp-page="/Admin/Deposit" asp-route-id="@Model.Account.AccountId">Deposit</a>
+                <a class="bank-btn" asp-page="/Admin/Withdraw" asp-route-id="@Model.Account.AccountId">Withdraw</a>
+                <a class="bank-btn" asp-page="/Admin/Transfer" asp-route-id="@Model.Account.AccountId">Transfer</a>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="customer-profile-layout">
+
+    <!-- Account details -->
+    <div class="dashboard-card">
+        <h3 class="card-title">
+            <i class="mdi mdi-wallet-outline icon"></i>
+            Account Overview
+        </h3>
+
+        <div class="customer-details-grid">
+            <div class="customer-detail">
+                <span class="label">Account Owner</span>
+                <span class="value">
+                    <a asp-page="/Admin/Customer" asp-route-id="@Model.Account.CustomerId">@Model.Account.CustomerName</a>
+                </span>
+            </div>
+            <div class="customer-detail">
+                <span class="label">Customer ID</span>
+                <span class="value">@Model.Account.CustomerId</span>
+            </div>
+            <div class="customer-detail">
+                <span class="label">Account Number</span>
+                <span class="value">@Model.Account.AccountId</span>
+            </div>
+            <div class="customer-detail">
+                <span class="label">Frequency</span>
+                <span class="value">@Model.Account.Frequency</span>
+            </div>
+            <div class="customer-detail">
+                <span class="label">Created</span>
+                <span class="value">@Model.Account.Created.ToString("yyyy-MM-dd")</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Balance -->
+    <div class="dashboard-card balance-card">
+        <h3 class="card-title">
+            <i class="mdi mdi-currency-usd icon"></i>
+            Balance
+        </h3>
+
+        <div class="balance-value">
+            @($"{Model.Account.Balance:N2} SEK")
+        </div>
+
+        <div class="balance-label">
+            Current balance on this account
+        </div>
+    </div>
+
+    <!-- Transactions -->
+    <div class="dashboard-card accounts-card account-transactions-card">
+        <h3 class="card-title">
+            <i class="mdi mdi-swap-horizontal icon"></i>
+            Transactions
+        </h3>
+
+        <!-- data-url = address of OnGetShowMoreAsync, read by script.js -->
+        <table class="mybank-table" id="transactions-table"
+               data-url="@Url.Page("/Admin/Account", "ShowMore", new { id = Model.Account.AccountId })">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Operation</th>
+                    <th class="currency">Amount</th>
+                    <th class="currency">Balance</th>
+                </tr>
+            </thead>
+            <!-- Empty – filled by script.js -->
+            <tbody></tbody>
+        </table>
+
+        <div class="show-more-wrap">
+            <button type="button" class="bank-btn-outline" id="show-more-btn">
+                Show more <i class="mdi mdi-chevron-down"></i>
+            </button>
+        </div>
+    </div>
+
+</div>

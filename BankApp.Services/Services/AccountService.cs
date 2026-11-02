@@ -26,7 +26,17 @@ namespace BankApp.Services.Services
                     AccountId = a.AccountId,
                     Frequency = a.Frequency,
                     Created = a.Created.ToDateTime(TimeOnly.MinValue),
-                    Balance = a.Balance
+                    Balance = a.Balance,
+
+                    // Owner via Dispositions
+                    CustomerId = a.Dispositions
+                        .Where(d => d.Type == "OWNER")
+                        .Select(d => d.CustomerId)
+                        .FirstOrDefault(),
+                    CustomerName = a.Dispositions
+                        .Where(d => d.Type == "OWNER")
+                        .Select(d => d.Customer.Givenname + " " + d.Customer.Surname)
+                        .FirstOrDefault() ?? ""
                 })
                 .FirstOrDefaultAsync();
         }

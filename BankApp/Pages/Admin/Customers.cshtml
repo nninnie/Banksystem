@@ -30,11 +30,11 @@
     <span>Search</span>
 </div>
 
-<h2 class="section-title">Customer Search</h2>
-
-<p class="section-subtitle">
-    Search customers by name or city.
-</p>
+<!-- Page header -->
+<div class="welcome-card customer-hero">
+    <h2 class="welcome-title">Customer Search</h2>
+    <p class="section-subtitle">Search customers by name or city.</p>
+</div>
 
 
 <!-- Search form -->
@@ -49,7 +49,7 @@
 
             <div class="col-md-3">
                 <div class="input-icon">
-                    <i class="mdi mdi-card-account-details-outline"></i>
+                    <i class="mdi mdi-account-outline"></i>
 
                     <input type="text"
                            name="searchName"
@@ -83,7 +83,12 @@
 
 
 <!-- Customer list -->
-<table class="mybank-table">
+<div class="table-card">
+    <h3 class="card-title">
+        <i class="mdi mdi-account-multiple-outline icon"></i>
+        Customers
+    </h3>
+    <table class="mybank-table">
     <thead>
         <tr>
             <th>
@@ -144,7 +149,7 @@
 </table>
 
 <!-- Pagination -->
-<div class="bank-pagination mt-4">
+<div class="bank-pagination">
 
     @if (Model.CurrentPage != 1)
     {
@@ -176,4 +181,5 @@
         </a>
     }
 
+</div>
 </div>

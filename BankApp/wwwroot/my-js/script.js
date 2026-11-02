@@ -399,3 +399,54 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 150); // waits until the user has stopped resizing
     });
 });
+
+
+/* ==========================================================
+ACCOUNT PAGE - SHOW MORE TRANSACTIONS (AJAX)
+========================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+
+    const table = document.getElementById("transactions-table");
+    const button = document.getElementById("show-more-btn");
+
+    // Only runs on the account page
+    if (!table || !button) return;
+
+    // Which page of 20 transactions to fetch next
+    let pageNo = 1;
+
+    // Same number format as the balance card: 51 096,10
+    const fmt = (n) => n.toLocaleString("sv-SE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    // Fetch the next 20 transactions from OnGetShowMoreAsync
+    function showMore() {
+        fetch(table.dataset.url + "&pageNo=" + pageNo)
+            .then((response) => response.json())
+            .then((json) => {
+                pageNo = pageNo + 1;
+                json.transactions.forEach(drawElements);
+
+                // Hide the button when there are no more transactions
+                if (json.transactions.length < 20) {
+                    button.style.display = "none";
+                }
+            });
+    }
+
+    // Add one row to the table
+    function drawElements(element) {
+        const amountClass = element.amount < 0 ? "negative" : "positive";
+
+        table.querySelector("tbody").innerHTML +=
+            `<tr>
+                <td>${new Date(element.date).toLocaleDateString("sv-SE")}</td>
+                <td>${element.type}</td>
+                <td>${element.operation ?? "–"}</td>
+                <td class="currency ${amountClass}">${fmt(element.amount)} SEK</td>
+                <td class="currency">${fmt(element.balance)} SEK</td>
+            </tr>`;
+    }
+
+    button.addEventListener("click", showMore);
+    showMore(); // load the first 20
+});
