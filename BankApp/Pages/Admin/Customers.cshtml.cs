@@ -36,7 +36,7 @@ namespace BankApp.Pages.Admin
         public string? SortOrder { get; set; }
         public int CurrentPage { get; set; }
 
-        public async Task OnGetAsync(string sortColumn, string sortOrder, int pageNo)
+        public async Task OnGetAsync(string? sortColumn, string? sortOrder, int pageNo)
         {
             if (pageNo < 1) pageNo = 1;
 
