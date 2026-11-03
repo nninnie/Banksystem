@@ -604,39 +604,6 @@ html body .navbar .navbar-menu-wrapper {
     width: min(600px, 45vw) !important;
 }
 
-    .navbar .search .form-control {
-        height: 42px;
-        padding-left: 14px;
-        background: rgba(8, 35, 26, .9) !important;
-        border: 1px solid rgba(232, 199, 102, .14) !important;
-        border-radius: 12px;
-        color: var(--text);
-        box-shadow: inset 0 0 6px rgba(212, 175, 55, 0.12);
-        transition: 0.25s ease;
-    }
-
-        .navbar .search .form-control:focus {
-            background: #124333 !important;
-            border-color: var(--gold-line) !important;
-            box-shadow: 0 0 0 3px rgba(242, 214, 117, .08) !important;
-        }
-
-        /* Autofill */
-        .navbar .search .form-control:-webkit-autofill,
-        .navbar .search .form-control:-webkit-autofill:hover,
-        .navbar .search .form-control:-webkit-autofill:focus {
-            -webkit-text-fill-color: var(--text) !important;
-            -webkit-box-shadow: 0 0 0 1000px #124333 inset !important;
-            box-shadow: 0 0 0 1000px #124333 inset !important;
-        }
-
-@media (max-width: 767px) {
-    .navbar .search {
-        flex: 1 1 auto !important;
-        width: auto !important;
-    }
-}
-
 /* ----- Right side ----- */
 html body .navbar .navbar-nav.navbar-nav-right {
     align-items: center !important;
@@ -1180,6 +1147,58 @@ html body .navbar .navbar-nav .nav-item.border-left {
     border: 1px solid var(--gold);
     color: var(--gold);
     font-weight: 700;
+}
+
+
+/* ----- Form fields (same on every page) ----- */
+html body .form-control {
+    height: 44px;
+    padding: 10px 14px;
+    font-size: .95rem;
+    background: var(--navbar) !important;
+    border: 1px solid var(--ring-border) !important;
+    border-radius: 10px;
+    color: var(--text) !important;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, .25);
+    transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+    html body .form-control::placeholder {
+        color: var(--muted);
+        opacity: 1;
+    }
+
+    /* Active: gold border, like hover on buttons */
+    html body .form-control:focus {
+        background: var(--sidebar) !important;
+        border-color: var(--gold) !important;
+        box-shadow: 0 0 0 3px rgba(242, 214, 117, .12) !important;
+        outline: none;
+    }
+
+    /* Autofill: stops the browser's light blue */
+    html body .form-control:-webkit-autofill,
+    html body .form-control:-webkit-autofill:hover,
+    html body .form-control:-webkit-autofill:focus {
+        -webkit-text-fill-color: var(--text) !important;
+        -webkit-box-shadow: 0 0 0 1000px var(--sidebar) inset !important;
+        box-shadow: 0 0 0 1000px var(--sidebar) inset !important;
+    }
+
+    /* Validation error: red border */
+    html body .form-control.input-validation-error {
+        border-color: var(--negative) !important;
+    }
+
+.field-validation-error {
+    color: var(--negative);
+    font-size: .85rem;
+}
+
+/* Autofill text: same font and size as typed text */
+html body .form-control:-webkit-autofill::first-line {
+    font-family: var(--font);
+    font-size: .95rem;
 }
 
 
@@ -2321,20 +2340,6 @@ html body .navbar .navbar-nav .nav-item.border-left {
         margin-bottom: .5rem;
     }
 
-    .login-card .form-control {
-        background: rgba(255, 255, 255, .04);
-        border: 1px solid rgba(255, 255, 255, .08);
-        border-radius: 10px;
-        color: var(--text);
-        padding: 12px 14px;
-        box-shadow: inset 0 0 6px rgba(212, 175, 55, .12);
-    }
-
-        .login-card .form-control:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 0 1px rgba(212, 175, 55, .25);
-        }
-
 /* Button */
 .login-btn {
     width: 100%;
@@ -2397,40 +2402,6 @@ html body .navbar .navbar-nav .nav-item.border-left {
     box-shadow: 0 12px 30px rgba(0, 0, 0, .18), inset 0 1px 0 rgba(255, 255, 255, .035);
 }
 
-/* Fields */
-.bank-search .form-control {
-    height: 44px;
-    padding: 10px 14px 10px 43px;
-    background: #0b2b20 !important;
-    border: 1px solid rgba(201, 162, 75, .20);
-    border-radius: 10px;
-    color: #f0f3ef !important;
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, .12);
-    transition: border-color .2s ease, box-shadow .2s ease;
-}
-
-    .bank-search .form-control::placeholder {
-        color: var(--muted);
-        opacity: 1;
-    }
-
-    .bank-search .form-control:focus {
-        background: #0b2b20 !important;
-        color: #f0f3ef !important;
-        border-color: var(--gold);
-        box-shadow: 0 0 0 3px rgba(201, 162, 75, .10);
-        outline: none;
-    }
-
-    /* Autofill */
-    .bank-search .form-control:-webkit-autofill,
-    .bank-search .form-control:-webkit-autofill:hover,
-    .bank-search .form-control:-webkit-autofill:focus {
-        -webkit-text-fill-color: #f0f3ef !important;
-        -webkit-box-shadow: 0 0 0 1000px #124333 inset !important;
-        box-shadow: 0 0 0 1000px #124333 inset !important;
-    }
-
 /* Layout */
 .bank-search .row {
     justify-content: flex-start;
@@ -2454,10 +2425,8 @@ html body .navbar .navbar-nav .nav-item.border-left {
         pointer-events: none;
     }
 
-@media (max-width: 767px) {
-    .search-card {
-        padding: 18px;
-    }
+.bank-search .form-control {
+    padding-left: 43px;
 }
 
 /* ==========================================================
@@ -2597,3 +2566,10 @@ html body .navbar .navbar-nav .nav-item.border-left {
     .customer-detail .value a:hover {
         color: #f5d77b;
     }
+
+/* Deposit / Withdraw form buttons */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}

@@ -26,11 +26,9 @@
 
         @if (User.IsInRole("Cashier"))
         {
-            <div class="customer-edit-btn">
-                <a class="bank-btn" asp-page="/Admin/Deposit" asp-route-id="@Model.Account.AccountId">Deposit</a>
-                <a class="bank-btn" asp-page="/Admin/Withdraw" asp-route-id="@Model.Account.AccountId">Withdraw</a>
-                <a class="bank-btn" asp-page="/Admin/Transfer" asp-route-id="@Model.Account.AccountId">Transfer</a>
-            </div>
+            <a class="bank-btn customer-edit-btn" asp-page="/Admin/Deposit" asp-route-id="@Model.Account.AccountId">
+                <i class="mdi mdi-cash-plus"></i>&nbsp;Deposit
+            </a>
         }
     </div>
 </div>

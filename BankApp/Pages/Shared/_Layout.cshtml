@@ -16,7 +16,7 @@
     <!-- Corona main style -->
     <link rel="stylesheet" href="~/css/style.css" />
     <!-- My css style -->
-    <link rel="stylesheet" href="~/my-css/style.css" />
+    <link rel="stylesheet" href="~/my-css/style.css" asp-append-version="true" />
     <!-- Page-specific styles (e.g. the map on the start page) -->
     @await RenderSectionAsync("Styles", required: false)
 
@@ -349,7 +349,7 @@
     <script src="~/js/misc.js"></script>
 
     <!-- My javascript -->
-    <script src="~/my-js/script.js"></script>
+    <script src="~/my-js/script.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

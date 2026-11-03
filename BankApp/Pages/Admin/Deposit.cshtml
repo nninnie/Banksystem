@@ -1,0 +1,70 @@
+﻿@page "{id:int}"
+@model BankApp.Pages.Admin.DepositModel
+@{
+    ViewData["Title"] = "Deposit";
+}
+
+<div class="page-breadcrumb">
+    <a asp-page="/Index">
+        <i class="mdi mdi-home"></i>
+    </a>
+    <span>›</span>
+    <a asp-page="/Admin/Customers">Customers</a>
+    <span>›</span>
+    <a asp-page="/Admin/Customer" asp-route-id="@Model.Account.CustomerId">@Model.Account.CustomerName</a>
+    <span>›</span>
+    <a asp-page="/Admin/Account" asp-route-id="@Model.Account.AccountId">Account @Model.Account.AccountId</a>
+    <span>›</span>
+    <span>Deposit</span>
+</div>
+
+<!-- Page header -->
+<div class="welcome-card customer-hero">
+    <h2 class="welcome-title">Deposit</h2>
+    <p class="section-subtitle">Add money to account @Model.Account.AccountId.</p>
+</div>
+
+<div class="customer-profile-layout">
+
+    <!-- Form -->
+    <div class="dashboard-card">
+        <h3 class="card-title">
+            <i class="mdi mdi-cash-plus icon"></i>
+            New Deposit
+        </h3>
+
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Input.Amount">Amount (SEK)</label>
+                <input asp-for="Input.Amount" class="form-control" placeholder="0.00" />
+                <span asp-validation-for="Input.Amount" class="text-danger"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="bank-btn">Confirm deposit</button>
+                <a class="bank-btn-outline" asp-page="/Admin/Account" asp-route-id="@Model.Account.AccountId">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Current balance -->
+    <div class="dashboard-card balance-card">
+        <h3 class="card-title">
+            <i class="mdi mdi-currency-usd icon"></i>
+            Current Balance
+        </h3>
+
+        <div class="balance-value">
+            @($"{Model.Account.Balance:N2} SEK")
+        </div>
+
+        <div class="balance-label">
+            @Model.Account.CustomerName · Account @Model.Account.AccountId
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

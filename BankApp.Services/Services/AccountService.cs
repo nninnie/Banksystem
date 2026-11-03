@@ -2,6 +2,8 @@ using BankApp.DataAccessLayer.DTOs;
 using BankApp.DataAccessLayer.Models;
 using BankApp.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using BankApp.Services.Enums;
+
 
 namespace BankApp.Services.Services
 {
@@ -63,6 +65,35 @@ namespace BankApp.Services.Services
                 Amount = t.Amount,
                 Balance = t.Balance
             }).ToList();
+        }
+
+        // Deposit – adds money to the account and saves a Credit transaction
+        public async Task<ErrorCode> DepositAsync(int accountId, decimal amount)
+        {
+            if (amount <= 0)
+                return ErrorCode.IncorrectAmount;
+
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountId == accountId);   
+
+            if (account == null)
+                return ErrorCode.AccountNotFound;
+
+            account.Balance += amount;
+
+            // The balance only changes together with a transaction row
+            _context.Transactions.Add(new Transaction
+            {
+                AccountId = accountId,
+                Date = DateOnly.FromDateTime(DateTime.Today),
+                Type = "Credit",
+                Operation = "Credit in Cash",
+                Amount = amount,
+                Balance = account.Balance
+            });
+
+            await _context.SaveChangesAsync();
+            return ErrorCode.OK;
+
         }
     }
 }

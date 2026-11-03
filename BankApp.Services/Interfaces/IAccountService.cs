@@ -1,4 +1,5 @@
 using BankApp.DataAccessLayer.DTOs;
+using BankApp.Services.Enums;
 
 namespace BankApp.Services.Interfaces
 {
@@ -7,5 +8,8 @@ namespace BankApp.Services.Interfaces
     {
         Task<AccountDto?> GetAccountAsync(int accountId);
         Task<List<TransactionDto>> GetTransactionsAsync(int accountId, int skip, int take);
+
+        // Deposit – returns OK or the reason it failed
+        Task<ErrorCode> DepositAsync(int accountId, decimal amount);
     }
 }
