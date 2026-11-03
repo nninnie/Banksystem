@@ -1904,6 +1904,12 @@ html body .form-control:-webkit-autofill::first-line {
         letter-spacing: 1.5px;
     }
 
+    /* Customer name in gold */
+    .customer-detail .customer-name-value {
+        color: var(--gold);
+        font-weight: 600;
+    }
+
 /* ----- Balance card ----- */
 .balance-card {
     position: relative;

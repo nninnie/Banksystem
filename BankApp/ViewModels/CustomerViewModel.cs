@@ -45,6 +45,7 @@ namespace BankApp.ViewModels
 
         // Properties are read-only, do not need validation attributes
         public decimal TotalBalance { get; set; }
+        public DateOnly? Birthday { get; set; }
         public List<AccountViewModel> Accounts { get; set; } = new List<AccountViewModel>();
     }
 }
