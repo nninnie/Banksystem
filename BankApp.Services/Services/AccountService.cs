@@ -95,5 +95,37 @@ namespace BankApp.Services.Services
             return ErrorCode.OK;
 
         }
+
+
+        // Withdraw – removes money from the account and saves a Debit transaction
+        public async Task<ErrorCode> WithdrawAsync(int accountId, decimal amount)
+        {
+            if (amount <= 0)
+                return ErrorCode.IncorrectAmount;
+
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountId == accountId);
+
+            if (account == null)
+                return ErrorCode.AccountNotFound;
+
+            if (amount > account.Balance) 
+                return ErrorCode.BalanceTooLow;
+
+            account.Balance -= amount;
+
+            // Balance only changes through a transaction (amount is negative for withdrawals)
+            _context.Transactions.Add(new Transaction
+            {
+                AccountId = accountId,
+                Date = DateOnly.FromDateTime(DateTime.Today),
+                Type = "Debit",
+                Operation = "Withdrawal in Cash",
+                Amount = -amount,
+                Balance = account.Balance
+            });
+
+            await _context.SaveChangesAsync();
+            return ErrorCode.OK;
+        }
     }
 }

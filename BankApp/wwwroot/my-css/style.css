@@ -2579,3 +2579,10 @@ html body .form-control:-webkit-autofill::first-line {
     gap: 12px;
     margin-top: 24px;
 }
+
+/* Cashier buttons in header */
+.account-actions {
+    display: flex;
+    gap: 12px;
+    margin-left: auto;
+}

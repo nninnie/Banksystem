@@ -11,5 +11,8 @@ namespace BankApp.Services.Interfaces
 
         // Deposit – returns OK or the reason it failed
         Task<ErrorCode> DepositAsync(int accountId, decimal amount);
+
+        // Withdraw – returns OK or the reason it failed
+        Task<ErrorCode> WithdrawAsync(int accountId, decimal amount);
     }
 }
