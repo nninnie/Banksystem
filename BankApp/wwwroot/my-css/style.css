@@ -2109,6 +2109,64 @@ html body input[type="number"] {
     }
 }
 
+/* Cashier shortcuts in the customer's account list */
+.account-quick-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Round green ring */
+.accounts-card .account-quick-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--ring-bg);
+    border: 1px solid var(--ring-border);
+    box-shadow: var(--ring-shadow);
+    color: var(--gold);
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+    /* Center the icon */
+    .accounts-card .account-quick-actions a i {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1;
+        text-align: center;
+    }
+
+        .accounts-card .account-quick-actions a i::before {
+            display: block;
+            margin: 0;
+            line-height: 1;
+            transform: translateY(1px); /* nudge it down */
+        }
+
+    /* Hover */
+    .accounts-card .account-quick-actions a:hover {
+        border-color: var(--ring-border-hover);
+        box-shadow: var(--ring-shadow-hover);
+        color: var(--gold-bright);
+    }
+
+/* Actions column, so Balance stays close */
+.accounts-card .mybank-table th:last-child,
+.accounts-card .mybank-table td.account-action {
+    width: 1%;
+    white-space: nowrap;
+    padding-left: 24px;
+}
 
 /* ==========================================================
    13. WELCOME HERO

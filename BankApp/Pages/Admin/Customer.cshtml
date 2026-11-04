@@ -130,7 +130,7 @@
                 <tr>
                     <th>Account Number</th>
                     <th class="currency">Balance</th>
-                    <th></th>
+                    <th class="currency">@(User.IsInRole("Cashier") ? "Actions" : "")</th>
                 </tr>
             </thead>
 
@@ -141,7 +141,7 @@
                         onclick="location.href='@Url.Page("/Admin/Account", new { id = account.AccountId })'">
 
                         <td>
-                            <i class="mdi mdi-credit-card-outline account-icon"></i>
+                            <i class="mdi mdi-wallet-outline account-icon"></i>
 
                             <span class="account-number">
                                 Account: @account.AccountId
@@ -153,7 +153,25 @@
                         </td>
 
                         <td class="account-action">
-                            <i class="mdi mdi-chevron-right"></i>
+                            @if (User.IsInRole("Cashier"))
+                            {
+                                <!-- Shortcuts: stopPropagation stops the row click so only the button is used -->
+                                <div class="account-quick-actions">
+                                    <a asp-page="/Admin/Deposit" asp-route-id="@account.AccountId" title="Deposit" onclick="event.stopPropagation()">
+                                        <i class="mdi mdi-plus-circle-outline"></i>
+                                    </a>
+                                    <a asp-page="/Admin/Withdraw" asp-route-id="@account.AccountId" title="Withdraw" onclick="event.stopPropagation()">
+                                        <i class="mdi mdi-minus-circle-outline"></i>
+                                    </a>
+                                    <a asp-page="/Admin/Transfer" asp-route-id="@account.AccountId" title="Transfer" onclick="event.stopPropagation()">
+                                        <i class="mdi mdi-swap-horizontal"></i>
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <i class="mdi mdi-chevron-right"></i>
+                            }
                         </td>
 
                     </tr>

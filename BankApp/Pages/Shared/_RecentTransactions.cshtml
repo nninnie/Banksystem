@@ -1,0 +1,40 @@
+﻿@model List<BankApp.ViewModels.TransactionViewModel>
+
+<!-- Reusable card: the latest transactions on an account (Deposit, Withdraw, Transfer) -->
+<div class="dashboard-card accounts-card account-transactions-card">
+    <h3 class="card-title">
+        <i class="mdi mdi-history icon"></i>
+        Latest Transactions
+    </h3>
+
+    @if (!Model.Any())
+    {
+        <p class="section-subtitle">No transactions yet.</p>
+    }
+    else
+    {
+        <table class="mybank-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Operation</th>
+                    <th class="currency">Amount</th>
+                    <th class="currency">Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+                    <tr>
+                        <td>@t.Date.ToString("yyyy-MM-dd")</td>
+                        <td>@t.Type</td>
+                        <td>@(string.IsNullOrEmpty(t.Operation) ? "–" : t.Operation)</td>
+                        <td class="currency @(t.Amount < 0 ? "negative" : "positive")">@($"{t.Amount:N2} SEK")</td>
+                        <td class="currency">@($"{t.Balance:N2} SEK")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

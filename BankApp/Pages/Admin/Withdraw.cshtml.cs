@@ -24,6 +24,9 @@ namespace BankApp.Pages.Admin
         // Shown on the page: owner, account number, balance
         public AccountViewModel Account { get; set; } = new();
 
+        // The 5 latest transactions, shown under the form
+        public List<TransactionViewModel> RecentTransactions { get; set; } = new();
+
         // Typed in the form, filled automatically on POST
         [BindProperty]
         public DepositWithdrawViewModel Input { get; set; } = new();
@@ -37,6 +40,10 @@ namespace BankApp.Pages.Admin
                 return NotFound();
 
             Account = _mapper.Map<AccountViewModel>(account);
+
+            var transactions = await _accountService.GetTransactionsAsync(id, 0, 5);
+            RecentTransactions = _mapper.Map<List<TransactionViewModel>>(transactions);
+
             return Page();
         }
 
@@ -49,6 +56,9 @@ namespace BankApp.Pages.Admin
                 return NotFound();
 
             Account = _mapper.Map<AccountViewModel>(account);
+
+            var transactions = await _accountService.GetTransactionsAsync(id, 0, 5);
+            RecentTransactions = _mapper.Map<List<TransactionViewModel>>(transactions);
 
             // Server-side validation
             if (!ModelState.IsValid)
