@@ -127,5 +127,56 @@ namespace BankApp.Services.Services
             await _context.SaveChangesAsync();
             return ErrorCode.OK;
         }
+
+
+        // Transfer – moves money between two accounts, one transaction on each
+        public async Task<ErrorCode> TransferAsync(int fromAccountId, int toAccountId, decimal amount)
+        {
+            if (amount <= 0)
+                return ErrorCode.IncorrectAmount;
+
+            if (fromAccountId == toAccountId)
+                return ErrorCode.SameAccount;
+
+            var fromAccount = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountId == fromAccountId);
+            var toAccount = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountId == toAccountId);
+
+            if (fromAccount == null || toAccount == null)
+                return ErrorCode.AccountNotFound;
+            
+            if (amount > fromAccount.Balance)
+                return ErrorCode.BalanceTooLow;
+
+            fromAccount.Balance -= amount;
+            toAccount.Balance += amount;
+
+            var today = DateOnly.FromDateTime(DateTime.Today);
+
+            // Money out from the sender (negative amount)
+            _context.Transactions.Add(new Transaction
+            {
+                AccountId = fromAccountId,
+                Date = today,
+                Type = "Debit",
+                Operation = $"Transfer to account {toAccountId}",
+                Amount = -amount,
+                Balance = fromAccount.Balance
+            });
+
+            // Money in to the receiver
+            _context.Transactions.Add(new Transaction
+            {
+                AccountId = toAccountId,
+                Date = today,
+                Type = "Credit",
+                Operation = $"Transfer from account {fromAccountId}",
+                Amount = amount,
+                Balance = toAccount.Balance
+            });
+
+            // One SaveChanges = both sides are saved together, or nothing
+            await _context.SaveChangesAsync();
+            return ErrorCode.OK;
+        }
     }
 }

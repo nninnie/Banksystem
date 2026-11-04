@@ -26,13 +26,16 @@
 
         @if (User.IsInRole("Cashier"))
         {
-            <!-- Cashier actions: deposit and withdraw -->
+            <!-- Cashier actions: deposit, withdraw and transfer -->
             <div class="account-actions">
                 <a class="bank-btn customer-edit-btn" asp-page="/Admin/Deposit" asp-route-id="@Model.Account.AccountId">
                     <i class="mdi mdi-plus-circle-outline"></i>&nbsp;Deposit
                 </a>
                 <a class="bank-btn customer-edit-btn" asp-page="/Admin/Withdraw" asp-route-id="@Model.Account.AccountId">
                     <i class="mdi mdi-minus-circle-outline"></i>&nbsp;Withdraw
+                </a>
+                <a class="bank-btn customer-edit-btn" asp-page="/Admin/Transfer" asp-route-id="@Model.Account.AccountId">
+                    <i class="mdi mdi-swap-horizontal"></i>&nbsp;Transfer
                 </a>
             </div>
         }

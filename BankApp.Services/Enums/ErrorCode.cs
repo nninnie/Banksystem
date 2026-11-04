@@ -6,6 +6,7 @@
         OK,
         BalanceTooLow,
         IncorrectAmount,
-        AccountNotFound
+        AccountNotFound,
+        SameAccount
     }
 }
