@@ -1,5 +1,8 @@
 <Solution>
-  <Project Path="BankApp/BankApp.csproj" />
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
   <Project Path="BankApp.DataAccessLayer/BankApp.DataAccessLayer.csproj" />
   <Project Path="BankApp.Services/BankApp.Services.csproj" />
+  <Project Path="BankApp/BankApp.csproj" />
 </Solution>
