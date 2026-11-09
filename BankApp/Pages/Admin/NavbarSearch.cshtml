@@ -1,0 +1,29 @@
+﻿@page
+@model BankApp.Pages.Admin.NavbarSearchModel
+@{
+    ViewData["Title"] = "Find customer";
+}
+
+<div class="dashboard-card">
+    <h3 class="card-title">
+        <i class="mdi mdi-magnify icon"></i>
+        Find customer
+    </h3>
+    <p class="section-subtitle">Enter a customer number to open the customer profile.</p>
+
+    <form method="get">
+        <div class="form-group">
+            <label asp-for="Search.CustomerId">Customer number</label>
+            <input asp-for="Search.CustomerId" class="form-control" min="1" placeholder="e.g. 25" />
+            <span asp-validation-for="Search.CustomerId" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="bank-btn">
+            <i class="mdi mdi-magnify"></i> Find
+        </button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

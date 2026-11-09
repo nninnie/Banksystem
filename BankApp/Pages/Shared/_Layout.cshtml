@@ -158,12 +158,17 @@
                         <span class="mdi mdi-menu"></span>
                     </button>
 
-                    <!-- SEARCH -->
+                    <!-- SEARCH - find a customer by customer number (Admin/Cashier) -->
                     <ul class="navbar-nav w-100">
                         <li class="nav-item w-100">
-                            <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                                <input type="text" id="globalSearch" class="form-control" placeholder="Search pages...">
-                            </form>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Cashier"))
+                            {
+                                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search"
+                                      method="get" asp-page="/Admin/NavbarSearch">
+                                    <input type="number" name="Search.CustomerId" min="1"
+                                           class="form-control" placeholder="Search customer number..." />
+                                </form>
+                            }
                         </li>
                     </ul>
 
