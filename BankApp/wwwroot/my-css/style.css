@@ -678,9 +678,18 @@ html body .navbar .navbar-nav .nav-item.border-left {
         width: 9px;
         height: 9px;
         border: 1.5px solid var(--navbar);
-        background: var(--gold) !important;
-        box-shadow: 0 0 6px rgba(242, 214, 117, .6);
     }
+
+        #notificationDropdown .count.dot-info,
+        #messageDropdown .count.dot-info {
+            background: var(--positive) !important;
+            box-shadow: 0 0 6px var(--positive);
+        }
+
+        #notificationDropdown .count.dot-warning {
+            background: var(--negative) !important;
+            box-shadow: 0 0 6px var(--negative);
+        }
 
 /* ----- Profile ----- */
 .navbar #profileDropdown {

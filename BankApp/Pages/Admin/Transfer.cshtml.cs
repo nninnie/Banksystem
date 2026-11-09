@@ -67,7 +67,10 @@ namespace BankApp.Pages.Admin
             var result = await _accountService.TransferAsync(id, Input.ToAccountId!.Value, Input.Amount);
 
             if (result == ErrorCode.OK)
+            {
+                TempData["TransferCompleted"] = true;
                 return RedirectToPage("/Admin/Account", new { id });
+            }
 
             if (result == ErrorCode.IncorrectAmount)
                 ModelState.AddModelError("Input.Amount", "Amount must be greater than 0.");

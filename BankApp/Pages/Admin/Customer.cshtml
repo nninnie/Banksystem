@@ -30,12 +30,14 @@
             <p class="section-subtitle">View customer details, accounts and balances.</p>
         </div>
 
-        @if (User.IsInRole("Cashier"))
-        {
-            <a class="bank-btn customer-edit-btn" asp-page="/Admin/EditCustomer" asp-route-id="@Model.Customer.CustomerId">
-                <i class="mdi mdi-pencil-outline"></i>&nbsp;Edit
-            </a>
-        }
+        @* Edit customer - enable when EditCustomer (CRUD) is built
+@if (User.IsInRole("Cashier"))
+{
+    <a class="bank-btn customer-edit-btn" asp-page="/Admin/EditCustomer" asp-route-id="@Model.Customer.CustomerId">
+        <i class="mdi mdi-pencil-outline"></i>&nbsp;Edit
+    </a>
+}
+*@
     </div>
 </div>
 

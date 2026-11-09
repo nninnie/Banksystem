@@ -21,6 +21,7 @@ namespace BankApp.Pages.Admin
         public string DisplayName { get; set; } = "";
 
         public string Greeting { get; set; } = "";
+        public DateTime Today { get; set; }
 
         public DashboardModel(IDashboardService dashboardService, ITransactionService transactionService)
         {
@@ -47,7 +48,8 @@ namespace BankApp.Pages.Admin
             }).ToList();
 
 
-            var hour = DateTime.Now.Hour;
+            Today = SwedishTime.Now;
+            var hour = Today.Hour;
 
             Greeting = hour switch
             {

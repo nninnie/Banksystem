@@ -28,51 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-/* ==========================================================
-   SEARCH – Global navbar search (navigate between pages)
-   ========================================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const searchInput = document.getElementById("globalSearch");
-
-    if (!searchInput) return;
-
-    const pages = {
-        dashboard: "/Admin/Dashboard",
-
-        customers: "/Admin/Customers",
-        customer: "/Admin/Customers",
-
-        country: "/Country",
-        countries: "/Country",
-
-        login: "/Login",
-        logout: "/Logout",
-
-        home: "/",
-        index: "/"
-    };
-
-    searchInput.addEventListener("keydown", function (e) {
-
-        if (e.key !== "Enter") return;
-
-        e.preventDefault();
-
-        const term = this.value.trim().toLowerCase();
-
-        for (const key in pages) {
-
-            if (term.includes(key)) {
-                window.location.href = pages[key];
-                return;
-            }
-        }
-
-        alert("No matching page found.");
-    });
-});
 
 /* ==========================================================
    DASHBOARD - CUSTOMER PER COUNTRY 

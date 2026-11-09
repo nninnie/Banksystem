@@ -67,7 +67,12 @@ namespace BankApp.Pages.Admin
             var result = await _accountService.WithdrawAsync(id, Input.Amount);
 
             if (result == ErrorCode.OK)
+            {
+                if (Input.Amount > 15000)
+                    TempData["LargeWithdrawal"] = true;
+
                 return RedirectToPage("/Admin/Account", new { id });
+            }
 
             if (result == ErrorCode.IncorrectAmount)
                 ModelState.AddModelError("Input.Amount", "Amount must be greater than 0.");
