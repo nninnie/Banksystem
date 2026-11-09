@@ -127,7 +127,8 @@
                  code = CountryFlags.IsoCode(c.Country),
                  customers = c.CustomerCount,
                  accounts = c.AccountCount,
-                 balance = c.TotalBalance
+                 balance = c.TotalBalance,
+                 currency = CountryCurrency.Code(c.Country)
                  })))">
         </div>
 

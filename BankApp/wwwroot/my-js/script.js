@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
         `<strong>${c.name}</strong><br>` +
         `Customers: ${fmt(c.customers)}<br>` +
         `Accounts: ${fmt(c.accounts)}<br>` +
-        `Balance: ${fmt(c.balance)} SEK`;
+        `Balance: ${fmt(c.balance)} ${c.currency}`;
 
     // Goes to the Top 10 page for a country
     const openCountry = (c) =>
@@ -364,6 +364,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const table = document.getElementById("transactions-table");
     const button = document.getElementById("show-more-btn");
 
+    // Currency of the account's country, set on the table by Account.cshtml
+    const currency = table.dataset.currency;
+
     // Only runs on the account page
     if (!table || !button) return;
 
@@ -397,8 +400,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${new Date(element.date).toLocaleDateString("sv-SE")}</td>
                 <td>${element.type}</td>
                 <td>${element.operation ?? "–"}</td>
-                <td class="currency ${amountClass}">${fmt(element.amount)} SEK</td>
-                <td class="currency">${fmt(element.balance)} SEK</td>
+                <td class="currency ${amountClass}">${fmt(element.amount)} ${currency}</td>
+                <td class="currency">${fmt(element.balance)} ${currency}</td>
             </tr>`;
     }
 

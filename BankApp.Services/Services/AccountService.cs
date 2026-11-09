@@ -38,6 +38,11 @@ namespace BankApp.Services.Services
                     CustomerName = a.Dispositions
                         .Where(d => d.Type == "OWNER")
                         .Select(d => d.Customer.Givenname + " " + d.Customer.Surname)
+                        .FirstOrDefault() ?? "",
+                    // Country of the owner - used to show the right currency
+                    Country = a.Dispositions
+                        .Where(d => d.Type == "OWNER")
+                        .Select(d => d.Customer.Country)
                         .FirstOrDefault() ?? ""
                 })
                 .FirstOrDefaultAsync();

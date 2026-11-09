@@ -71,7 +71,7 @@
                     <div class="data-row balance-row">
                         <i class="mdi mdi-cash-multiple icon"></i>
                         <span class="label">Total balance</span>
-                        <span class="value">@c.TotalBalance.ToString("N2") kr</span>
+                        <span class="value">@c.TotalBalance.ToString("N2") @CountryCurrency.Code(c.Country)</span>
                     </div>
 
                     <div class="country-footer">
@@ -137,7 +137,7 @@
                 </div>
                 <div class="transaction-amount-wrap">
                     <span class="transaction-amount @(t.IsDebit ? "negative" : "positive")">
-                        @(t.IsDebit ? "-" : "+")@t.Amount.ToString("N2") kr
+                        @(t.IsDebit ? "-" : "+")@t.Amount.ToString("N2")
                     </span>
                     <span class="transaction-date">@t.Date.ToString("yyyy-MM-dd")</span>
                 </div>

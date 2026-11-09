@@ -1,4 +1,8 @@
 ﻿@model List<BankApp.ViewModels.TransactionViewModel>
+@{
+    // Set by the page that shows this partial (Deposit, Withdraw, Transfer)
+    var currency = ViewData["Currency"] as string ?? "";
+}
 
 <!-- Reusable card: the latest transactions on an account (Deposit, Withdraw, Transfer) -->
 <div class="dashboard-card accounts-card account-transactions-card">
@@ -30,8 +34,8 @@
                         <td>@t.Date.ToString("yyyy-MM-dd")</td>
                         <td>@t.Type</td>
                         <td>@(string.IsNullOrEmpty(t.Operation) ? "–" : t.Operation)</td>
-                        <td class="currency @(t.Amount < 0 ? "negative" : "positive")">@($"{t.Amount:N2} SEK")</td>
-                        <td class="currency">@($"{t.Balance:N2} SEK")</td>
+                        <td class="currency @(t.Amount < 0 ? "negative" : "positive")">@($"{t.Amount:N2} {currency}")</td>
+                        <td class="currency">@($"{t.Balance:N2} {currency}")</td>
                     </tr>
                 }
             </tbody>

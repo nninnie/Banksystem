@@ -105,7 +105,7 @@
         </h3>
 
         <div class="balance-value">
-            @($"{Model.Customer.TotalBalance:N2} SEK")
+            @($"{Model.Customer.TotalBalance:N2} {CountryCurrency.Code(Model.Customer.Country)}")
         </div>
 
         <div class="balance-label">
@@ -151,7 +151,7 @@
                         </td>
 
                         <td class="currency">
-                            @($"{account.Balance:N2} SEK")
+                            @($"{account.Balance:N2} {CountryCurrency.Code(Model.Customer.Country)}")
                         </td>
 
                         <td class="account-action">

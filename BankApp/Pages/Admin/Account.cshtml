@@ -85,7 +85,7 @@
         </h3>
 
         <div class="balance-value">
-            @($"{Model.Account.Balance:N2} SEK")
+            @($"{Model.Account.Balance:N2} {CountryCurrency.Code(Model.Account.Country)}")
         </div>
 
         <div class="balance-label">
@@ -102,7 +102,8 @@
 
         <!-- data-url = address of OnGetShowMoreAsync, read by script.js -->
         <table class="mybank-table" id="transactions-table"
-               data-url="@Url.Page("/Admin/Account", "ShowMore", new { id = Model.Account.AccountId })">
+               data-url="@Url.Page("/Admin/Account", "ShowMore", new { id = Model.Account.AccountId })"
+               data-currency="@CountryCurrency.Code(Model.Account.Country)">
             <thead>
                 <tr>
                     <th>Date</th>
