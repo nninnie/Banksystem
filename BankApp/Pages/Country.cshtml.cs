@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using AutoMapper;
 
 namespace BankApp.Pages
 {
@@ -17,10 +18,12 @@ namespace BankApp.Pages
     public class CountryModel : PageModel
     {
         private readonly ICustomerService _customerService;
+        private readonly IMapper _mapper;
 
-        public CountryModel(ICustomerService customerService)
+        public CountryModel(ICustomerService customerService, IMapper mapper)
         {
             _customerService = customerService;
+            _mapper = mapper;
         }
 
         // The country comes from the URL, e.g. /Country?country=Sweden
@@ -38,14 +41,7 @@ namespace BankApp.Pages
             var customers = await _customerService
                 .GetTopCustomersByCountryAsync(Country, 10);
 
-            TopCustomers = customers.Select(c => new CustomerViewModel
-            {
-                CustomerId = c.CustomerId,
-                FullName = c.FullName,
-                City = c.City,
-                Country = c.Country,
-                TotalBalance = c.TotalBalance
-            }).ToList();
+            TopCustomers = _mapper.Map<List<CustomerViewModel>>(customers);
         }
     }
 }
