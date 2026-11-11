@@ -6,7 +6,8 @@
 
 Ett administrationssystem för bankens anställda (**Admins** och **Cashiers**), byggt med **ASP.NET Core Razor Pages**, **Entity Framework Core** och **ASP.NET Core Identity**.
 Systemet hanterar kunder, konton, saldon och transaktioner mot en befintlig bankdatabas (Database First).
-Projektet är en individuell examinationsuppgift i kursen *Programmering med C# .NET* på YH Akademin och är byggt som ett riktigt system, med fokus på lagerindelning, validering och säkerhet.
+Utvecklat som en del av utbildningen Systemutvecklare .NET på YH Akademin.
+Projektet är byggt som ett riktigt bankadministrationssystem med fokus på arkitektur, lagerindelning, validering, säkerhet och användarroller.
 
 > Kunderna är inte systemanvändare. Det är bankens anställda som loggar in och arbetar i systemet.
 
@@ -14,7 +15,7 @@ Projektet är en individuell examinationsuppgift i kursen *Programmering med C# 
 
 ## 🌍 Live-demo
 
-**Azure:** *(länk läggs till efter driftsättning)*
+**Azure:** *https://bankapp-ninnie-afebhbh6b8cjezg0.swedencentral-01.azurewebsites.net*
 
 ---
 
