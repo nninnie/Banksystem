@@ -20,6 +20,8 @@
    16. Customer search form
    17. Country map
    18. Account Page
+   19. Responsive tables
+   20. ResponsiveTweaks
    ========================================================== */
 
 
@@ -2533,6 +2535,12 @@ html body input[type="number"] {
         margin-top: 0;
     }
 
+    /* Table wrapper fills the grid cell, so the table matches the map card */
+    .country-overview .table-responsive,
+    .country-overview .table-responsive .mybank-table {
+        height: 100%;
+    }
+
 /* Map card */
 .map-card {
     display: flex;
@@ -2610,7 +2618,7 @@ html body input[type="number"] {
     box-shadow: 0 8px 24px rgba(0, 0, 0, .45);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1300px) {
     .country-overview {
         grid-template-columns: 1fr;
     }
@@ -2665,4 +2673,155 @@ html body input[type="number"] {
     display: flex;
     gap: 12px;
     margin-left: auto;
+}
+
+/* ==========================================================
+   19. RESPONSIVE TABLES - each row becomes a card on mobile
+   ========================================================== */
+@media (max-width: 576px) {
+    .mybank-table thead {
+        display: none;
+    }
+
+    .mybank-table,
+    .mybank-table tbody,
+    .mybank-table tr,
+    .mybank-table td {
+        display: block;
+        width: 100%;
+    }
+
+        .mybank-table tr {
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            border: 1px solid var(--gold-line);
+            border-radius: 12px;
+        }
+
+        .mybank-table td {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 6px 0;
+            border: 0;
+            text-align: right;
+        }
+
+            .mybank-table td::before {
+                content: attr(data-label);
+                color: var(--muted);
+                font-weight: 500;
+                text-align: left;
+            }
+}
+
+/* ==========================================================
+   20. RESPONSIVE TWEAKS
+   ========================================================== */
+
+/* Tablet and mobile: tighter navbar so the menu button fits */
+@media (max-width: 991px) {
+    html body .navbar .navbar-nav.navbar-nav-right {
+        gap: 6px;
+        padding-right: 8px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-title {
+        white-space: normal;
+    }
+
+    /* The map is too small to use on a phone. The table has the same links. */
+    .map-card {
+        display: none !important;
+    }
+}
+
+
+/* Customer Accounts-kortet */
+@media (max-width: 576px) {
+
+    .account-summary-card {
+        padding: 1rem;
+    }
+
+    .account-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        justify-content: flex-start;
+    }
+
+        .account-actions .btn,
+        .account-actions a {
+            min-width: 44px;
+            min-height: 44px;
+        }
+}
+
+/* Dropdow ikons + text navbar*/
+@media (max-width: 576px) {
+
+    .dropdown-menu {
+        width: 90vw !important;
+        max-width: 320px;
+        right: 0;
+        left: auto;
+    }
+
+    .dropdown-item {
+        white-space: normal;
+        word-break: break-word;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .navbar .nav-link {
+        padding: .4rem;
+    }
+
+    .navbar .menu-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .navbar .navbar-nav {
+        gap: .25rem;
+    }
+}
+
+/* dashboard */
+
+
+
+@media (max-width: 576px) {
+    .stat-number {
+        font-size: 1.25rem;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        line-height: 1.2;
+    }
+    .stat-title {
+        font-size: .9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .country-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 576px) {
+    .content-wrapper {
+        max-width: 100%;
+    }
 }

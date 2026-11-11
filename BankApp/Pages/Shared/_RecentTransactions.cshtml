@@ -17,6 +17,7 @@
     }
     else
     {
+        <div class="table-responsive">
         <table class="mybank-table">
             <thead>
                 <tr>
@@ -29,16 +30,17 @@
             </thead>
             <tbody>
                 @foreach (var t in Model)
-                {
-                    <tr>
-                        <td>@t.Date.ToString("yyyy-MM-dd")</td>
-                        <td>@t.Type</td>
-                        <td>@(string.IsNullOrEmpty(t.Operation) ? "–" : t.Operation)</td>
-                        <td class="currency @(t.Amount < 0 ? "negative" : "positive")">@($"{t.Amount:N2} {currency}")</td>
-                        <td class="currency">@($"{t.Balance:N2} {currency}")</td>
-                    </tr>
+                    {
+                        <tr>
+                            <td data-label="Date">@t.Date.ToString("yyyy-MM-dd")</td>
+                            <td data-label="Type">@t.Type</td>
+                            <td data-label="Operation">@(string.IsNullOrEmpty(t.Operation) ? "–" : t.Operation)</td>
+                            <td class="currency @(t.Amount < 0 ? "negative" : "positive")" data-label="Amount">@($"{t.Amount:N2} {currency}")</td>
+                            <td class="currency" data-label="Balance">@($"{t.Balance:N2} {currency}")</td>
+                        </tr>
                 }
             </tbody>
         </table>
+        </div>
     }
 </div>

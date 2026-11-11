@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<BankApp.DataAccessLayer.DTOs.CountryDashboardDto>
 
+<div class="table-responsive">
 <table class="mybank-table">
     <thead>
         <tr>
@@ -9,28 +10,29 @@
             <th class="currency">Total Balance</th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var country in Model)
-        {
-            <tr class="clickable-row">
-                <td>
-                    <a asp-page="/Country"
-                       asp-route-country="@country.Country"
-                       class="stretched-link country-link">
-                        <img src="@CountryFlags.Wide(country.Country)"
-                             class="country-flag"
-                             alt="@country.Country" />
-                        @country.Country
-                    </a>
-                </td>
-                <td class="country-name">
-                    @country.CustomerCount.ToString("N0")
-                </td>
-                <td>@country.AccountCount.ToString("N0")</td>
-                <td class="currency primary-value">
-                    @country.TotalBalance.ToString("N2")
-                </td>
-            </tr>
-        }
-    </tbody>
+        <tbody>
+            @foreach (var country in Model)
+            {
+                <tr class="clickable-row">
+                    <td data-label="Country">
+                        <a asp-page="/Country"
+                           asp-route-country="@country.Country"
+                           class="stretched-link country-link">
+                            <img src="@CountryFlags.Wide(country.Country)"
+                                 class="country-flag"
+                                 alt="@country.Country" />
+                            @country.Country
+                        </a>
+                    </td>
+                    <td class="country-name" data-label="Customers">
+                        @country.CustomerCount.ToString("N0")
+                    </td>
+                    <td data-label="Accounts">@country.AccountCount.ToString("N0")</td>
+                    <td class="currency primary-value" data-label="Total Balance">
+                        @country.TotalBalance.ToString("N2")
+                    </td>
+                </tr>
+            }
+        </tbody>
 </table>
+</div>

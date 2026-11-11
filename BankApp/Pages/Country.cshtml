@@ -121,6 +121,7 @@ else
             <i class="mdi mdi-trophy-outline icon"></i>
             Ranking
         </h3>
+        <div class="table-responsive">
         <table class="mybank-table">
         <thead>
             <tr>
@@ -141,7 +142,7 @@ else
                 {
                     <tr class="clickable-row">
 
-                    <td class="rank-column">
+                    <td class="rank-column" data-label="Rank">
                             @switch (rank)
                             {
                                 case 1:
@@ -162,25 +163,25 @@ else
                             }
                         </td>
 
-                        <td class="customer-id">
-                            <a asp-page="/Admin/Customer"
-                               asp-route-id="@c.CustomerId"
-                               class="stretched-link">
-                                @c.CustomerId
-                            </a>
-                        </td>
+                            <td class="customer-id" data-label="Customer ID">
+                                <a asp-page="/Admin/Customer"
+                                   asp-route-id="@c.CustomerId"
+                                   class="stretched-link">
+                                    @c.CustomerId
+                                </a>
+                            </td>
 
-                        <td class="primary-value">
-                            @c.FullName
-                        </td>
+                            <td class="primary-value" data-label="Name">
+                                @c.FullName
+                            </td>
 
-                        <td>
-                            @c.City
-                        </td>
+                            <td data-label="City">
+                                @c.City
+                            </td>
 
-                        <td class="currency">
-                            @c.TotalBalance.ToString("N2")
-                        </td>
+                            <td class="currency" data-label="Total Balance">
+                                @c.TotalBalance.ToString("N2")
+                            </td>
 
                     </tr>
 
@@ -190,4 +191,6 @@ else
             </tbody>
     </table>
     </div>
+    </div>
+
 }

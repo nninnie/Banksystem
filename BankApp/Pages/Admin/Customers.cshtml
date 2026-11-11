@@ -84,6 +84,7 @@
         <i class="mdi mdi-account-multiple-outline icon"></i>
         Customers
     </h3>
+    <div class="table-responsive">
     <table class="mybank-table">
     <thead>
         <tr>
@@ -127,22 +128,23 @@
 
     <tbody>
         @foreach (var c in Model.Customers)
-        {
-            <tr class="clickable-row">
-                <td class="customer-id">
-                    <a asp-page="/Admin/Customer" asp-route-id="@c.CustomerId" class="stretched-link">
-                        @c.CustomerId
-                    </a>
-                </td>
-                <td class="national-id" >@c.NationalId</td>
-                <td class="primary-value">@c.FullName</td>
-                <td>@c.Streetaddress</td>
-                <td>@c.City</td>
-            </tr>
+               {
+                    <tr class="clickable-row">
+                        <td class="customer-id" data-label="ID">
+                            <a asp-page="/Admin/Customer" asp-route-id="@c.CustomerId" class="stretched-link">
+                                @c.CustomerId
+                            </a>
+                        </td>
+                        <td class="national-id" data-label="National ID">@c.NationalId</td>
+                        <td class="primary-value" data-label="Name">@c.FullName</td>
+                        <td data-label="Address">@c.Streetaddress</td>
+                        <td data-label="City">@c.City</td>
+                    </tr>
 
         }
     </tbody>
 </table>
+    </div>
 
 <!-- Pagination -->
 <div class="bank-pagination">

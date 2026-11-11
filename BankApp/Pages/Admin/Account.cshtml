@@ -101,6 +101,7 @@
         </h3>
 
         <!-- data-url = address of OnGetShowMoreAsync, read by script.js -->
+        <div class="table-responsive">
         <table class="mybank-table" id="transactions-table"
                data-url="@Url.Page("/Admin/Account", "ShowMore", new { id = Model.Account.AccountId })"
                data-currency="@CountryCurrency.Code(Model.Account.Country)">
@@ -116,6 +117,7 @@
             <!-- Empty – filled by script.js -->
             <tbody></tbody>
         </table>
+        </div>
 
         <div class="show-more-wrap">
             <button type="button" class="bank-btn-outline" id="show-more-btn">

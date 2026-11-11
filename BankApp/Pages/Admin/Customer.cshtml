@@ -126,7 +126,7 @@
             <i class="mdi mdi-wallet-outline icon"></i>
             Customer Accounts (@Model.Customer.Accounts.Count)
         </h3>
-
+        <div class="table-responsive">
         <table class="mybank-table">
             <thead>
                 <tr>
@@ -135,6 +135,7 @@
                     <th class="currency">@(User.IsInRole("Cashier") ? "Actions" : "")</th>
                 </tr>
             </thead>
+            
 
             <tbody>
                 @foreach (var account in Model.Customer.Accounts)
@@ -142,19 +143,19 @@
                     <tr class="clickable-row"
                         onclick="location.href='@Url.Page("/Admin/Account", new { id = account.AccountId })'">
 
-                        <td>
-                            <i class="mdi mdi-wallet-outline account-icon"></i>
+                            <td data-label="Account Number">
+                                <i class="mdi mdi-wallet-outline account-icon"></i>
 
-                            <span class="account-number">
-                                Account: @account.AccountId
-                            </span>
-                        </td>
+                                <span class="account-number">
+                                    Account: @account.AccountId
+                                </span>
+                            </td>
 
-                        <td class="currency">
-                            @($"{account.Balance:N2} {CountryCurrency.Code(Model.Customer.Country)}")
-                        </td>
+                            <td class="currency" data-label="Balance">
+                                @($"{account.Balance:N2} {CountryCurrency.Code(Model.Customer.Country)}")
+                            </td>
 
-                        <td class="account-action">
+                            <td class="account-action" data-label="@(User.IsInRole("Cashier") ? "Actions" : "")">
                             @if (User.IsInRole("Cashier"))
                             {
                                 <!-- Shortcuts: stopPropagation stops the row click so only the button is used -->
@@ -180,6 +181,8 @@
                 }
             </tbody>
         </table>
+        </div>
+       
 
     </div>
 </div>

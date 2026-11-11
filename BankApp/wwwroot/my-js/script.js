@@ -364,11 +364,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const table = document.getElementById("transactions-table");
     const button = document.getElementById("show-more-btn");
 
-    // Currency of the account's country, set on the table by Account.cshtml
-    const currency = table.dataset.currency;
-
     // Only runs on the account page
     if (!table || !button) return;
+
+    // Currency of the account's country, set on the table by Account.cshtml
+    const currency = table.dataset.currency;
 
     // Which page of 20 transactions to fetch next
     let pageNo = 1;
@@ -397,11 +397,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         table.querySelector("tbody").innerHTML +=
             `<tr>
-                <td>${new Date(element.date).toLocaleDateString("sv-SE")}</td>
-                <td>${element.type}</td>
-                <td>${element.operation ?? "–"}</td>
-                <td class="currency ${amountClass}">${fmt(element.amount)} ${currency}</td>
-                <td class="currency">${fmt(element.balance)} ${currency}</td>
+                <td data-label="Date">${new Date(element.date).toLocaleDateString("sv-SE")}</td>
+                <td data-label="Type">${element.type}</td>
+                <td data-label="Operation">${element.operation ?? "-"}</td>
+                <td class="currency ${amountClass}" data-label="Amount">${fmt(element.amount)} ${currency}</td>
+                <td class="currency" data-label="Balance">${fmt(element.balance)} ${currency}</td>
             </tr>`;
     }
 
