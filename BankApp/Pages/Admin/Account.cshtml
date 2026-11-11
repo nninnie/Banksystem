@@ -102,7 +102,7 @@
 
         <!-- data-url = address of OnGetShowMoreAsync, read by script.js -->
         <div class="table-responsive">
-        <table class="mybank-table" id="transactions-table"
+            <table class="mybank-table mobile-cards" id="transactions-table"
                data-url="@Url.Page("/Admin/Account", "ShowMore", new { id = Model.Account.AccountId })"
                data-currency="@CountryCurrency.Code(Model.Account.Country)">
             <thead>

@@ -2535,11 +2535,13 @@ html body input[type="number"] {
         margin-top: 0;
     }
 
-    /* Table wrapper fills the grid cell, so the table matches the map card */
+/* Side by side (wide screens): the table matches the map card's height */
+@media (min-width: 1301px) {
     .country-overview .table-responsive,
     .country-overview .table-responsive .mybank-table {
         height: 100%;
     }
+}
 
 /* Map card */
 .map-card {
@@ -2618,13 +2620,6 @@ html body input[type="number"] {
     box-shadow: 0 8px 24px rgba(0, 0, 0, .45);
 }
 
-@media (max-width: 1300px) {
-    .country-overview {
-        grid-template-columns: 1fr;
-    }
-}
-
-
 
 /* ==========================================================
    18. ACCOUNT PAGE
@@ -2676,43 +2671,87 @@ html body input[type="number"] {
 }
 
 /* ==========================================================
-   19. RESPONSIVE TABLES - each row becomes a card on mobile
+   19. RESPONSIVE TABLES
    ========================================================== */
 @media (max-width: 576px) {
-    .mybank-table thead {
-        display: none;
-    }
 
-    .mybank-table,
-    .mybank-table tbody,
-    .mybank-table tr,
+    /* ----- Compact tables ----- */
+    .mybank-table th,
     .mybank-table td {
-        display: block;
-        width: 100%;
+        padding: 10px 8px;
+        font-size: .85rem;
     }
 
-        .mybank-table tr {
-            margin-bottom: 12px;
-            padding: 8px 12px;
-            border: 1px solid var(--gold-line);
-            border-radius: 12px;
+    .mybank-table .country-flag {
+        width: 20px;
+    }
+
+    /* ----- Card tables ----- */
+    .mybank-table.mobile-cards {
+        background: transparent;
+        overflow: visible;
+    }
+
+        .mybank-table.mobile-cards thead {
+            display: none;
         }
 
-        .mybank-table td {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 6px 0;
-            border: 0;
-            text-align: right;
+        .mybank-table.mobile-cards,
+        .mybank-table.mobile-cards tbody,
+        .mybank-table.mobile-cards tr,
+        .mybank-table.mobile-cards td {
+            display: block;
+            width: 100%;
         }
 
-            .mybank-table td::before {
-                content: attr(data-label);
-                color: var(--muted);
-                font-weight: 500;
-                text-align: left;
+            .mybank-table.mobile-cards tr {
+                position: relative;
+                margin-bottom: 10px;
+                padding: 12px 14px 12px 18px;
+                background: linear-gradient(145deg, rgba(20, 44, 34, .7), rgba(8, 16, 12, .6));
+                border: 1px solid var(--gold-line);
+                border-radius: 14px;
+                box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
             }
+
+                /* Gold accent on the left */
+                .mybank-table.mobile-cards tr::before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    top: 12px;
+                    bottom: 12px;
+                    width: 3px;
+                    border-radius: 3px;
+                    background: var(--gold);
+                }
+
+            .mybank-table.mobile-cards td {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                gap: 12px;
+                padding: 6px 0;
+                border: 0;
+                font-size: .9rem;
+                text-align: right;
+            }
+
+                /* Thin line between rows inside the card */
+                .mybank-table.mobile-cards td + td {
+                    border-top: 1px solid rgba(242, 214, 117, .08);
+                }
+
+                /* Label: small, uppercase, like a bank statement */
+                .mybank-table.mobile-cards td::before {
+                    content: attr(data-label);
+                    color: var(--muted);
+                    font-size: .7rem;
+                    font-weight: 600;
+                    letter-spacing: .08em;
+                    text-transform: uppercase;
+                    text-align: left;
+                }
 }
 
 /* ==========================================================
@@ -2729,17 +2768,52 @@ html body input[type="number"] {
 
 /* Mobile */
 @media (max-width: 576px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
+
+    /* Stat cards: two per row. An odd last card takes the full row. */
+    .dashboard-grid:has(> .stat-card) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+        .dashboard-grid:has(> .stat-card) > :last-child:nth-child(odd) {
+            grid-column: 1 / -1;
+        }
+
+    /* Compact stat card: icon on top, text below */
+    .stat-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 12px 14px;
+    }
+
+    .stat-icon {
+        flex: 0 0 36px;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+    }
+
+        .stat-icon i {
+            font-size: 1.2rem;
+        }
+
+    .stat-content {
+        width: 100%;
     }
 
     .stat-title {
         white-space: normal;
+        font-size: .75rem;
     }
 
-    /* The map is too small to use on a phone. The table has the same links. */
-    .map-card {
-        display: none !important;
+    .stat-number {
+        font-size: 1.15rem;
+        white-space: nowrap;
+    }
+
+    .stat-subtitle {
+        display: none;
     }
 }
 
@@ -2800,23 +2874,22 @@ html body input[type="number"] {
 /* dashboard */
 
 
-
-@media (max-width: 576px) {
-    .stat-number {
-        font-size: 1.25rem;
-        white-space: normal;
-        overflow-wrap: anywhere;
-        line-height: 1.2;
-    }
-    .stat-title {
-        font-size: .9rem;
-    }
-}
-
 @media (max-width: 576px) {
     .country-header {
         flex-direction: column;
         align-items: flex-start;
+    }
+}
+
+@media (max-width: 1300px) {
+    .country-overview {
+        grid-template-columns: 1fr;
+    }
+
+    /* Stacked: the map gets its own fixed height */
+    #countryMap {
+        flex: none;
+        height: 280px;
     }
 }
 
