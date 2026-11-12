@@ -194,7 +194,7 @@
                                 notifications.Add("Large withdrawal detected");
 
                             if (TempData["TransferCompleted"] != null)
-                                notifications.Add("Transfer completed");
+                                notifications.Add(TempData["TransferCompleted"]!.ToString()!);
 
                             var hasWarning = TempData["LargeWithdrawal"] != null;
 

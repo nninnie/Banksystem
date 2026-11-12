@@ -38,7 +38,8 @@
             New Withdrawal                                                       
         </h3>
 
-        <form method="post">
+        <form method="post" data-confirm="withdraw"
+              data-from="@Model.Account.AccountId" data-currency="@currency">
             <div class="form-group">
                 <label asp-for="Input.Amount">Amount (@currency)</label>
                 <input asp-for="Input.Amount" class="form-control" placeholder="0.00" />
@@ -72,6 +73,7 @@
 
 <!-- Latest 5 transactions (shared partial) -->
 <partial name="_RecentTransactions" model="Model.RecentTransactions" />
+<partial name="_ConfirmModal" />
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

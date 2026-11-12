@@ -1,4 +1,5 @@
 using AutoMapper;
+using BankApp.Helpers;
 using BankApp.Services.Enums;
 using BankApp.Services.Interfaces;
 using BankApp.ViewModels;
@@ -68,7 +69,13 @@ namespace BankApp.Pages.Admin
 
             if (result == ErrorCode.OK)
             {
-                TempData["TransferCompleted"] = true;
+                // Receipt: shows who got the money in the notification on the next page
+                var receiver = await _accountService.GetAccountAsync(Input.ToAccountId.Value);
+                var currency = CountryCurrency.Code(Account.Country);
+
+                TempData["TransferCompleted"] =
+                    $"Transferred {Input.Amount:N2} {currency} to account {Input.ToAccountId} ({receiver?.CustomerName})";
+
                 return RedirectToPage("/Admin/Account", new { id });
             }
 
@@ -85,6 +92,18 @@ namespace BankApp.Pages.Admin
                 ModelState.AddModelError("Input.ToAccountId", "You can't transfer to the same account.");
 
             return Page();
+        }
+
+        // AJAX – GET ?handler=Recipient&accountId=33
+        // Returns the owner's name so the cashier can check the receiver before sending (Confirmation of Payee)
+        public async Task<IActionResult> OnGetRecipientAsync(int accountId)
+        {
+            var account = await _accountService.GetAccountAsync(accountId);
+
+            if (account == null)
+                return new JsonResult(new { found = false });
+
+            return new JsonResult(new { found = true, name = account.CustomerName });
         }
     }
 }

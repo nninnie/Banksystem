@@ -38,10 +38,13 @@
             New Transfer
         </h3>
 
-        <form method="post">
+        <form method="post" data-confirm="transfer"
+              data-from="@Model.Account.AccountId" data-currency="@currency">
             <div class="form-group">
                 <label asp-for="Input.ToAccountId">To Account</label>
-                <input asp-for="Input.ToAccountId" class="form-control" placeholder="Account number" />
+                <input asp-for="Input.ToAccountId" class="form-control" placeholder="Account number"
+                       data-recipient-url="@Url.Page("/Admin/Transfer", "Recipient", new { id = Model.Account.AccountId })" />
+                <div id="recipientInfo" class="recipient-info" aria-live="polite"></div>
                 <span asp-validation-for="Input.ToAccountId" class="text-danger"></span>
             </div>
 
@@ -78,6 +81,7 @@
 
 <!-- Latest 5 transactions (shared partial) -->
 <partial name="_RecentTransactions" model="Model.RecentTransactions" />
+<partial name="_ConfirmModal" />
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

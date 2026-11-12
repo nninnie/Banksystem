@@ -418,3 +418,91 @@ document.addEventListener("DOMContentLoaded", function () {
     button.addEventListener("click", showMore);
     showMore(); // load the first 20
 });
+
+
+
+/* ==========================================================
+TRANSFER - SHOW RECEIVER NAME (Confirmation of Payee, AJAX)
+========================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+    const input = document.querySelector("[data-recipient-url]");
+    const info = document.getElementById("recipientInfo");
+    if (!input || !info) return;
+
+    let timer;
+
+    input.addEventListener("input", function () {
+        clearTimeout(timer);
+        info.textContent = "";
+        info.className = "recipient-info";
+        input.dataset.recipientName = "";
+
+        const accountId = input.value.trim();
+        if (!accountId) return;
+
+        // Waits until the cashier stops typing, then asks the server once
+        timer = setTimeout(async function () {
+            const response = await fetch(`${input.dataset.recipientUrl}&accountId=${accountId}`);
+            const data = await response.json();
+
+            if (data.found) {
+                info.textContent = `Receiver: ${data.name}`;
+                info.classList.add("found");
+                input.dataset.recipientName = data.name;
+            } else {
+                info.textContent = "The account does not exist";
+                info.classList.add("not-found");
+            }
+        }, 400);
+    });
+});
+
+
+
+/* ==========================================================
+CONFIRM BEFORE POST (transfer and withdraw)
+Runs after client-side validation. The server still validates everything.
+========================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+    const modalEl = document.getElementById("confirmModal");
+    if (!modalEl) return;
+
+    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    const message = document.getElementById("confirmMessage");
+    let formToSend = null;
+
+    document.querySelectorAll("form[data-confirm]").forEach(function (form) {
+        form.addEventListener("submit", function (e) {
+            // Already confirmed - let it through
+            if (form.dataset.confirmed === "true") return;
+
+            // Validation first: invalid form = no dialog, the errors are shown instead
+            if (window.jQuery && jQuery(form).valid && !jQuery(form).valid()) return;
+
+            e.preventDefault();
+
+            const amount = form.querySelector("[name='Input.Amount']").value;
+            const currency = form.dataset.currency;
+
+            if (form.dataset.confirm === "transfer") {
+                const to = form.querySelector("[name='Input.ToAccountId']");
+                const name = to.dataset.recipientName ? ` (${to.dataset.recipientName})` : "";
+                message.textContent =
+                    `Transfer ${amount} ${currency} from account ${form.dataset.from} to account ${to.value}${name}?`;
+            } else {
+                message.textContent =
+                    `Withdraw ${amount} ${currency} from account ${form.dataset.from}?`;
+            }
+
+            formToSend = form;
+            modal.show();
+        });
+    });
+
+    document.getElementById("confirmOk").addEventListener("click", function () {
+        if (!formToSend) return;
+        formToSend.dataset.confirmed = "true";
+        modal.hide();
+        formToSend.requestSubmit();
+    });
+});

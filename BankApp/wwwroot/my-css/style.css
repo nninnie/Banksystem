@@ -3049,3 +3049,33 @@ html body input[type="number"] {
 .stat-number {
     font-size: clamp(1.15rem, 1rem + .8vw, 1.75rem);
 }
+
+/* Transfer: receiver name under the account field */
+.recipient-info {
+    min-height: 1.4em;
+    margin-top: 6px;
+    font-size: .85rem;
+    color: var(--muted, #A7B4C5);
+}
+
+    .recipient-info.found {
+        color: #63D097;
+    }
+
+    .recipient-info.not-found {
+        color: #E53935;
+    }
+
+
+/* Confirm modal in the bank's style */
+.bank-modal {
+    background: #0A1A14;
+    border: 1px solid rgba(201, 162, 75, .35);
+    border-radius: 16px;
+    color: var(--text, #F8FAFC);
+}
+
+    .bank-modal .modal-header,
+    .bank-modal .modal-footer {
+        border-color: rgba(255, 255, 255, .08);
+    }
