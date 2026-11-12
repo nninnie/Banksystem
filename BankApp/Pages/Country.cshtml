@@ -115,53 +115,45 @@ else
 
     </div>
 
-    /* Tabel */
+    /* Table */
     <div class="table-card">
         <h3 class="card-title">
             <i class="mdi mdi-trophy-outline icon"></i>
             Ranking
         </h3>
+
         <div class="table-responsive">
             <table class="mybank-table mobile-cards">
-        <thead>
-            <tr>
-                <th class="rank-column">Rank</th>
-                <th>Customer ID</th>
-                <th>Name</th>
-                <th>City</th>
-                <th class="currency">Total Balance</th>
-            </tr>
-        </thead>
-            <tbody>
+                <thead>
+                    <tr>
+                        <th class="rank-column">Rank</th>
+                        <th>Customer ID</th>
+                        <th>Name</th>
+                        <th>City</th>
+                        <th class="currency">Total Balance</th>
+                    </tr>
+                </thead>
 
-                @{
-                    var rank = 1;
-                }
+                <tbody>
+                    @{
+                        var rank = 1;
+                    }
 
-                @foreach (var c in Model.TopCustomers)
-                {
-                    <tr class="clickable-row">
+                    @foreach (var c in Model.TopCustomers)
+                    {
+                        // Gold, silver and bronze for the top three, plain badge for the rest
+                        var medal = rank switch
+                        {
+                            1 => "gold",
+                            2 => "silver",
+                            3 => "bronze",
+                            _ => ""
+                        };
 
-                    <td class="rank-column" data-label="Rank">
-                            @switch (rank)
-                            {
-                                case 1:
-                                    <span>🥇</span>
-                                    break;
-
-                                case 2:
-                                    <span>🥈</span>
-                                    break;
-
-                                case 3:
-                                    <span>🥉</span>
-                                    break;
-
-                                default:
-                                    <span>@rank</span>
-                                    break;
-                            }
-                        </td>
+                        <tr class="clickable-row">
+                            <td class="rank-column" data-label="Rank">
+                                <span class="rank-badge @medal">@rank</span>
+                            </td>
 
                             <td class="customer-id" data-label="Customer ID">
                                 <a asp-page="/Admin/Customer"
@@ -182,15 +174,12 @@ else
                             <td class="currency" data-label="Total Balance">
                                 @c.TotalBalance.ToString("N2")
                             </td>
+                        </tr>
 
-                    </tr>
-
-                    rank++;
-                }
-
-            </tbody>
-    </table>
+                        rank++;
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-    </div>
-
 }
