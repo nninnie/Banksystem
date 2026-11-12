@@ -137,7 +137,7 @@
                 </div>
                 <div class="transaction-amount-wrap">
                     <span class="transaction-amount @(t.IsDebit ? "negative" : "positive")">
-                        @(t.IsDebit ? "-" : "+")@t.Amount.ToString("N2")
+                        @(t.IsDebit ? "-" : "+")@Math.Abs(t.Amount).ToString("N2")
                     </span>
                     <span class="transaction-date">@t.Date.ToString("yyyy-MM-dd")</span>
                 </div>

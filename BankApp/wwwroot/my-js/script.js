@@ -344,6 +344,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Keep the Nordics in the middle when the window changes size
     const map = jQuery(mapEl).vectorMap("get", "mapObject");
+
+    // Locks the map on touch screens
+    mapEl.addEventListener("touchmove", function (e) {
+        e.stopPropagation();
+    }, { capture: true });
+
     let resizeTimer;
 
     window.addEventListener("resize", function () {

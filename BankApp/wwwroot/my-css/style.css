@@ -2815,6 +2815,21 @@ html body input[type="number"] {
     .stat-subtitle {
         display: none;
     }
+
+    /* Touch targets */
+    .bank-btn,
+    .bank-btn-outline,
+    .btn {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Search button */
+    .bank-search .bank-btn {
+        width: 100%;
+    }
 }
 
 
@@ -2897,4 +2912,35 @@ html body input[type="number"] {
     .content-wrapper {
         max-width: 100%;
     }
+}
+
+/* Navbar dropdowns */
+@media (max-width: 991px) {
+    .navbar .navbar-dropdown {
+        position: fixed !important;
+        top: 70px !important;
+        left: 8px !important;
+        right: 8px !important;
+        transform: none !important;
+        max-height: 70vh;
+        overflow-y: auto;
+        border: 1px solid rgba(201, 162, 75, .35);
+        border-radius: 12px;
+    }
+}
+
+/* Breadcrumb */
+@media (max-width: 576px) {
+    .page-breadcrumb {
+        flex-wrap: wrap;
+        font-size: .8rem;
+        row-gap: 4px;
+    }
+
+        .page-breadcrumb span {
+            max-width: 60vw;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 }
