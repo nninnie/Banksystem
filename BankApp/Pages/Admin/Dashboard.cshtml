@@ -13,35 +13,14 @@
     <span>Dashboard</span>
 </div>
 
-<div class="welcome-card">
+<partial name="_PageHeader" model='new PageHeaderViewModel
+         {
+             Kicker = "WELCOME BACK",
+             Title = $"{Model.Greeting}, {Model.DisplayName}",
+             Subtitle = "Here is what is happening in your bank today.",
+             ShowDate = true
+         }' />
 
-    <span class="welcome-kicker">
-        WELCOME BACK
-    </span>
-
-    <div class="welcome-header">
-
-        <div>
-            <h1 class="welcome-title">
-                @Model.Greeting, @Model.DisplayName
-            </h1>
-
-            <p class="welcome-subtitle">
-                Here's what's happening in your bank today.
-            </p>
-        </div>
-
-        <div class="welcome-date">
-            <i class="mdi mdi-calendar-month"></i>
-            <div>
-                <span>Today</span>
-                <strong>@Model.Today.ToString("MMMM dd, yyyy", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</strong>
-            </div>
-        </div>
-
-    </div>
-
-</div>
 
 <!-- Contry Cards -->
 <div class="dashboard-grid">

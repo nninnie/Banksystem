@@ -1,0 +1,23 @@
+﻿@model BankApp.ViewModels.PageHeaderViewModel
+
+<div class="welcome-card">
+    <span class="welcome-kicker">@Model.Kicker</span>
+
+    <div class="welcome-header">
+        <div>
+            <h1 class="welcome-title">@Model.Title</h1>
+            <p class="welcome-subtitle">@Model.Subtitle</p>
+        </div>
+
+        @if (Model.ShowDate)
+        {
+            <div class="welcome-date">
+                <i class="mdi mdi-calendar-month"></i>
+                <div>
+                    <span>Today</span>
+                    <strong>@DateTime.Today.ToString("MMMM dd, yyyy", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</strong>
+                </div>
+            </div>
+        }
+    </div>
+</div>

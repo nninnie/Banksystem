@@ -350,6 +350,10 @@ document.addEventListener("DOMContentLoaded", function () {
         e.stopPropagation();
     }, { capture: true });
 
+    // Starts on the Nordics also when the map was drawn in another size
+    map.updateSize();
+    map.setFocus(focus);
+
     let resizeTimer;
 
     window.addEventListener("resize", function () {

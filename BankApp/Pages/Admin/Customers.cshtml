@@ -31,10 +31,12 @@
 </div>
 
 <!-- Page header -->
-<div class="welcome-card customer-hero">
-    <h2 class="welcome-title">Customer Search</h2>
-    <p class="section-subtitle">Search customers by name or city.</p>
-</div>
+<partial name="_PageHeader" model='new PageHeaderViewModel
+         {
+             Kicker = "CUSTOMERS",
+             Title = "Customer Search",
+             Subtitle = "Search customers by name or city."
+         }' />
 
 
 <!-- Search form -->

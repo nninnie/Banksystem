@@ -12,35 +12,13 @@
     <span>Home</span>
 </div>
 
-<div class="welcome-card">
-
-    <span class="welcome-kicker">
-        PUBLIC OVERVIEW
-    </span>
-
-    <div class="welcome-header">
-
-        <div>
-            <h1 class="welcome-title">
-                Country Statistics
-            </h1>
-
-            <p class="welcome-subtitle">
-                Public overview of customers, accounts and total balance grouped by country.
-            </p>
-        </div>
-
-        <div class="welcome-date">
-            <i class="mdi mdi-calendar-month"></i>
-            <div>
-                <span>Today</span>
-                <strong>@Model.Today.ToString("MMMM dd, yyyy", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</strong>
-            </div>
-        </div>
-
-    </div>
-
-</div>
+<partial name="_PageHeader" model='new PageHeaderViewModel
+         {
+             Kicker = "PUBLIC OVERVIEW",
+             Title = "Country Statistics",
+             Subtitle = "Public overview of customers, accounts and total balance grouped by country.",
+             ShowDate = true
+         }' />
 
 <!--- KPI-card --->
 <div class="dashboard-grid">

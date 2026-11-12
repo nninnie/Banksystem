@@ -2943,4 +2943,35 @@ html body input[type="number"] {
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+
+    /* A card that fills the whole row */
+    .dashboard-grid:has(> .stat-card) > .stat-card:last-child:nth-child(odd) {
+        flex-direction: row;
+        align-items: center;
+        gap: 14px;
+    }
+}
+
+/* Mobile logo in the navbar */
+@media (max-width: 991px) {
+    .navbar .navbar-brand-wrapper {
+        width: auto;
+        height: auto;
+        background: transparent;
+        padding: 0 8px 0 4px;
+    }
+
+        .navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini {
+            display: inline-flex;
+            align-items: center;
+            width: auto;
+            padding: 0;
+        }
+
+            .navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini img {
+                width: 40px;
+                height: 40px;
+                max-width: none;
+                object-fit: contain;
+            }
 }
