@@ -41,6 +41,7 @@ namespace BankApp.Services.Services
             var owners = await _context.Dispositions
                 .AsNoTracking()
                 .Where(d => accountIds.Contains(d.AccountId))
+                .Where(d => d.Type == "OWNER")
                 .OrderBy(d => d.DispositionId)
                 .Select(d => new
                 {

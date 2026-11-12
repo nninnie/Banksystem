@@ -122,9 +122,9 @@ namespace BankApp.Services.Services
             // Pagination (afetr sorting)
             if (page < 1) page = 1;
 
-            var firsPageIndex = (page - 1) * 50;
+            var firstPageIndex = (page - 1) * 50;
 
-            query = query.Skip(firsPageIndex);
+            query = query.Skip(firstPageIndex);
             query = query.Take(50);
 
             return await query.ToListAsync();
@@ -141,7 +141,9 @@ namespace BankApp.Services.Services
                     FullName = c.Givenname + " " + c.Surname,
                     City = c.City,
                     Country = c.Country,
-                    TotalBalance = c.Dispositions.Sum(d => d.Account.Balance)
+                    TotalBalance = c.Dispositions
+                    .Where(d => d.Type == "OWNER")
+                    .Sum(d => d.Account.Balance)
                 })
                 .OrderByDescending(x => x.TotalBalance)
                 .Take(count)

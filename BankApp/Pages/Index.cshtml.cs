@@ -15,11 +15,9 @@ namespace BankApp.Pages
             _dashboardService = dashboardService;
         }
 
-        public DateTime Today { get; set; }
 
         public async Task OnGetAsync()
         {
-            Today = SwedishTime.Now;
             var data = await _dashboardService.GetDashboardAsync();
             Countries = data.Countries;
         }

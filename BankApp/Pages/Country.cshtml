@@ -1,7 +1,9 @@
-﻿@page
+﻿v@page
 @model BankApp.Pages.CountryModel
 @{
     ViewData["Title"] = "Top 10 - " + Model.Country;
+    // One currency per country (SEK, NOK, DKK, EUR), shown on every amount
+    var currency = CountryCurrency.Code(Model.Country);
 }
 
 <div class="page-breadcrumb">
@@ -31,7 +33,6 @@
              alt="@Model.Country Flag" />
 
         <div>
-
             <h1 class="welcome-title">
                 Top 10 Customers in @Model.Country
             </h1>
@@ -39,14 +40,11 @@
             <p class="welcome-subtitle">
                 Customers with the highest total balance in @Model.Country.
             </p>
-
         </div>
 
     </div>
 
 </div>
-
-
 
 @if (!Model.TopCustomers.Any())
 {
@@ -70,12 +68,10 @@ else
                 </div>
 
                 <div class="stat-subtitle">
-                    Highest ranked customers 
+                    Highest ranked customers
                 </div>
             </div>
         </div>
-
-        
 
         <div class="dashboard-card stat-card">
             <div class="stat-icon">
@@ -86,7 +82,7 @@ else
                 <div class="stat-title">Average Balance</div>
 
                 <div class="stat-number">
-                    @Model.TopCustomers.Average(x => x.TotalBalance).ToString("N0")
+                    @Model.TopCustomers.Average(x => x.TotalBalance).ToString("N0") @currency
                 </div>
 
                 <div class="stat-subtitle">
@@ -104,7 +100,7 @@ else
                 <div class="stat-title">Total Balance</div>
 
                 <div class="stat-number">
-                    @Model.TopCustomers.Sum(x => x.TotalBalance).ToString("N0")
+                    @Model.TopCustomers.Sum(x => x.TotalBalance).ToString("N0") @currency
                 </div>
 
                 <div class="stat-subtitle">
@@ -172,7 +168,7 @@ else
                             </td>
 
                             <td class="currency" data-label="Total Balance">
-                                @c.TotalBalance.ToString("N2")
+                                @c.TotalBalance.ToString("N2") @currency
                             </td>
                         </tr>
 

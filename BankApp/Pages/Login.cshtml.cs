@@ -48,7 +48,11 @@ namespace BankApp.Pages
 
                     TempData["Welcome"] = true;
 
-                    return RedirectToPage("/Index");
+                    // Each role starts where it works: Admin on the dashboard, Cashier on customer search
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                        return RedirectToPage("/Admin/Dashboard");
+
+                    return RedirectToPage("/Admin/Customers");
                 }
             }
 

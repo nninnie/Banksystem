@@ -4,6 +4,7 @@ using BankApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BankApp.Helpers;
+using AutoMapper;
 
 namespace BankApp.Pages.Admin
 {
@@ -23,11 +24,15 @@ namespace BankApp.Pages.Admin
         public string Greeting { get; set; } = "";
         public DateTime Today { get; set; }
 
-        public DashboardModel(IDashboardService dashboardService, ITransactionService transactionService)
+        private readonly IMapper _mapper;
+
+        public DashboardModel(IDashboardService dashboardService, ITransactionService transactionService, IMapper mapper)
         {
             _dashboardService = dashboardService;
             _transactionService = transactionService;
+            _mapper = mapper;
         }
+
         public async Task OnGet()
         {
             Data = await _dashboardService.GetDashboardAsync();
@@ -35,18 +40,7 @@ namespace BankApp.Pages.Admin
 
             var transactions = await _transactionService.GetRecentTransactionsAsync(5);
 
-            RecentTransactions = transactions.Select(t => new TransactionViewModel
-            {
-                TransactionId = t.TransactionId,
-                AccountId = t.AccountId,
-                CustomerName = t.CustomerName,
-                Date = t.Date,
-                Type = t.Type,
-                Operation = t.Operation ?? "",
-                Amount = t.Amount,
-                Balance = t.Balance
-            }).ToList();
-
+            RecentTransactions = _mapper.Map<List<TransactionViewModel>>(transactions);
 
             Today = SwedishTime.Now;
             var hour = Today.Hour;
