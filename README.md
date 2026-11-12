@@ -102,7 +102,12 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
      (AutoMapper)
 ```
 
+**Exempel – överföring:** `Transfer.cshtml.cs` validerar `TransferViewModel` →
+`ITransactionService.TransferAsync()` kontrollerar saldot och skapar två transaktioner →
+`BankAppContext.SaveChangesAsync()` sparar båda på en gång, eller ingen.
+
 ### **BankApp – Webbapplikation**
+- Tar emot förfrågan, validerar indata i ViewModels och visar resultatet. Innehåller ingen affärslogik.
 - Razor Pages (`.cshtml` + PageModel)
 - ViewModels med validering
 - AutoMapper-profil (`MappingProfile`)
@@ -110,11 +115,13 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 - `Program.cs`: dependency injection, Identity, Response Caching och migrering vid uppstart
 
 ### **BankApp.Services – Affärslogik**
+- Bankens regler: kontrollerar saldo, skapar transaktioner och returnerar en ErrorCode när något inte är tillåtet.
 - `ICustomerService`, `IAccountService`, `ITransactionService`, `IDashboardService`
 - All logik för insättning, uttag och överföring
 - `ErrorCode` (enum) som PageModel översätter till felmeddelanden
 
 ### **BankApp.DataAccessLayer – Data**
+- Pratar med databasen via EF Core. Entiteter och DbContext lämnar aldrig det här lagret till vyerna.
 - Entiteter och `BankAppContext` (Database First)
 - `ApplicationDbContext` och migrering för Identity
 - DTO:er
