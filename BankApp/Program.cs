@@ -5,6 +5,8 @@ using BankApp.Mapping;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BankApp.Services.Interfaces;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace BankApp
 {
@@ -76,6 +78,15 @@ namespace BankApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            // Shows numbers, dates and currency in Swedish format (5 369 and 41 833 191,90) also in Azure
+            var swedish = new CultureInfo("sv-SE");
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(swedish),
+                SupportedCultures = new[] { swedish },
+                SupportedUICultures = new[] { swedish }
+            });
 
             app.UseHttpsRedirection();
 
