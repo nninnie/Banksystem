@@ -2299,10 +2299,6 @@ html body input[type="number"] {
     .welcome-header {
         flex-direction: column;
     }
-
-    .welcome-title {
-        font-size: 1.8rem;
-    }
 }
 
 
@@ -3006,5 +3002,50 @@ html body input[type="number"] {
                 height: 40px;
                 max-width: none;
                 object-fit: contain;
-            }
+          */
+.action-card {
+    border-top: 3px solid var(--gold);
+}
+
+    .action-card.deposit {
+        border-top-color: #4CAF50;
+    }
+
+    .action-card.withdraw {
+        border-top-color: #E53935;
+    }
+
+    .action-card.transfer {
+        border-top-color: var(--gold);
+    }
+
+/* Dashboard chart on mobile */
+@media (max-width: 576px) {
+    .chart-header {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+        .chart-header .card-title {
+            font-size: 1rem;
+        }
+
+    .chart-pill {
+        white-space: nowrap;
+        padding: 6px 10px;
+        font-size: .7rem;
+    }
+
+    .flag-item span {
+        font-size: .6rem;
+    }
+}
+
+/* Fluid type: grows smoothly with the screen */
+.card-title {
+    font-size: clamp(1rem, .9rem + .4vw, 1.25rem);
+}
+
+.stat-number {
+    font-size: clamp(1.15rem, 1rem + .8vw, 1.75rem);
 }

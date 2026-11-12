@@ -22,15 +22,17 @@
 </div>
 
 <!-- Page header -->
-<div class="welcome-card customer-hero">
-    <h2 class="welcome-title">Deposit</h2>
-    <p class="section-subtitle">Add money to account @Model.Account.AccountId.</p>
-</div>
+<partial name="_PageHeader" model='new PageHeaderViewModel
+         {
+             Kicker = "DEPOSIT",
+             Title = "Deposit",
+             Subtitle = $"Add money to account {Model.Account.AccountId}."
+         }' />
 
 <div class="customer-profile-layout">
 
     <!-- Form -->
-    <div class="dashboard-card">
+    <div class="dashboard-card action-card deposit">
         <h3 class="card-title">
             <i class="mdi mdi-plus-circle-outline icon"></i>
             New Deposit

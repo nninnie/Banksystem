@@ -22,15 +22,17 @@
 </div>
 
 <!-- Page header -->
-<div class="welcome-card customer-hero">
-    <h2 class="welcome-title">Withdraw</h2>                                       
-    <p class="section-subtitle">Withdraw money from account @Model.Account.AccountId.</p>  
-</div>
+<partial name="_PageHeader" model='new PageHeaderViewModel
+         {
+             Kicker = "WITHDRAW",
+             Title = "Withdraw",
+             Subtitle = $"Withdraw money from account {Model.Account.AccountId}."
+         }' />
 
 <div class="customer-profile-layout">
 
     <!-- Form -->
-    <div class="dashboard-card">
+    <div class="dashboard-card action-card withdraw">
         <h3 class="card-title">
             <i class="mdi mdi-minus-circle-outline icon"></i>
             New Withdrawal                                                       
