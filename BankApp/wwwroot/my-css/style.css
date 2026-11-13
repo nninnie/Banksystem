@@ -2981,13 +2981,14 @@ html body input[type="number"] {
     }
 }
 
-/* Mobile logo in the navbar */
+/* Mobile logo in the navbar: same height as the profile picture, never squeezed */
 @media (max-width: 991px) {
     .navbar .navbar-brand-wrapper {
         width: auto;
         height: auto;
         background: transparent;
         padding: 0 8px 0 4px;
+        flex-shrink: 0;
     }
 
         .navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini {
@@ -2998,11 +2999,13 @@ html body input[type="number"] {
         }
 
             .navbar .navbar-brand-wrapper .navbar-brand.brand-logo-mini img {
-                width: 40px;
-                height: 40px;
+                width: auto;
+                height: 48px;
                 max-width: none;
                 object-fit: contain;
-          */
+            }
+}
+
 .action-card {
     border-top: 3px solid var(--gold);
 }
