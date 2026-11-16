@@ -80,7 +80,12 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 - De 5 senaste transaktionerna i banken
 
 ### 👤 User Admin (Admin)
-- Sida för administration av systemanvändare, skyddad med `[Authorize(Roles = "Admin")]`
+- Admin kan **skapa, läsa, uppdatera och ta bort** systemanvändare (CRUD) och tilldela roll (Admin eller Cashier)
+- Skyddad med `[Authorize(Roles = "Admin")]`
+- Lösenord hanteras av `UserManager` (Identity), aldrig i klartext
+- De två seedade kontona är markerade **Protected** och kan inte tas bort
+- Man kan inte ta bort sig själv eller ändra sin egen roll
+- Servicen `IUserService` pratar med Identity, sidorna använder ViewModels (`CreateUserViewModel`, `EditUserViewModel`)
 
 ### 🛡️ Inloggning, roller och behörighet
 - Egen inloggningssida, ingen öppen registrering
