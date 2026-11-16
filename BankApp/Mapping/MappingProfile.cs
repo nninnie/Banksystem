@@ -53,6 +53,14 @@ namespace BankApp.Mapping
 
             // Maps Customer - CustomerFormViewModel (edit form, database to form)
             CreateMap<Customer, CustomerFormViewModel>();
+
+
+            // Maps UserDto - UserViewModel (User Admin list)
+            CreateMap<UserDto, UserViewModel>();
+
+
+            // Maps UserDto - EditUserViewModel (fills the edit user form)
+            CreateMap<UserDto, EditUserViewModel>();
         }
     }
 }

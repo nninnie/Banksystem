@@ -1,0 +1,74 @@
+﻿@page
+@model BankApp.Pages.Admin.CreateUserModel
+@{
+    ViewData["Title"] = "New user";
+}
+
+<div class="page-breadcrumb">
+    <a asp-page="/Index">
+        <i class="mdi mdi-home"></i>
+    </a>
+    <span>›</span>
+    <a asp-page="/Admin/UserAdmin">User Admin</a>
+    <span>›</span>
+    <span>New user</span>
+</div>
+
+<!-- Page header -->
+<partial name="_PageHeader" model='new PageHeaderViewModel
+         {
+             Kicker = "ADMINISTRATION",
+             Title = "New user",
+             Subtitle = "Create a system user and choose the role."
+         }' />
+
+<div class="dashboard-card action-card form-card">
+    <h3 class="card-title">
+        <i class="mdi mdi-account-plus-outline icon"></i>
+        User details
+    </h3>
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="Input.Email">Email</label>
+            <input asp-for="Input.Email" class="form-control" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label asp-for="Input.Password">Password</label>
+                <input asp-for="Input.Password" class="form-control" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 form-group">
+                <label asp-for="Input.ConfirmPassword">Repeat password</label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+
+        <p class="section-subtitle">At least 6 characters with an upper case letter, a lower case letter, a digit and a special character.</p>
+
+        <div class="form-group">
+            <label asp-for="Input.Role">Role</label>
+            <select asp-for="Input.Role" class="form-control">
+                <option value="">Choose role</option>
+                <option value="Cashier">Cashier</option>
+                <option value="Admin">Admin</option>
+            </select>
+            <span asp-validation-for="Input.Role" class="text-danger"></span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="bank-btn">Create user</button>
+            <a class="bank-btn-outline" asp-page="/Admin/UserAdmin">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

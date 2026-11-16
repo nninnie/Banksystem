@@ -13,19 +13,69 @@
 </div>
 
 <!-- Page header -->
-<div class="welcome-card customer-hero">
-    <h2 class="welcome-title">User Admin</h2>
-    <p class="section-subtitle">Manage system users and their roles.</p>
-</div>
+<partial name="_PageHeader" model='new PageHeaderViewModel
+         {
+             Kicker = "ADMINISTRATION",
+             Title = "User Admin",
+             Subtitle = "Manage system users and their roles.",
+             ActionPage = "/Admin/CreateUser",
+             ActionText = "New user",
+             ActionIcon = "mdi-account-plus-outline"
+         }' />
 
-<!-- Empty state until user CRUD is built (VG) -->
+    
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="text-danger mb-3">@Model.ErrorMessage</div>
+}
+
+<!-- System users -->
 <div class="table-card">
     <h3 class="card-title">
         <i class="mdi mdi-shield-account icon"></i>
-        System Users
+        System Users (@Model.Users.Count)
     </h3>
 
-    <p class="section-subtitle">
-        User administration will be available here.
-    </p>
+    <div class="table-responsive">
+        <table class="mybank-table mobile-cards">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th class="currency"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td class="primary-value" data-label="Email">@user.Email</td>
+                        <td data-label="Role">@user.Role</td>
+
+                        <td class="currency" data-label="Actions">
+                            @if (user.IsProtected)
+                            {
+                                <span class="section-subtitle">Protected</span>
+                            }
+                            else
+                            {
+                                <div class="account-actions">
+                                    <a class="bank-btn-outline" asp-page="/Admin/EditUser" asp-route-id="@user.Id">
+                                        <i class="mdi mdi-pencil-outline"></i>&nbsp;Edit
+                                    </a>
+
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@user.Id"
+                                          onsubmit="return confirm('Delete @user.Email? This can not be undone.');">
+                                        <button type="submit" class="bank-btn-outline">
+                                            <i class="mdi mdi-delete-outline"></i>&nbsp;Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

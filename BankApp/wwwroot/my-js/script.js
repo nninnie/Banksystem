@@ -514,3 +514,20 @@ document.addEventListener("DOMContentLoaded", function () {
         formToSend.requestSubmit();
     });
 });
+
+
+
+
+/* ==========================================================
+   ACCOUNT QUICK ACTIONS (Customer page)
+   ========================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+
+    // The whole account row is clickable. Clicking a shortcut button (Deposit, Withdraw,
+    // Transfer) must only use that button, so we stop the click from reaching the row.
+    document.querySelectorAll(".account-quick-actions a").forEach(function (link) {
+        link.addEventListener("click", function (e) {
+            e.stopPropagation();
+        });
+    });
+});

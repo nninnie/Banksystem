@@ -157,15 +157,15 @@
                             <td class="account-action" data-label="@(User.IsInRole("Cashier") ? "Actions" : "")">
                                 @if (User.IsInRole("Cashier"))
                                 {
-                                    <!-- Shortcuts: stopPropagation stops the row click so only the button is used -->
+                                    <!-- Shortcuts: script.js stops the row click so only the button is used -->
                                     <div class="account-quick-actions">
-                                        <a asp-page="/Admin/Deposit" asp-route-id="@account.AccountId" title="Deposit" onclick="event.stopPropagation()">
+                                        <a asp-page="/Admin/Deposit" asp-route-id="@account.AccountId" title="Deposit">
                                             <i class="mdi mdi-plus-circle-outline"></i>
                                         </a>
-                                        <a asp-page="/Admin/Withdraw" asp-route-id="@account.AccountId" title="Withdraw" onclick="event.stopPropagation()">
+                                        <a asp-page="/Admin/Withdraw" asp-route-id="@account.AccountId" title="Withdraw">
                                             <i class="mdi mdi-minus-circle-outline"></i>
                                         </a>
-                                        <a asp-page="/Admin/Transfer" asp-route-id="@account.AccountId" title="Transfer" onclick="event.stopPropagation()">
+                                        <a asp-page="/Admin/Transfer" asp-route-id="@account.AccountId" title="Transfer">
                                             <i class="mdi mdi-swap-horizontal"></i>
                                         </a>
                                     </div>

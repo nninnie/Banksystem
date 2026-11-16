@@ -1,0 +1,76 @@
+﻿@page "{id}"
+@model BankApp.Pages.Admin.EditUserModel
+@{
+    ViewData["Title"] = "Edit user";
+}
+
+<div class="page-breadcrumb">
+    <a asp-page="/Index">
+        <i class="mdi mdi-home"></i>
+    </a>
+    <span>›</span>
+    <a asp-page="/Admin/UserAdmin">User Admin</a>
+    <span>›</span>
+    <span>Edit user</span>
+</div>
+
+<!-- Page header -->
+<partial name="_PageHeader" model='new PageHeaderViewModel
+         {
+             Kicker = "ADMINISTRATION",
+             Title = "Edit user",
+             Subtitle = "Change the email or role, or set a new password."
+         }' />
+
+<div class="dashboard-card action-card form-card">
+    <h3 class="card-title">
+        <i class="mdi mdi-pencil-outline icon"></i>
+        User details
+    </h3>
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <label asp-for="Input.Email">Email</label>
+            <input asp-for="Input.Email" class="form-control" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Input.Role">Role</label>
+            <select asp-for="Input.Role" class="form-control">
+                <option value="">Choose role</option>
+                <option value="Cashier">Cashier</option>
+                <option value="Admin">Admin</option>
+            </select>
+            <span asp-validation-for="Input.Role" class="text-danger"></span>
+        </div>
+
+        <div class="form-section-title">New password (optional)</div>
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label asp-for="Input.NewPassword">New password</label>
+                <input asp-for="Input.NewPassword" class="form-control" />
+                <span asp-validation-for="Input.NewPassword" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 form-group">
+                <label asp-for="Input.ConfirmNewPassword">Repeat new password</label>
+                <input asp-for="Input.ConfirmNewPassword" class="form-control" />
+                <span asp-validation-for="Input.ConfirmNewPassword" class="text-danger"></span>
+            </div>
+        </div>
+
+        <p class="section-subtitle">Leave empty to keep the current password.</p>
+
+        <div class="form-actions">
+            <button type="submit" class="bank-btn">Save changes</button>
+            <a class="bank-btn-outline" asp-page="/Admin/UserAdmin">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
