@@ -8,9 +8,9 @@ namespace BankApp.Services.Interfaces
     {
         Task<Customer?> GetCustomerAsync(int id);
 
-        Task<decimal> GetTotalBalanceAsync(Customer customer);
+        decimal GetTotalBalance(Customer customer);
 
-        Task<List<Account>> GetAccountsAsync(Customer customer);
+        List<Account> GetAccounts(Customer customer);
 
         Task<List<Customer>> SearchCustomersAsync(
             string? searchName,

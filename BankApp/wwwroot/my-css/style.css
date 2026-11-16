@@ -264,53 +264,6 @@ html body .sidebar .sidebar-brand-wrapper {
         text-transform: uppercase;
     }
 
-/* Chevron */
-.sidebar .profile-chevron {
-    flex-shrink: 0;
-    margin-right: 2px;
-    color: var(--gold) !important;
-    font-size: 1rem;
-    line-height: 1;
-    transition: transform .25s ease;
-}
-
-.sidebar .profile-toggle[aria-expanded="true"] .profile-chevron {
-    transform: rotate(180deg);
-}
-
-/* Profile dropdown */
-.sidebar .sidebar-profile-menu {
-    min-width: 190px;
-    margin-top: 4px;
-    padding: 8px 0;
-    background: var(--navbar);
-    border: 1px solid var(--gold-line);
-    border-radius: 12px;
-    box-shadow: 0 18px 50px rgba(0, 0, 0, .55);
-    z-index: 1050;
-}
-
-    .sidebar .sidebar-profile-menu .dropdown-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        width: 100%;
-        padding: 10px 16px;
-        color: var(--text);
-        background: none;
-        border: 0;
-    }
-
-        .sidebar .sidebar-profile-menu .dropdown-item i {
-            color: var(--gold);
-            font-size: 1.1rem;
-        }
-
-        .sidebar .sidebar-profile-menu .dropdown-item:hover {
-            color: var(--gold);
-            background: rgba(242, 214, 117, .08);
-        }
-
 /* ----- Menu rows ----- */
 .sidebar .nav .nav-item {
     margin-bottom: 6px;
@@ -451,8 +404,7 @@ html body .sidebar .sidebar-brand-wrapper {
 
 /* ----- Hidden labels ----- */
 .sidebar-icon-only .sidebar .nav .nav-item.profile .profile-name,
-.sidebar-icon-only .sidebar .nav .nav-item.nav-category,
-.sidebar-icon-only .sidebar .profile-chevron {
+.sidebar-icon-only .sidebar .nav .nav-item.nav-category {
     display: none !important;
 }
 
@@ -1293,11 +1245,6 @@ html body input[type="number"] {
         text-align: right;
     }
 
-/* Accounts table */
-.accounts-heading + .mybank-table {
-    margin-top: 0;
-}
-
 /* Bold values */
 .primary-value,
 .clickable-row td.primary-value {
@@ -1750,37 +1697,6 @@ html body input[type="number"] {
             color: var(--text);
         }
 
-
-
-/* ----- Sparkline ----- */
-.spark-bg {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 55%;
-    z-index: -1;
-    pointer-events: none;
-}
-
-    .spark-bg svg {
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
-
-/* Endpoint */
-.spark-dot {
-    position: absolute;
-    left: 96%;
-    width: 8px;
-    height: 8px;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: #63D097;
-    box-shadow: 0 0 0 3px rgba(99, 208, 151, .18), 0 0 12px rgba(99, 208, 151, .8);
-}
-
 /* ----- Chart ----- */
 .chart-header {
     display: flex;
@@ -1797,12 +1713,6 @@ html body input[type="number"] {
     color: var(--gold);
     font-size: .75rem;
     font-weight: 600;
-}
-
-.chart-pill-label {
-    color: var(--muted);
-    font-weight: 500;
-    margin-right: 6px;
 }
 
 /* Flags under bars */
@@ -1915,25 +1825,6 @@ html body input[type="number"] {
         border-bottom: 1px solid rgba(242, 214, 117, 0.14);
     }
 
-/* Name */
-.customer-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding-bottom: 20px;
-    margin-bottom: 24px;
-    border-bottom: 1px solid var(--gold-line);
-}
-
-    .customer-header img {
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        border: 1px solid var(--gold);
-        box-shadow: 0 0 10px rgba(212, 175, 55, 0.35);
-        object-fit: cover;
-    }
-
 /* Details */
 .customer-details-grid {
     display: grid;
@@ -2020,50 +1911,20 @@ html body input[type="number"] {
     text-transform: none;
 }
 
-.balance-sparkline {
+.balance-sparkline { 
     width: 100%;
     height: 85px;
     margin-top: 20px;
     overflow: hidden;
 }
 
-#balanceChart {
+.balance-sparkline canvas {
     display: block;
     width: 100%;
     height: 100%;
 }
 
-.balance-footer {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: auto;
-    padding-top: 14px;
-    border-top: 1px solid rgba(242, 214, 117, 0.1);
-    color: var(--muted);
-    font-size: 0.8rem;
-}
-
-    .balance-footer i {
-        color: var(--gold);
-        font-size: 18px;
-    }
-
 /* ----- Accounts ----- */
-.accounts-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    margin: 32px 0 12px;
-}
-
-    .accounts-heading h3 {
-        margin: 0;
-        color: var(--text);
-        font-size: 1.2rem;
-        font-weight: 600;
-    }
 
 .accounts-card {
     margin-top: 0;
@@ -2113,12 +1974,6 @@ html body input[type="number"] {
     font-weight: 600;
 }
 
-.account-subtitle {
-    color: var(--muted);
-    font-size: .8rem;
-    margin-top: 2px;
-}
-
 .account-action {
     width: 40px;
     text-align: right;
@@ -2140,11 +1995,6 @@ html body input[type="number"] {
 
     .customer-profile-layout {
         gap: 16px;
-    }
-
-    .accounts-heading {
-        align-items: flex-start;
-        flex-direction: column;
     }
 
     .balance-card {
@@ -2865,10 +2715,6 @@ html body input[type="number"] {
 /* Customer Accounts-kortet */
 @media (max-width: 576px) {
 
-    .account-summary-card {
-        padding: 1rem;
-    }
-
     .account-actions {
         display: flex;
         flex-wrap: wrap;
@@ -3032,12 +2878,6 @@ html body input[type="number"] {
         .chart-header .card-title {
             font-size: 1rem;
         }
-
-    .chart-pill {
-        white-space: nowrap;
-        padding: 6px 10px;
-        font-size: .7rem;
-    }
 
     .flag-item span {
         font-size: .6rem;

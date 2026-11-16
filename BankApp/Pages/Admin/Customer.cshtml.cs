@@ -32,11 +32,11 @@ namespace BankApp.Pages.Admin
 
             Customer = _mapper.Map<CustomerViewModel>(customer);
 
-            var accounts = await _customerService.GetAccountsAsync(customer);
+            var accounts = _customerService.GetAccounts(customer);
 
             Customer.Accounts = _mapper.Map<List<AccountViewModel>>(accounts);
 
-            Customer.TotalBalance = await _customerService.GetTotalBalanceAsync(customer);
+            Customer.TotalBalance = _customerService.GetTotalBalance(customer);
 
             return Page();
         }

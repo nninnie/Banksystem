@@ -17,6 +17,11 @@ namespace BankApp.Services.Services
             _context = context;
         }
 
+        // Today's date in Swedish time (Azure servers run on UTC)
+        private static DateOnly Today() =>
+            DateOnly.FromDateTime(
+                TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Europe/Stockholm"));
+
         // Fetches a single account (number + balance)
         public async Task<AccountDto?> GetAccountAsync(int accountId)
         {
@@ -89,7 +94,7 @@ namespace BankApp.Services.Services
             _context.Transactions.Add(new Transaction
             {
                 AccountId = accountId,
-                Date = DateOnly.FromDateTime(DateTime.Today),
+                Date = Today(),
                 Type = "Credit",
                 Operation = "Credit in Cash",
                 Amount = amount,
@@ -122,7 +127,7 @@ namespace BankApp.Services.Services
             _context.Transactions.Add(new Transaction
             {
                 AccountId = accountId,
-                Date = DateOnly.FromDateTime(DateTime.Today),
+                Date = Today(),
                 Type = "Debit",
                 Operation = "Withdrawal in Cash",
                 Amount = -amount,
@@ -155,7 +160,7 @@ namespace BankApp.Services.Services
             fromAccount.Balance -= amount;
             toAccount.Balance += amount;
 
-            var today = DateOnly.FromDateTime(DateTime.Today);
+            var today = Today();
 
             // Money out from the sender (negative amount)
             _context.Transactions.Add(new Transaction

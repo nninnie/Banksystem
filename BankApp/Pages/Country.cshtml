@@ -1,4 +1,4 @@
-﻿v@page
+﻿@page
 @model BankApp.Pages.CountryModel
 @{
     ViewData["Title"] = "Top 10 - " + Model.Country;
@@ -105,6 +105,9 @@ else
 
                 <div class="stat-subtitle">
                     Combined balance in @Model.Country
+                </div>
+                <div class="balance-sparkline" aria-hidden="true">
+                    <canvas></canvas>
                 </div>
             </div>
         </div>

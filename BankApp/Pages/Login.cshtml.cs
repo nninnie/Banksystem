@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace BankApp.Pages
 {
-    // LoginModel for responsible for handling user loggin
+    // LoginModel for responsible for handling user login
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;

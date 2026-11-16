@@ -27,25 +27,20 @@ namespace BankApp.Services.Services
 
 
         // Calculates the customer's total balance
-        public Task<decimal> GetTotalBalanceAsync(Customer customer)
+        public decimal GetTotalBalance(Customer customer)
         {
-            var total = customer.Dispositions
+            return customer.Dispositions
                 .Where(d => d.Account != null)
                 .Sum(d => d.Account.Balance);
-
-            return Task.FromResult(total);
         }
 
-
         // Returns all accounts belonging to the customer
-        public Task<List<Account>> GetAccountsAsync(Customer customer)
+        public List<Account> GetAccounts(Customer customer)
         {
-            var accounts = customer.Dispositions
+            return customer.Dispositions
                 .Where(d => d.Account != null)
                 .Select(d => d.Account)
                 .ToList();
-
-            return Task.FromResult(accounts);
         }
 
         // Search + sorting + pagination (50 per page)
@@ -59,9 +54,8 @@ namespace BankApp.Services.Services
             if (!string.IsNullOrWhiteSpace(searchName))
             {
                 query = query.Where(c =>
-                    c.CustomerId.ToString().Contains(searchName) ||
-                    c.Givenname.Contains(searchName) ||
-                    c.Surname.Contains(searchName));
+                c.CustomerId.ToString().Contains(searchName) ||
+                (c.Givenname + " " + c.Surname).Contains(searchName));
             }
 
             if (!string.IsNullOrWhiteSpace(searchCity))
@@ -69,57 +63,50 @@ namespace BankApp.Services.Services
                 query = query.Where(c => c.City.Contains(searchCity));
             }
 
-            // Sort (defaults)
-            if (string.IsNullOrEmpty(sortOrder))
-                sortOrder = "asc";
-            if (string.IsNullOrEmpty(sortColumn))
-                sortColumn = "Id";
+            // Sort
+            var desc = sortOrder == "desc";
+            const string collation = "Finnish_Swedish_CI_AS";
 
-            if (sortColumn == "Id")
+            // ThenBy CustomerId = tie-breaker, so customers with the same value
+            // always come in the same order (needed for correct paging)
+            if (sortColumn == "NationalId")
             {
-                if (sortOrder == "desc")
+                if (desc)
+                    query = query.OrderByDescending(c => c.NationalId).ThenByDescending(c => c.CustomerId);
+                else
+                    query = query.OrderBy(c => c.NationalId).ThenBy(c => c.CustomerId);
+            }
+            else if (sortColumn == "Name")
+            {
+                if (desc)
+                    query = query.OrderByDescending(c => EF.Functions.Collate(c.Surname, collation)).ThenByDescending(c => c.CustomerId);
+                else
+                    query = query.OrderBy(c => EF.Functions.Collate(c.Surname, collation)).ThenBy(c => c.CustomerId);
+            }
+            else if (sortColumn == "Address")
+            {
+                if (desc)
+                    query = query.OrderByDescending(c => EF.Functions.Collate(c.Streetaddress, collation)).ThenByDescending(c => c.CustomerId);
+                else
+                    query = query.OrderBy(c => EF.Functions.Collate(c.Streetaddress, collation)).ThenBy(c => c.CustomerId);
+            }
+            else if (sortColumn == "City")
+            {
+                if (desc)
+                    query = query.OrderByDescending(c => EF.Functions.Collate(c.City, collation)).ThenByDescending(c => c.CustomerId);
+                else
+                    query = query.OrderBy(c => EF.Functions.Collate(c.City, collation)).ThenBy(c => c.CustomerId);
+            }
+            else
+            {
+                // Default: sort by customer number (already unique)
+                if (desc)
                     query = query.OrderByDescending(c => c.CustomerId);
                 else
                     query = query.OrderBy(c => c.CustomerId);
             }
-            if (sortColumn == "NationalId")
-            {
-                if (sortOrder == "desc")
-                    query = query.OrderByDescending(c => c.NationalId);
-                else
-                    query = query.OrderBy(c => c.NationalId);
-            }
-            if (sortColumn == "Name")
-            {
-                if (sortOrder == "desc")
-                    query = query.OrderByDescending(c =>
-                        EF.Functions.Collate(c.Surname, "Finnish_Swedish_CI_AS"));
-                else
-                    query = query.OrderBy(c =>
-                        EF.Functions.Collate(c.Surname, "Finnish_Swedish_CI_AS"));
-            }
 
-            if (sortColumn == "Address")
-            {
-                if (sortOrder == "desc")
-                    query = query.OrderByDescending(c =>
-                        EF.Functions.Collate(c.Streetaddress, "Finnish_Swedish_CI_AS"));
-                else
-                    query = query.OrderBy(c =>
-                        EF.Functions.Collate(c.Streetaddress, "Finnish_Swedish_CI_AS"));
-            }
-
-            if (sortColumn == "City")
-            {
-                if (sortOrder == "desc")
-                    query = query.OrderByDescending(c =>
-                        EF.Functions.Collate(c.City, "Finnish_Swedish_CI_AS"));
-                else
-                    query = query.OrderBy(c =>
-                        EF.Functions.Collate(c.City, "Finnish_Swedish_CI_AS"));
-            }
-
-            // Pagination (afetr sorting)
+            // Pagination (after sorting)
             if (page < 1) page = 1;
 
             var firstPageIndex = (page - 1) * 50;

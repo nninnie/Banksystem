@@ -1,4 +1,16 @@
 ﻿/* ==========================================================
+   HELPERS
+   ========================================================== */
+
+// Number with spaces: 51 096
+const formatNumber = (n) => Number(n).toLocaleString("sv-SE");
+
+// Money with 2 decimals: 51 096,10
+const formatMoney = (n) =>
+    Number(n).toLocaleString("sv-SE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+
+/* ==========================================================
    APP-LAUNCHER
    ========================================================== */
 document.addEventListener("DOMContentLoaded", function () {
@@ -12,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     launcherBtn.style.cursor = "pointer";
 
+    // Click on the button opens/closes the menu
     launcherBtn.addEventListener("click", function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -19,10 +32,12 @@ document.addEventListener("DOMContentLoaded", function () {
         launcher.classList.toggle("hidden");
     });
 
+    // Click inside the menu keeps it open
     launcher.addEventListener("click", function (e) {
         e.stopPropagation();
     });
 
+    // Click anywhere else closes it
     document.addEventListener("click", function () {
         launcher.classList.add("hidden");
     });
@@ -30,12 +45,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 /* ==========================================================
-   DASHBOARD - CUSTOMER PER COUNTRY 
+   DASHBOARD - CUSTOMERS PER COUNTRY
    ========================================================== */
-
 document.addEventListener("DOMContentLoaded", function () {
 
     const canvas = document.getElementById("customersChart");
+
+    // Only runs on the dashboard, where the chart and Chart.js are loaded
     if (!canvas || typeof Chart === "undefined") return;
 
     const values = JSON.parse(canvas.dataset.values);
@@ -44,11 +60,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .closest(".dashboard-card")
         .querySelectorAll(".chart-flags .flag-item");
 
-    const fmt = (n) => Number(n).toLocaleString("sv-SE");
-
     Chart.defaults.global.defaultFontFamily = "Inter, system-ui, sans-serif";
 
-    // Ritar staplar med rundade hörn upptill + värde ovanför
+    // Draws bars with rounded tops and the value above each bar
     const roundedBars = {
         afterDatasetsDraw: function (chart) {
             const ctx = chart.ctx;
@@ -67,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const bottom = m.base;
                 const r = Math.min(10, w / 2, (bottom - top) / 2);
 
+                // The bar
                 ctx.save();
                 ctx.beginPath();
                 ctx.moveTo(x, bottom);
@@ -80,16 +95,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 ctx.fill();
                 ctx.restore();
 
+                // The value above the bar
                 ctx.save();
                 ctx.fillStyle = "#F8FAFC";
                 ctx.font = "600 12px Inter, sans-serif";
                 ctx.textAlign = "center";
-                ctx.fillText(fmt(values[i]), m.x, top - 10);
+                ctx.fillText(formatNumber(values[i]), m.x, top - 10);
                 ctx.restore();
             });
         },
 
-        // Flaggor centrerade under varje stapel
+        // Puts each flag under its bar
         afterDraw: function (chart) {
             chart.getDatasetMeta(0).data.forEach(function (bar, i) {
                 if (flagEls[i]) flagEls[i].style.left = bar._model.x + "px";
@@ -106,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
             datasets: [{
                 label: "",
                 data: values,
-                backgroundColor: "rgba(0,0,0,0)",
+                backgroundColor: "rgba(0,0,0,0)", // the plugin draws the bars
                 borderWidth: 0,
                 barPercentage: 0.8,
                 categoryPercentage: 0.7
@@ -122,36 +138,30 @@ document.addEventListener("DOMContentLoaded", function () {
             tooltips: {
                 callbacks: {
                     label: function (item) {
-                        return " " + fmt(item.yLabel) + " customers";
+                        return " " + formatNumber(item.yLabel) + " customers";
                     }
                 }
-            },
-
-
+            }
         }
     });
 });
 
 
-
-
 /* ==========================================================
-   CUSTOMER CARD - TOTAL BALANCE
+   TOTAL BALANCE - DECORATIVE CURVE (sparkline)
+   Runs on every canvas inside .balance-sparkline.
+   The curve is only for looks, it does not show real data.
    ========================================================== */
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    const canvas = document.getElementById("balanceChart");
-
-    if (!canvas) return;
-
+function setupSparkline(canvas) {
     const ctx = canvas.getContext("2d");
 
     function drawChart() {
         const rect = canvas.getBoundingClientRect();
 
+        // Hidden element = nothing to draw
         if (rect.width === 0 || rect.height === 0) return;
 
+        // Sharp lines on high-resolution screens
         const dpr = window.devicePixelRatio || 1;
 
         canvas.width = rect.width * dpr;
@@ -163,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const width = rect.width;
         const height = rect.height;
 
-        // Kurvans punkter
+        // The points of the curve (x and y as part of width and height)
         const points = [
             [0.00, 0.78],
             [0.12, 0.64],
@@ -179,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
             y: y * height
         }));
 
-        // Funktion för att rita den mjuka kurvan
+        // Draws the smooth curve through the points
         function drawCurve() {
             ctx.beginPath();
             ctx.moveTo(points[0].x, points[0].y);
@@ -191,47 +201,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 const midX = (current.x + next.x) / 2;
                 const midY = (current.y + next.y) / 2;
 
-                ctx.quadraticCurveTo(
-                    current.x,
-                    current.y,
-                    midX,
-                    midY
-                );
+                ctx.quadraticCurveTo(current.x, current.y, midX, midY);
             }
 
             const last = points[points.length - 1];
             ctx.lineTo(last.x, last.y);
         }
 
-        const last = points[points.length - 1];
-
-        // Grön gradient under kurvan
+        // Green fill under the curve
         drawCurve();
         ctx.lineTo(width, height);
         ctx.lineTo(0, height);
         ctx.closePath();
 
-        const fillGradient = ctx.createLinearGradient(
-            0, 0, 0, height
-        );
-
-        fillGradient.addColorStop(
-            0, "rgba(32, 184, 121, 0.24)"
-        );
-        fillGradient.addColorStop(
-            1, "rgba(32, 184, 121, 0)"
-        );
+        const fillGradient = ctx.createLinearGradient(0, 0, 0, height);
+        fillGradient.addColorStop(0, "rgba(32, 184, 121, 0.24)");
+        fillGradient.addColorStop(1, "rgba(32, 184, 121, 0)");
 
         ctx.fillStyle = fillGradient;
         ctx.fill();
 
-        // Grön till guld på själva linjen
+        // The line itself, green to gold
         drawCurve();
 
-        const lineGradient = ctx.createLinearGradient(
-            0, 0, width, 0
-        );
-
+        const lineGradient = ctx.createLinearGradient(0, 0, width, 0);
         lineGradient.addColorStop(0, "#16865B");
         lineGradient.addColorStop(1, "#F2D675");
 
@@ -244,8 +237,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     drawChart();
 
-    // Rita om kurvan när fönstrets storlek ändras
+    // Redraws the curve when the window changes size
     window.addEventListener("resize", drawChart);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".balance-sparkline canvas").forEach(setupSparkline);
 });
 
 
@@ -260,7 +257,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!mapEl || typeof jQuery === "undefined" || !jQuery.fn.vectorMap) return;
 
     const countries = JSON.parse(mapEl.dataset.countries);
-    const fmt = (n) => Number(n).toLocaleString("sv-SE");
 
     // Marker position per country (the capital city)
     const capitals = {
@@ -285,9 +281,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Tooltip text for one country
     const tipText = (c) =>
         `<strong>${c.name}</strong><br>` +
-        `Customers: ${fmt(c.customers)}<br>` +
-        `Accounts: ${fmt(c.accounts)}<br>` +
-        `Balance: ${fmt(c.balance)} ${c.currency}`;
+        `Customers: ${formatNumber(c.customers)}<br>` +
+        `Accounts: ${formatNumber(c.accounts)}<br>` +
+        `Balance: ${formatNumber(c.balance)} ${c.currency}`;
 
     // Goes to the Top 10 page for a country
     const openCountry = (c) =>
@@ -342,7 +338,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Keep the Nordics in the middle when the window changes size
     const map = jQuery(mapEl).vectorMap("get", "mapObject");
 
     // Locks the map on touch screens
@@ -354,6 +349,7 @@ document.addEventListener("DOMContentLoaded", function () {
     map.updateSize();
     map.setFocus(focus);
 
+    // Keeps the Nordics in the middle when the window changes size
     let resizeTimer;
 
     window.addEventListener("resize", function () {
@@ -367,8 +363,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 /* ==========================================================
-ACCOUNT PAGE - SHOW MORE TRANSACTIONS (AJAX)
-========================================================== */
+   ACCOUNT PAGE - SHOW MORE TRANSACTIONS (AJAX)
+   ========================================================== */
 document.addEventListener("DOMContentLoaded", function () {
 
     const table = document.getElementById("transactions-table");
@@ -383,55 +379,60 @@ document.addEventListener("DOMContentLoaded", function () {
     // Which page of 20 transactions to fetch next
     let pageNo = 1;
 
-    // Same number format as the balance card: 51 096,10
-    const fmt = (n) => n.toLocaleString("sv-SE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-    // Fetch the next 20 transactions from OnGetShowMoreAsync
+    // Fetches the next 20 transactions from OnGetShowMoreAsync
     function showMore() {
         fetch(table.dataset.url + "&pageNo=" + pageNo)
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) throw new Error("Server error " + response.status);
+                return response.json();
+            })
             .then((json) => {
                 pageNo = pageNo + 1;
                 json.transactions.forEach(drawElements);
 
-                // Hide the button when there are no more transactions
+                // Hides the button when there are no more transactions
                 if (json.transactions.length < 20) {
                     button.style.display = "none";
                 }
+            })
+            .catch((error) => {
+                console.error("Could not load transactions:", error);
             });
     }
 
-    // Add one row to the table
+    // Adds one row at the end of the table
     function drawElements(element) {
         const amountClass = element.amount < 0 ? "negative" : "positive";
 
-        table.querySelector("tbody").innerHTML +=
+        table.querySelector("tbody").insertAdjacentHTML("beforeend",
             `<tr>
                 <td data-label="Date">${new Date(element.date).toLocaleDateString("sv-SE")}</td>
                 <td data-label="Type">${element.type}</td>
                 <td data-label="Operation">${element.operation ?? "-"}</td>
-                <td class="currency ${amountClass}" data-label="Amount">${fmt(element.amount)} ${currency}</td>
-                <td class="currency" data-label="Balance">${fmt(element.balance)} ${currency}</td>
-            </tr>`;
+                <td class="currency ${amountClass}" data-label="Amount">${formatMoney(element.amount)} ${currency}</td>
+                <td class="currency" data-label="Balance">${formatMoney(element.balance)} ${currency}</td>
+            </tr>`);
     }
 
     button.addEventListener("click", showMore);
-    showMore(); // load the first 20
+    showMore(); // loads the first 20
 });
 
 
-
 /* ==========================================================
-TRANSFER - SHOW RECEIVER NAME (Confirmation of Payee, AJAX)
-========================================================== */
+   TRANSFER - SHOW RECEIVER NAME (Confirmation of Payee, AJAX)
+   ========================================================== */
 document.addEventListener("DOMContentLoaded", function () {
     const input = document.querySelector("[data-recipient-url]");
     const info = document.getElementById("recipientInfo");
+
+    // Only runs on the transfer page
     if (!input || !info) return;
 
     let timer;
 
     input.addEventListener("input", function () {
+        // Clears the old answer on every key press
         clearTimeout(timer);
         info.textContent = "";
         info.className = "recipient-info";
@@ -442,29 +443,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Waits until the cashier stops typing, then asks the server once
         timer = setTimeout(async function () {
-            const response = await fetch(`${input.dataset.recipientUrl}&accountId=${accountId}`);
-            const data = await response.json();
+            try {
+                const url = `${input.dataset.recipientUrl}&accountId=${encodeURIComponent(accountId)}`;
+                const response = await fetch(url);
+                const data = await response.json();
 
-            if (data.found) {
-                info.textContent = `Receiver: ${data.name}`;
-                info.classList.add("found");
-                input.dataset.recipientName = data.name;
-            } else {
-                info.textContent = "The account does not exist";
-                info.classList.add("not-found");
+                if (data.found) {
+                    info.textContent = `Receiver: ${data.name}`;
+                    info.classList.add("found");
+                    input.dataset.recipientName = data.name;
+                } else {
+                    info.textContent = "The account does not exist";
+                    info.classList.add("not-found");
+                }
+            } catch (error) {
+                console.error("Could not look up the receiver:", error);
             }
         }, 400);
     });
 });
 
 
-
 /* ==========================================================
-CONFIRM BEFORE POST (transfer and withdraw)
-Runs after client-side validation. The server still validates everything.
-========================================================== */
+   CONFIRM BEFORE POST (transfer and withdraw)
+   Runs after client-side validation. The server still validates everything.
+   ========================================================== */
 document.addEventListener("DOMContentLoaded", function () {
     const modalEl = document.getElementById("confirmModal");
+
+    // Only runs on pages with the confirm dialog
     if (!modalEl) return;
 
     const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
@@ -499,6 +506,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // OK in the dialog sends the form for real
     document.getElementById("confirmOk").addEventListener("click", function () {
         if (!formToSend) return;
         formToSend.dataset.confirmed = "true";

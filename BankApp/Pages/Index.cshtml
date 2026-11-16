@@ -70,14 +70,17 @@
         </div>
 
         <div class="stat-content">
-            <div class="stat-title">Total Balance</div>
+            <div class="stat-title">Total Balance (all currencies)</div>
 
             <div class="stat-number">
                 @Model.Countries.Sum(x => x.TotalBalance).ToString("N2")
             </div>
 
             <div class="stat-subtitle">
-                Mixed currencies, not converted
+                Not converted, see table below
+            </div>
+            <div class="balance-sparkline" aria-hidden="true">
+                <canvas></canvas>
             </div>
         </div>
 

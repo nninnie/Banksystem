@@ -103,7 +103,7 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 ```
 
 **Exempel – överföring:** `Transfer.cshtml.cs` validerar `TransferViewModel` →
-`ITransactionService.TransferAsync()` kontrollerar saldot och skapar två transaktioner →
+`IAccountService.TransferAsync()` kontrollerar saldot och skapar två transaktioner →
 `BankAppContext.SaveChangesAsync()` sparar båda på en gång, eller ingen.
 
 ### **BankApp – Webbapplikation**

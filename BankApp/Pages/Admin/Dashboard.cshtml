@@ -22,7 +22,7 @@
          }' />
 
 
-<!-- Contry Cards -->
+<!-- Country Cards -->
 <div class="dashboard-grid">
     @foreach (var c in Model.Data.Countries)
     {
@@ -50,7 +50,11 @@
                     <div class="data-row balance-row">
                         <i class="mdi mdi-cash-multiple icon"></i>
                         <span class="label">Total balance</span>
+
                         <span class="value">@c.TotalBalance.ToString("N2") @CountryCurrency.Code(c.Country)</span>
+                    </div>
+                    <div class="balance-sparkline" aria-hidden="true">
+                        <canvas></canvas>
                     </div>
 
                     <div class="country-footer">
