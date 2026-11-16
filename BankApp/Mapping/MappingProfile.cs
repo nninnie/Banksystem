@@ -2,6 +2,7 @@
 using BankApp.DataAccessLayer.DTOs;
 using BankApp.DataAccessLayer.Models;
 using BankApp.ViewModels;
+using BankApp.Helpers;
 
 namespace BankApp.Mapping
 {
@@ -38,6 +39,20 @@ namespace BankApp.Mapping
 
             // Maps TransactionDto - TransactionViewModel (account page and dashboard)
             CreateMap<TransactionDto, TransactionViewModel>();
+
+
+            // Maps CustomerFormViewModel - Customer (create/edit form, form to database)
+            CreateMap<CustomerFormViewModel, Customer>()
+                // CountryCode is never typed by the user, it is calculated from Country (SE, NO, DK, FI)
+                .ForMember(dest => dest.CountryCode,
+                    opt => opt.MapFrom(src => CountryFlags.IsoCode(src.Country)))
+
+                // Accounts are created by the service, not by the form
+                .ForMember(dest => dest.Dispositions,
+                    opt => opt.Ignore());
+
+            // Maps Customer - CustomerFormViewModel (edit form, database to form)
+            CreateMap<Customer, CustomerFormViewModel>();
         }
     }
 }

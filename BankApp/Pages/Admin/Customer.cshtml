@@ -30,14 +30,13 @@
             <p class="section-subtitle">View customer details, accounts and balances.</p>
         </div>
 
-        @* Edit customer - enable when EditCustomer (CRUD) is built
-@if (User.IsInRole("Cashier"))
-{
-    <a class="bank-btn customer-edit-btn" asp-page="/Admin/EditCustomer" asp-route-id="@Model.Customer.CustomerId">
-        <i class="mdi mdi-pencil-outline"></i>&nbsp;Edit
-    </a>
-}
-*@
+
+        @if (User.IsInRole("Cashier"))
+        {
+            <a class="bank-btn customer-edit-btn" asp-page="/Admin/EditCustomer" asp-route-id="@Model.Customer.CustomerId">
+                <i class="mdi mdi-pencil-outline"></i>&nbsp;Edit
+            </a>
+        }
     </div>
 </div>
 
@@ -46,9 +45,9 @@
     <!-- Customer details -->
     <div class="dashboard-card">
         <h3 class="card-title">
-    <i class="mdi mdi-account-outline icon"></i>
-    Customer Overview
-</h3>
+            <i class="mdi mdi-account-outline icon"></i>
+            Customer Overview
+        </h3>
 
 
         <div class="customer-details-grid">
@@ -128,20 +127,20 @@
         </h3>
         <div class="table-responsive">
             <table class="mybank-table mobile-cards">
-            <thead>
-                <tr>
-                    <th>Account Number</th>
-                    <th class="currency">Balance</th>
-                    <th class="currency">@(User.IsInRole("Cashier") ? "Actions" : "")</th>
-                </tr>
-            </thead>
+                <thead>
+                    <tr>
+                        <th>Account Number</th>
+                        <th class="currency">Balance</th>
+                        <th class="currency">@(User.IsInRole("Cashier") ? "Actions" : "")</th>
+                    </tr>
+                </thead>
             
 
-            <tbody>
-                @foreach (var account in Model.Customer.Accounts)
-                {
-                    <tr class="clickable-row"
-                        onclick="location.href='@Url.Page("/Admin/Account", new { id = account.AccountId })'">
+                <tbody>
+                    @foreach (var account in Model.Customer.Accounts)
+                    {
+                        <tr class="clickable-row"
+                            onclick="location.href='@Url.Page("/Admin/Account", new { id = account.AccountId })'">
 
                             <td data-label="Account Number">
                                 <i class="mdi mdi-wallet-outline account-icon"></i>
@@ -156,31 +155,31 @@
                             </td>
 
                             <td class="account-action" data-label="@(User.IsInRole("Cashier") ? "Actions" : "")">
-                            @if (User.IsInRole("Cashier"))
-                            {
-                                <!-- Shortcuts: stopPropagation stops the row click so only the button is used -->
-                                <div class="account-quick-actions">
-                                    <a asp-page="/Admin/Deposit" asp-route-id="@account.AccountId" title="Deposit" onclick="event.stopPropagation()">
-                                        <i class="mdi mdi-plus-circle-outline"></i>
-                                    </a>
-                                    <a asp-page="/Admin/Withdraw" asp-route-id="@account.AccountId" title="Withdraw" onclick="event.stopPropagation()">
-                                        <i class="mdi mdi-minus-circle-outline"></i>
-                                    </a>
-                                    <a asp-page="/Admin/Transfer" asp-route-id="@account.AccountId" title="Transfer" onclick="event.stopPropagation()">
-                                        <i class="mdi mdi-swap-horizontal"></i>
-                                    </a>
-                                </div>
-                            }
-                            else
-                            {
-                                <i class="mdi mdi-chevron-right"></i>
-                            }
-                        </td>
+                                @if (User.IsInRole("Cashier"))
+                                {
+                                    <!-- Shortcuts: stopPropagation stops the row click so only the button is used -->
+                                    <div class="account-quick-actions">
+                                        <a asp-page="/Admin/Deposit" asp-route-id="@account.AccountId" title="Deposit" onclick="event.stopPropagation()">
+                                            <i class="mdi mdi-plus-circle-outline"></i>
+                                        </a>
+                                        <a asp-page="/Admin/Withdraw" asp-route-id="@account.AccountId" title="Withdraw" onclick="event.stopPropagation()">
+                                            <i class="mdi mdi-minus-circle-outline"></i>
+                                        </a>
+                                        <a asp-page="/Admin/Transfer" asp-route-id="@account.AccountId" title="Transfer" onclick="event.stopPropagation()">
+                                            <i class="mdi mdi-swap-horizontal"></i>
+                                        </a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <i class="mdi mdi-chevron-right"></i>
+                                }
+                            </td>
 
-                    </tr>
-                }
-            </tbody>
-        </table>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
        
 

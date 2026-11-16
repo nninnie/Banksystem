@@ -19,5 +19,12 @@
                 </div>
             </div>
         }
+
+        @if (!string.IsNullOrEmpty(Model.ActionPage))
+        {
+            <a class="bank-btn" asp-page="@Model.ActionPage">
+                <i class="mdi @Model.ActionIcon"></i>&nbsp;@Model.ActionText
+            </a>
+        }
     </div>
 </div>

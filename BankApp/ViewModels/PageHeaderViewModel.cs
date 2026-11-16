@@ -7,5 +7,8 @@
         public string Title { get; set; } = "";
         public string Subtitle { get; set; } = "";
         public bool ShowDate { get; set; }
+        public string ActionPage { get; set; } = "";
+        public string ActionText { get; set; } = "";
+        public string ActionIcon { get; set; } = "";
     }
 }

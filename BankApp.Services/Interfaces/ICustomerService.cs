@@ -19,5 +19,9 @@ namespace BankApp.Services.Interfaces
             string? sortOrder,
             int page);
         Task<List<CustomerDto>> GetTopCustomersByCountryAsync(string country, int count);
+
+        Task<int> CreateCustomerAsync(Customer customer);
+
+        Task<bool> UpdateCustomerAsync(Customer customer);
     }
 }

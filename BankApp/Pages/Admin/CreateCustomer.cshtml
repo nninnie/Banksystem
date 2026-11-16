@@ -1,0 +1,43 @@
+﻿@page
+@model BankApp.Pages.Admin.CreateCustomerModel
+@{
+    ViewData["Title"] = "New customer";
+}
+
+<div class="page-breadcrumb">
+    <a asp-page="/Index">
+        <i class="mdi mdi-home"></i>
+    </a>
+    <span>›</span>
+    <a asp-page="/Admin/Customers">Customers</a>
+    <span>›</span>
+    <span>New customer</span>
+</div>
+
+<!-- Page header -->
+<partial name="_PageHeader" model='new PageHeaderViewModel
+         {
+             Kicker = "CUSTOMERS",
+             Title = "New customer",
+             Subtitle = "A customer number and a transaction account are created automatically."
+         }' />
+
+<div class="dashboard-card action-card">
+    <h3 class="card-title">
+        <i class="mdi mdi-account-plus-outline icon"></i>
+        Customer details
+    </h3>
+
+    <form method="post">
+        <partial name="_CustomerForm" for="Input" />
+
+        <div class="form-actions">
+            <button type="submit" class="bank-btn">Create customer</button>
+            <a class="bank-btn-outline" asp-page="/Admin/Customers">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,95 @@
+﻿@model BankApp.ViewModels.CustomerFormViewModel
+
+@* Shared form fields for create and edit customer *@
+<input type="hidden" asp-for="CustomerId" />
+
+<div class="form-section-title">Personal</div>
+
+<div class="row">
+    <div class="col-md-6 form-group">
+        <label asp-for="Givenname">First name</label>
+        <input asp-for="Givenname" class="form-control" />
+        <span asp-validation-for="Givenname" class="text-danger"></span>
+    </div>
+    <div class="col-md-6 form-group">
+        <label asp-for="Surname">Last name</label>
+        <input asp-for="Surname" class="form-control" />
+        <span asp-validation-for="Surname" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 form-group">
+        <label asp-for="Gender">Gender</label>
+        <select asp-for="Gender" class="form-control">
+            <option value="">Choose gender</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+        </select>
+        <span asp-validation-for="Gender" class="text-danger"></span>
+    </div>
+    <div class="col-md-6 form-group">
+        <label asp-for="Birthday">Birthday</label>
+        <input asp-for="Birthday" type="date" class="form-control" />
+        <span asp-validation-for="Birthday" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="NationalId">National ID</label>
+    <input asp-for="NationalId" class="form-control" />
+    <span asp-validation-for="NationalId" class="text-danger"></span>
+</div>
+
+<div class="form-section-title">Address</div>
+
+<div class="form-group">
+    <label asp-for="Streetaddress">Street address</label>
+    <input asp-for="Streetaddress" class="form-control" />
+    <span asp-validation-for="Streetaddress" class="text-danger"></span>
+</div>
+
+<div class="row">
+    <div class="col-md-4 form-group">
+        <label asp-for="Zipcode">Zip code</label>
+        <input asp-for="Zipcode" class="form-control" />
+        <span asp-validation-for="Zipcode" class="text-danger"></span>
+    </div>
+    <div class="col-md-4 form-group">
+        <label asp-for="City">City</label>
+        <input asp-for="City" class="form-control" />
+        <span asp-validation-for="City" class="text-danger"></span>
+    </div>
+    <div class="col-md-4 form-group">
+        <label asp-for="Country">Country</label>
+        <select asp-for="Country" class="form-control">
+            <option value="">Choose country</option>
+            <option value="Sweden">Sweden</option>
+            <option value="Norway">Norway</option>
+            <option value="Denmark">Denmark</option>
+            <option value="Finland">Finland</option>
+        </select>
+        <span asp-validation-for="Country" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-section-title">Contact</div>
+
+<div class="row">
+    <div class="col-md-3 form-group">
+        <label asp-for="Telephonecountrycode">Phone code</label>
+        <input asp-for="Telephonecountrycode" class="form-control" placeholder="+46" />
+        <span asp-validation-for="Telephonecountrycode" class="text-danger"></span>
+    </div>
+    <div class="col-md-9 form-group">
+        <label asp-for="Telephonenumber">Phone number</label>
+        <input asp-for="Telephonenumber" class="form-control" />
+        <span asp-validation-for="Telephonenumber" class="text-danger"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label asp-for="Emailaddress">Email</label>
+    <input asp-for="Emailaddress" class="form-control" />
+    <span asp-validation-for="Emailaddress" class="text-danger"></span>
+</div>

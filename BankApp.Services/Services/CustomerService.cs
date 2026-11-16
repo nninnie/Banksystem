@@ -25,6 +25,57 @@ namespace BankApp.Services.Services
                 .FirstOrDefaultAsync(c => c.CustomerId == id);
         }
 
+        // Today's date in Swedish time (Azure servers run on UTC)
+        private static DateOnly Today() =>
+            DateOnly.FromDateTime(
+                TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Europe/Stockholm"));
+
+        // Creates a customer + an owner account in ONE SaveChanges, returns the new customer number
+        public async Task<int> CreateCustomerAsync(Customer customer)
+        {
+            var account = new Account
+            {
+                Frequency = "Monthly",
+                Created = Today(),
+                Balance = 0
+            };
+
+            customer.Dispositions.Add(new Disposition
+            {
+                Type = "OWNER",
+                Account = account
+            });
+
+            _context.Customers.Add(customer);
+            await _context.SaveChangesAsync();
+
+            return customer.CustomerId;
+        }
+
+        // Updates an existing customer, returns false if the customer does not exist
+        public async Task<bool> UpdateCustomerAsync(Customer customer)
+        {
+            var existing = await _context.Customers.FindAsync(customer.CustomerId);
+            if (existing == null)
+                return false;
+
+            existing.Gender = customer.Gender;
+            existing.Givenname = customer.Givenname;
+            existing.Surname = customer.Surname;
+            existing.Streetaddress = customer.Streetaddress;
+            existing.City = customer.City;
+            existing.Zipcode = customer.Zipcode;
+            existing.Country = customer.Country;
+            existing.CountryCode = customer.CountryCode;
+            existing.Birthday = customer.Birthday;
+            existing.NationalId = customer.NationalId;
+            existing.Telephonecountrycode = customer.Telephonecountrycode;
+            existing.Telephonenumber = customer.Telephonenumber;
+            existing.Emailaddress = customer.Emailaddress;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
 
         // Calculates the customer's total balance
         public decimal GetTotalBalance(Customer customer)
