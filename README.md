@@ -74,6 +74,15 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 - Överföring skapar två transaktioner (ut från avsändaren, in till mottagaren) i samma `SaveChanges`, så att båda sparas eller ingen
 - De 5 senaste transaktionerna på kontot visas under formuläret (partial `_RecentTransactions`)
 
+### ➕ Skapa och ändra kund (Cashier)
+- Cashier kan skapa en ny kund (**New customer**) och ändra en befintlig kund (**Edit customer**)
+- Kunden får automatiskt ett nytt unikt kundnummer, som databasen delar ut
+- Ett transaktionskonto med kunden som ägare skapas automatiskt, och kund, konto och koppling sparas i samma `SaveChanges`
+- Samma formulär används för att skapa och ändra (`CustomerFormViewModel` och partialen `_CustomerForm`)
+- **Server-side:** data annotations och `ModelState.IsValid`. **Client-side:** jQuery Validation i webbläsaren
+- Kön och land väljs i dropdown, och en födelsedag i framtiden nekas
+- Skyddad med `[Authorize(Roles = "Cashier")]`
+
 ### 📊 Dashboard (Admin)
 - Personlig hälsning efter tid på dygnet
 - Statistik: kunder, konton och totalt saldo
@@ -87,11 +96,20 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 - Man kan inte ta bort sig själv eller ändra sin egen roll
 - Servicen `IUserService` pratar med Identity, sidorna använder ViewModels (`CreateUserViewModel`, `EditUserViewModel`)
 
+### 🕵️ Konsolapp: misstänkta transaktioner
+- Eget konsolprojekt (`BankApp.SuspiciousTransactions`) som återanvänder `BankAppContext` och servicen `ISuspiciousTransactionService` (DRY)
+- Körs för varje land och kontrollerar kundernas transaktioner mot två regler:
+  1. En enskild transaktion över 15 000 kr
+  2. En kunds totala transaktioner de senaste 3 dygnen över 23 000 kr (`Date` är ett `DateOnly` i databasen, så 72 timmar räknas som 3 dagar)
+- Skapar en rapport som .txt-fil per land i `Dokument\BankAppReports`, med person, kontonummer och transaktionsnummer
+- Sparar senast kontrollerade transaktions-id i `last-checked-transaction-id.txt`, så att nästa körning bara rapporterar **nya** misstänkta transaktioner
+- Tabeller och färger med Spectre.Console, i samma färger som webben
+
 ### 🛡️ Inloggning, roller och behörighet
 - Egen inloggningssida, ingen öppen registrering
 - Utloggning sker med ett POST-formulär som skyddas av en antiforgery-token
-- **Admin:** dashboard, User Admin, kundsökning, kundbild och kontobild
-- **Cashier:** kundsökning, kundbild, kontobild, insättning, uttag och överföring
+- **Admin:** dashboard, User Admin (skapa, läsa, ändra och ta bort användare samt tilldela roll), kundsökning, kundbild och kontobild. Admin kan se kunder men inte ändra dem
+- **Cashier:** kundsökning, kundbild, kontobild, skapa och ändra kund, insättning, uttag och överföring
 - `[Authorize(Roles = "...")]` skyddar varje sida, även om någon skriver adressen direkt
 - Menyn visar bara det som användarens roll har tillgång till
 
@@ -99,7 +117,7 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 
 ## 🧱 Arkitektur
 
-Lösningen är uppdelad i **tre projekt** (3-lagersarkitektur). Sidorna pratar aldrig direkt med databasen, de går alltid via en service.
+Lösningen är uppdelad i **tre lager** (webb, services, data) plus en **konsolapp**. Sidorna pratar aldrig direkt med databasen, de går alltid via en service.
 
 ```
 Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
@@ -121,7 +139,7 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 
 ### **BankApp.Services – Affärslogik**
 - Bankens regler: kontrollerar saldo, skapar transaktioner och returnerar en ErrorCode när något inte är tillåtet.
-- `ICustomerService`, `IAccountService`, `ITransactionService`, `IDashboardService`
+- `ICustomerService`, `IAccountService`, `ITransactionService`, `IDashboardService`, `IUserService` (användare och roller via Identity) och `ISuspiciousTransactionService` (reglerna för misstänkta transaktioner)
 - All logik för insättning, uttag och överföring
 - `ErrorCode` (enum) som PageModel översätter till felmeddelanden
 
@@ -132,13 +150,17 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 - DTO:er
 - `SeedData` för roller och användare
 
+### **BankApp.SuspiciousTransactions – Konsolapp**
+- Startar sökningen, skriver rapporterna och sparar var körningen slutade. Reglerna ligger i servicen, inte här.
+- `Program.cs` och `ReportWriter` (skriver .txt-rapporten)
+
 ---
 
 ## ✅ Validering
 
 - Data annotations på ViewModels (`[Required]`, `[Range]`, `[StringLength]` m.fl.) med egna felmeddelanden
 - **Server-side:** `ModelState.IsValid` kontrolleras innan något sparas eller söks
-- **Client-side:** jQuery Validation (installerat med LibMan i `wwwroot/lib`) via `_ValidationScriptsPartial` på alla formulär: inloggning, snabbsökning, kundsökning, insättning, uttag och överföring
+- **Client-side:** jQuery Validation (installerat med LibMan i `wwwroot/lib`) via `_ValidationScriptsPartial` på alla formulär: inloggning, snabbsökning, kundsökning, insättning, uttag, överföring samt skapa och ändra kund
 - Regler som kräver databasen (t.ex. för lite pengar eller ett mottagarkonto som inte finns) returneras som `ErrorCode` från servicen och visas med `ModelState.AddModelError`
 - Ett kund- eller kontonummer som inte finns i adressen ger 404
 
@@ -165,21 +187,23 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 - jQuery Validation
 - Bootstrap (Corona Admin Free)
 - Git & GitHub (en branch per funktion)
+- Console Application med Spectre.Console
 
 ---
 
 ## 📁 Projektstruktur
 
 ```
-BankApp/                     Webbapplikationen
-  Pages/                     Razor Pages (Admin/, Shared/)
-  ViewModels/                ViewModels med validering
-  Mapping/                   AutoMapper-profil
-  Helpers/                   CountryFlags, UserDisplay
-  wwwroot/my-css, my-js      Egen CSS och JavaScript
-BankApp.Services/            Services, interfaces, ErrorCode
-BankApp.DataAccessLayer/     Entiteter, DbContexts, DTO:er, migrering, seed
-image/                       Bilder till README
+BankApp/                         Webbapplikationen
+  Pages/                         Razor Pages (Admin/, Shared/)
+  ViewModels/                    ViewModels med validering
+  Mapping/                       AutoMapper-profil
+  Helpers/                       CountryFlags, UserDisplay
+  wwwroot/my-css, my-js          Egen CSS och JavaScript
+BankApp.Services/                Services, interfaces, ErrorCode
+BankApp.DataAccessLayer/         Entiteter, DbContexts, DTO:er, migrering, seed
+BankApp.SuspiciousTransactions/  Konsolapp som söker misstänkta transaktioner
+image/                           Bilder till README
 BankApp.slnx
 README.md
 ```
@@ -199,6 +223,15 @@ README.md
 4. Öppna `BankApp.slnx`, kontrollera att **BankApp** är startprojekt och tryck **F5**
 
 Vid första start skapas Identity-tabellerna automatiskt (`MigrateAsync` i `Program.cs`), och därefter seedas roller och användare. Banktabellerna finns redan i `.bak`-filen.
+
+### Konsolappen (valfritt, för att köra rapporten)
+
+1. Öppna `BankApp.SuspiciousTransactions/appsettings.json` och ändra `Server=` och `Database=` till samma som i BankApp
+2. Högerklicka **BankApp.SuspiciousTransactions** i Solution Explorer → **Debug** → **Start New Instance** (eller `dotnet run --project BankApp.SuspiciousTransactions`)
+3. Rapporterna sparas i `Dokument\BankAppReports`. Första körningen rapporterar hela historiken, och efter det bara nya transaktioner. Ta bort filen `last-checked-transaction-id.txt` för att börja om
+4. Kom ihåg att ställa tillbaka **BankApp** som startprojekt innan du trycker F5 på webben
+
+Konsolappen körs lokalt, inte i Azure.
 
 ---
 
@@ -220,6 +253,8 @@ Lärdomar:
 - Utan `MigrateAsync` vid uppstart hade appen kraschat mot en nyss återställd databas
 - Validera först, ändra data sedan: ordningen i OnPost spelar roll
 - Nästa gång gör jag moodboard och sidplanering innan jag designar
+- Frågor som börjar i `Transactions` (filtrera först, koppla sedan till kund) gick på sekunder, medan frågor som började hos kunden tog över 30 sekunder i den stora databasen
+- `Date` på transaktioner saknar klockslag, så regeln om 72 timmar blev 3 dagar
 
 ---
 
