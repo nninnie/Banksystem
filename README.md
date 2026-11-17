@@ -15,7 +15,7 @@ Projektet är byggt som ett riktigt bankadministrationssystem med fokus på arki
 
 ## 🌍 Live-demo
 
-**Azure:** *https://bankapp-ninnie-afebhbh6b8cjezg0.swedencentral-01.azurewebsites.net*
+**Azure:** https://bankapp-ninnie-afebhbh6b8cjezg0.swedencentral-01.azurewebsites.net
 
 ---
 
@@ -85,8 +85,9 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 
 ### 📊 Dashboard (Admin)
 - Personlig hälsning efter tid på dygnet
-- Statistik: kunder, konton och totalt saldo
-- De 5 senaste transaktionerna i banken
+- Kort per land med kunder, konton och totalt saldo, som leder till topp 10
+- Stapeldiagram med antal kunder per land
+- De 5 senaste transaktionerna i banken, med klickbara namn som öppnar kontot
 
 ### 👤 User Admin (Admin)
 - Admin kan **skapa, läsa, uppdatera och ta bort** systemanvändare (CRUD) och tilldela roll (Admin eller Cashier)
@@ -98,7 +99,7 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 
 ### 🚨 Misstänkta transaktioner (Admin)
 - Sidan `/Admin/Suspicious` visar misstänkta transaktioner för ett valt land. Bara Admin har åtkomst, Cashier och utloggade skickas vidare.
-- Filter på land och period (All time, 7, 30 eller 90 dagar), med validering.
+- Sökningen körs först när man trycker **Show**, och resultatet sparas i minnet i 5 minuter per land och period (`IMemoryCache`), så att sidbyte går direkt
 - Samma regler som konsolappen, via samma service (`SuspiciousTransactionService`): en enskild transaktion över 15 000, eller en kunds summa över 23 000 de senaste tre dagarna.
 - Sammanfattningskort (antal, summa och antal per regel), listan är paginerad med 50 per sida och har länkar till kundbild och kontosida.
 - Snabb fråga: kontoägare hämtas först, sedan bara matchande transaktioner, och kopplingen sker i minnet.
@@ -141,8 +142,8 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 - Razor Pages (`.cshtml` + PageModel)
 - ViewModels med validering
 - AutoMapper-profil (`MappingProfile`)
-- Helpers: landsflaggor (`CountryFlags`) och visningsnamn för inloggad användare (`UserDisplay`)
-- `Program.cs`: dependency injection, Identity, Response Caching och migrering vid uppstart
+- Helpers: landsflaggor (`CountryFlags`), valutakod per land (`CountryCurrency`), svensk tid (`SwedishTime`) och visningsnamn för inloggad användare (`UserDisplay`)
+- `Program.cs`: dependency injection, Identity, Response Caching, `IMemoryCache` och migrering vid uppstart
 
 ### **BankApp.Services – Affärslogik**
 - Bankens regler: kontrollerar saldo, skapar transaktioner och returnerar en ErrorCode när något inte är tillåtet.
@@ -180,6 +181,7 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 - Färgerna ligger som CSS-variabler i `:root`, så de kan ändras på ett ställe
 - Typsnittet Inter med tabulära siffror, så att belopp linjerar i kolumner
 - Egen logga och tagline: *TRUST • SECURITY • GROWTH*
+- Responsiv: fungerar på mobil, surfplatta och dator. På mobil blir tabellerna kort med etiketter, och kort och knappar anpassas efter skärmbredden
 
 ---
 
@@ -205,7 +207,7 @@ BankApp/                         Webbapplikationen
   Pages/                         Razor Pages (Admin/, Shared/)
   ViewModels/                    ViewModels med validering
   Mapping/                       AutoMapper-profil
-  Helpers/                       CountryFlags, UserDisplay
+  Helpers/                       CountryFlags, CountryCurrency, SwedishTime, UserDisplay
   wwwroot/my-css, my-js          Egen CSS och JavaScript
 BankApp.Services/                Services, interfaces, ErrorCode
 BankApp.DataAccessLayer/         Entiteter, DbContexts, DTO:er, migrering, seed
@@ -234,9 +236,8 @@ Vid första start skapas Identity-tabellerna automatiskt (`MigrateAsync` i `Prog
 ### Konsolappen (valfritt, för att köra rapporten)
 
 1. Öppna `BankApp.SuspiciousTransactions/appsettings.json` och ändra `Server=` och `Database=` till samma som i BankApp
-2. Högerklicka **BankApp.SuspiciousTransactions** i Solution Explorer → **Debug** → **Start New Instance** (eller `dotnet run --project BankApp.SuspiciousTransactions`)
+2. Högerklicka **BankApp.SuspiciousTransactions** i Solution Explorer → **Debug** → **Start Without Debugging**, så står fönstret kvar när rapporten är klar (eller kör `dotnet run --project BankApp.SuspiciousTransactions` i terminalen)
 3. Rapporterna sparas i `Dokument\BankAppReports`. Första körningen rapporterar hela historiken, och efter det bara nya transaktioner. Ta bort filen `last-checked-transaction-id.txt` för att börja om
-4. Kom ihåg att ställa tillbaka **BankApp** som startprojekt innan du trycker F5 på webben
 
 Konsolappen körs lokalt, inte i Azure.
 
