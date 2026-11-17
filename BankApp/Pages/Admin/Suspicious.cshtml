@@ -126,7 +126,7 @@
                     <tbody>
                         @foreach (var t in Model.PageItems)
                         {
-                            <tr>
+                            <tr class="@(t.Amount < 0 ? "tx-out" : "tx-in")">
                                 <td data-label="Transaction">@t.TransactionId</td>
                                 <td class="text-nowrap" data-label="Date">@t.Date.ToString("yyyy-MM-dd")</td>
                                 <td class="primary-value" data-label="Customer">
@@ -135,7 +135,7 @@
                                 <td data-label="Account">
                                     <a asp-page="/Admin/Account" asp-route-id="@t.AccountId">@t.AccountId</a>
                                 </td>
-                                <td data-label="Amount">@t.Amount.ToString("N2")</td>
+                                <td class="@(t.Amount < 0 ? "negative" : "positive")" data-label="Amount">@t.Amount.ToString("N2")</td>
                                 <td data-label="Reason">@t.Reason</td>
                             </tr>
                         }
@@ -158,7 +158,7 @@
                     </a>
                 }
 
-                <span class="bank-page-info">@Model.CurrentPage / @Model.TotalPages</span>
+                <span class="bank-page-info">@Model.CurrentPage</span>
 
                 @if (Model.CurrentPage < Model.TotalPages)
                 {
@@ -176,7 +176,6 @@
         }
     </div>
 }
-
 else if (ModelState.IsValid)
 {
     <div class="table-card">

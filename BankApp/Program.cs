@@ -62,6 +62,8 @@ namespace BankApp
             // Registers the Response Caching services in the DI container
             builder.Services.AddResponseCaching();
 
+            builder.Services.AddMemoryCache();
+
             var app = builder.Build();
 
             // Applies Identity migrations and seeds roles and default users at application startup

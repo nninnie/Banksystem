@@ -133,6 +133,16 @@ document.addEventListener("DOMContentLoaded", function () {
             responsive: true,
             maintainAspectRatio: false,
             layout: { padding: { top: 28 } },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        fontSize: 10,
+                        padding: 2,
+                        maxTicksLimit: 5,
+                        display: window.innerWidth > 576
+                    }
+                }]
+            },
             legend: { display: false },
 
             tooltips: {
@@ -403,9 +413,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Adds one row at the end of the table
     function drawElements(element) {
         const amountClass = element.amount < 0 ? "negative" : "positive";
+        // Red edge for money out, green for money in (mobile cards)
+        const rowClass = element.amount < 0 ? "tx-out" : "tx-in";
 
         table.querySelector("tbody").insertAdjacentHTML("beforeend",
-            `<tr>
+            `<tr class="${rowClass}">
                 <td data-label="Date">${new Date(element.date).toLocaleDateString("sv-SE")}</td>
                 <td data-label="Type">${element.type}</td>
                 <td data-label="Operation">${element.operation ?? "-"}</td>

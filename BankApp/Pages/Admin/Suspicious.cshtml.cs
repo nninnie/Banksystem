@@ -4,6 +4,7 @@ using BankApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BankApp.Pages.Admin
 {
@@ -16,11 +17,13 @@ namespace BankApp.Pages.Admin
 
         private readonly ISuspiciousTransactionService _service;
         private readonly IMapper _mapper;
+        private readonly IMemoryCache _cache;
 
-        public SuspiciousTransactionsModel(ISuspiciousTransactionService service, IMapper mapper)
+        public SuspiciousTransactionsModel(ISuspiciousTransactionService service, IMapper mapper, IMemoryCache cache)
         {
             _service = service;
             _mapper = mapper;
+            _cache = cache;
         }
 
         public List<string> Countries { get; set; } = new();
@@ -67,13 +70,20 @@ namespace BankApp.Pages.Admin
             if (!ModelState.IsValid || !Search)
                 return;
 
-            // null = all time, otherwise how far back to show
-            DateOnly? since = Days == 0 ? null : DateOnly.FromDateTime(DateTime.Now.AddDays(-Days));
-            var found = await _service.FindSuspiciousAsync(Country!, 0, since);
+            // Saved for 5 minutes per country and period, so paging does not search again
+            var key = $"suspicious-{Country}-{Days}";
+            if (!_cache.TryGetValue(key, out List<SuspiciousTransactionViewModel>? all) || all == null)
+            {
+                // null = all time, otherwise how far back to show
+                DateOnly? since = Days == 0 ? null : DateOnly.FromDateTime(DateTime.Now.AddDays(-Days));
+                var found = await _service.FindSuspiciousAsync(Country!, 0, since);
 
-            var all = _mapper.Map<List<SuspiciousTransactionViewModel>>(found)
-                .OrderByDescending(t => t.TransactionId)
-                .ToList();
+                all = _mapper.Map<List<SuspiciousTransactionViewModel>>(found)
+                    .OrderByDescending(t => t.TransactionId)
+                    .ToList();
+
+                _cache.Set(key, all, TimeSpan.FromMinutes(5));
+            }
 
             TotalCount = all.Count;
             TotalAmount = all.Sum(t => Math.Abs(t.Amount));

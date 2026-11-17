@@ -110,7 +110,7 @@
         {
             <div class="transaction-row">
                 <div class="transaction-info">
-                    <span class="transaction-name">@t.CustomerName</span>
+                    <a asp-page="/Admin/Account" asp-route-id="@t.AccountId" class="transaction-name">@t.CustomerName</a>
                     <span class="transaction-operation">
                         @(string.IsNullOrWhiteSpace(t.Operation) ? t.Type : t.Operation)
                     </span>

@@ -19,28 +19,29 @@
     {
         <div class="table-responsive">
             <table class="mybank-table mobile-cards">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Operation</th>
-                    <th class="currency">Amount</th>
-                    <th class="currency">Balance</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var t in Model)
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Operation</th>
+                        <th class="currency">Amount</th>
+                        <th class="currency">Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in Model)
                     {
-                        <tr>
+                        <!-- tx-in / tx-out = green / red edge on mobile -->
+                        <tr class="@(t.Amount < 0 ? "tx-out" : "tx-in")">
                             <td data-label="Date">@t.Date.ToString("yyyy-MM-dd")</td>
                             <td data-label="Type">@t.Type</td>
                             <td data-label="Operation">@(string.IsNullOrEmpty(t.Operation) ? "–" : t.Operation)</td>
                             <td class="currency @(t.Amount < 0 ? "negative" : "positive")" data-label="Amount">@($"{t.Amount:N2} {currency}")</td>
                             <td class="currency" data-label="Balance">@($"{t.Balance:N2} {currency}")</td>
                         </tr>
-                }
-            </tbody>
-        </table>
+                    }
+                </tbody>
+            </table>
         </div>
     }
 </div>

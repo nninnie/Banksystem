@@ -1509,7 +1509,7 @@ html body .form-card .form-group {
 
 .stat-number {
     color: var(--text);
-    font-size: clamp(1.1rem, 9cqw, 2.1rem);
+    font-size: clamp(0.75rem, 8cqw, 1.9rem);
     font-weight: 700;
     margin-top: 4px;
     line-height: 1.1;
@@ -1959,6 +1959,8 @@ html body .form-card .form-group {
         text-align: left;
     }
 
+
+
 /* Profile balance */
 .customer-profile-layout .balance-card .balance-value {
     text-align: left;
@@ -2325,6 +2327,15 @@ html body .form-card .form-group {
     margin: 0;
 }
 
+/* Recent transactions: the name is a link */
+a.transaction-name {
+    text-decoration: none;
+    transition: color .2s ease;
+}
+
+    a.transaction-name:hover {
+        color: var(--gold);
+    }
 
 /* ==========================================================
    15. LOGIN PAGE
@@ -2757,7 +2768,7 @@ td .account-actions {
     }
 
     .stat-number {
-        font-size: 1.15rem;
+        font-size: clamp(1rem, 14cqw, 1.5rem);
         white-space: nowrap;
     }
 
@@ -2765,11 +2776,13 @@ td .account-actions {
         display: none;
     }
 
-    /* Touch targets */
+    /* Buttons: smaller on mobile, still easy to tap */
     .bank-btn,
     .bank-btn-outline,
     .btn {
-        min-height: 44px;
+        min-height: 36px;
+        padding: 6px 12px;
+        font-size: 12px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -2779,6 +2792,51 @@ td .account-actions {
     .bank-search .bank-btn {
         width: 100%;
     }
+}
+
+/* Stat cards - On a tablet or narrow window the icon goes above the text */
+@media (min-width: 577px) and (max-width: 992px) {
+    .stat-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .stat-icon {
+        align-self: flex-start;
+    }
+
+    .stat-title {
+        white-space: normal;
+    }
+}
+
+/* Page number box */
+.bank-page-info {
+    width: auto;
+    min-width: 38px;
+    padding: 0 12px;
+    white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+    .mybank-table.mobile-cards tr.tx-in::before {
+        background: var(--positive);
+    }
+
+    .mybank-table.mobile-cards tr.tx-out::before {
+        background: var(--negative);
+    }
+
+    /* Long text */
+    .mybank-table.mobile-cards td {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+        /* Cells without a label */
+        .mybank-table.mobile-cards td[data-label=""] {
+            display: none;
+        }
 }
 
 
@@ -2794,8 +2852,8 @@ td .account-actions {
 
         .account-actions .btn,
         .account-actions a {
-            min-width: 44px;
-            min-height: 44px;
+            min-width: 36px;
+            min-height: 36px;
         }
 }
 
@@ -2959,10 +3017,6 @@ td .account-actions {
     font-size: clamp(1rem, .9rem + .4vw, 1.25rem);
 }
 
-.stat-number {
-    font-size: clamp(1.15rem, 1rem + .8vw, 1.75rem);
-}
-
 /* Transfer: receiver name under the account field */
 .recipient-info {
     min-height: 1.4em;
@@ -2992,3 +3046,88 @@ td .account-actions {
     .bank-modal .modal-footer {
         border-color: rgba(255, 255, 255, .08);
     }
+
+/* Mobile */
+@media (max-width: 576px) {
+
+    /* Actions*/
+    .accounts-card .mybank-table.mobile-cards td.account-action {
+        width: 100%;
+        padding-left: 0;
+    }
+
+    /* Account number */
+    .mybank-table.mobile-cards td .account-icon {
+        margin-left: auto;
+    }
+
+    .mybank-table.mobile-cards td .account-number {
+        white-space: nowrap;
+    }
+
+    /* Header buttons */
+    .account-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        width: 100%;
+        gap: 8px;
+    }
+
+    /* Edit customer */
+    .customer-edit-btn {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+/* Mobile: form buttons and pagination */
+@media (max-width: 576px) {
+    .form-actions {
+        gap: 8px;
+    }
+
+        .form-actions .bank-btn,
+        .form-actions .bank-btn-outline {
+            flex: 1;
+        }
+
+    .bank-pagination .bank-btn-outline,
+    .bank-page-info {
+        height: 34px;
+        min-height: 34px;
+    }
+}
+
+/* Balance card without a curve (Deposit, Withdraw, Transfer): the amount sits in the middle */
+.balance-card:not(:has(.balance-sparkline)) {
+    display: flex;
+    flex-direction: column;
+}
+
+    .balance-card:not(:has(.balance-sparkline)) .balance-value {
+        margin-top: auto;
+    }
+
+    .balance-card:not(:has(.balance-sparkline)) .balance-label {
+        margin-bottom: auto;
+    }
+
+/* Mobile: Top 10 cards and a lower balance card */
+@media (max-width: 576px) {
+
+    /* Rank: label on the left, badge on the right, like the other rows */
+    .mybank-table.mobile-cards td.rank-column {
+        text-align: right !important;
+        padding-right: 0 !important;
+        font-size: .9rem;
+    }
+
+    /* The Customer ID cell had a desktop margin */
+    .mybank-table.mobile-cards td.customer-id {
+        margin-top: 0;
+    }
+
+    .balance-card:not(:has(.balance-sparkline)) {
+        min-height: 170px;
+    }
+}
