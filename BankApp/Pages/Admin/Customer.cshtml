@@ -34,7 +34,7 @@
         @if (User.IsInRole("Cashier"))
         {
             <a class="bank-btn customer-edit-btn" asp-page="/Admin/EditCustomer" asp-route-id="@Model.Customer.CustomerId">
-                <i class="mdi mdi-pencil-outline"></i>&nbsp;Edit
+                <i class="mdi mdi-pencil-outline"></i>&nbsp;Edit customer
             </a>
         }
     </div>
