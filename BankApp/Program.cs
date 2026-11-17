@@ -23,8 +23,11 @@ namespace BankApp
             builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
 
             // Add database context, Dependency Injection, and configure the connection string
+            // Long timeout - the suspicious search reads over a million transactions
             builder.Services.AddDbContext<BankAppContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection"),
+                    sql => sql.CommandTimeout(120)));
 
             // Add Identity services and configure options
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -54,6 +57,7 @@ namespace BankApp
             builder.Services.AddScoped<ITransactionService, TransactionService>();
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ISuspiciousTransactionService, SuspiciousTransactionService>();
 
             // Registers the Response Caching services in the DI container
             builder.Services.AddResponseCaching();

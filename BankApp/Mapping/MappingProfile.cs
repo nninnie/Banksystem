@@ -6,61 +6,49 @@ using BankApp.Helpers;
 
 namespace BankApp.Mapping
 {
-    // MappingProfile – defines how entities and DTOs are converted into ViewModels
+    // MappingProfile - How entities and DTOs become ViewModels
     public class MappingProfile : Profile
     {
         public MappingProfile()
         {
-            // Maps Customer entity - CustomerViewModel
+            // Customer - CustomerViewModel
             CreateMap<Customer, CustomerViewModel>()
-                // Creates FullName from Givenname + Surname
+                // Name and phone are put together from two fields
                 .ForMember(dest => dest.FullName,
                     opt => opt.MapFrom(src => $"{src.Givenname} {src.Surname}"))
-
-                // Maps telephone country code + number into one string
                 .ForMember(dest => dest.Telephone,
                     opt => opt.MapFrom(src => $"{src.Telephonecountrycode}{src.Telephonenumber}"))
-
-                // Maps email address
                 .ForMember(dest => dest.Email,
                     opt => opt.MapFrom(src => src.Emailaddress));
 
-            // Maps Account entity - AccountViewModel
-            // Created is DateOnly in the database and DateTime in the ViewModel
+            // Account - AccountViewModel (DateOnly in the database, DateTime in the ViewModel)
             CreateMap<Account, AccountViewModel>()
                 .ForMember(dest => dest.Created,
                     opt => opt.MapFrom(src => src.Created.ToDateTime(TimeOnly.MinValue)));
 
-            // Maps CustomerDto - CustomerViewModel (Top 10 per country)
+            // DTOs - ViewModels (same names, so no extra rules)
             CreateMap<CustomerDto, CustomerViewModel>();
-
-            // Maps AccountDto - AccountViewModel (account page)
             CreateMap<AccountDto, AccountViewModel>();
-
-            // Maps TransactionDto - TransactionViewModel (account page and dashboard)
             CreateMap<TransactionDto, TransactionViewModel>();
 
-
-            // Maps CustomerFormViewModel - Customer (create/edit form, form to database)
+            // Create/edit customer form - Customer
             CreateMap<CustomerFormViewModel, Customer>()
-                // CountryCode is never typed by the user, it is calculated from Country (SE, NO, DK, FI)
+                // Country code is calculated from Country, the user never types it
                 .ForMember(dest => dest.CountryCode,
                     opt => opt.MapFrom(src => CountryFlags.IsoCode(src.Country)))
-
-                // Accounts are created by the service, not by the form
+                // Accounts are created by the service, not the form
                 .ForMember(dest => dest.Dispositions,
                     opt => opt.Ignore());
 
-            // Maps Customer - CustomerFormViewModel (edit form, database to form)
+            // Customer - edit form (fills the form from the database)
             CreateMap<Customer, CustomerFormViewModel>();
 
-
-            // Maps UserDto - UserViewModel (User Admin list)
+            // User Admin
             CreateMap<UserDto, UserViewModel>();
-
-
-            // Maps UserDto - EditUserViewModel (fills the edit user form)
             CreateMap<UserDto, EditUserViewModel>();
+
+            // Admin page for suspicious transactions
+            CreateMap<SuspiciousTransactionDto, SuspiciousTransactionViewModel>();
         }
     }
 }

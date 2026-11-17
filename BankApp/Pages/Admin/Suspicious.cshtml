@@ -1,0 +1,176 @@
+﻿@page
+@model BankApp.Pages.Admin.SuspiciousTransactionsModel
+@{
+    ViewData["Title"] = "Suspicious Transactions";
+}
+
+<div class="page-breadcrumb">
+    <a asp-page="/Index">
+        <i class="mdi mdi-home"></i>
+    </a>
+    <span>›</span>
+    <span>Suspicious Transactions</span>
+</div>
+
+<!-- Page header -->
+<partial name="_PageHeader" model='new PageHeaderViewModel
+         {
+             Kicker = "ADMINISTRATION",
+             Title = "Suspicious Transactions",
+             Subtitle = "Possible money laundering: one transaction over 15 000, or a customer total over 23 000 in 3 days."
+         }' />
+
+<!-- Filter form -->
+<div class="dashboard-card search-card">
+    <form method="get" class="bank-search">
+        <div class="row g-3 align-items-start">
+
+            <div class="col-md-5">
+                <div class="input-icon">
+                    <i class="mdi mdi-earth"></i>
+                    <select asp-for="Country" class="form-control"
+                            asp-items="@(new SelectList(Model.Countries))"></select>
+                </div>
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-5">
+                <div class="input-icon">
+                    <i class="mdi mdi-calendar-range"></i>
+                    <select asp-for="Days" class="form-control">
+                        <option value="0">All time</option>
+                        <option value="7">Last 7 days</option>
+                        <option value="30">Last 30 days</option>
+                        <option value="90">Last 90 days</option>
+                    </select>
+                </div>
+                <span asp-validation-for="Days" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="bank-btn w-100">Show</button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+@if (ModelState.IsValid)
+{
+    <!-- Summary cards -->
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card stat-card">
+            <div class="stat-icon"><i class="mdi mdi-alert-octagon-outline"></i></div>
+            <div class="stat-content">
+                <div class="stat-title">Suspicious</div>
+                <div class="stat-number">@Model.TotalCount.ToString("N0")</div>
+                <div class="stat-subtitle">Transactions found</div>
+            </div>
+        </div>
+
+        <div class="dashboard-card stat-card">
+            <div class="stat-icon"><i class="mdi mdi-cash-multiple"></i></div>
+            <div class="stat-content">
+                <div class="stat-title">Total amount</div>
+                <div class="stat-number">@Model.TotalAmount.ToString("N2")</div>
+                <div class="stat-subtitle">Sum of all amounts</div>
+            </div>
+        </div>
+
+        <div class="dashboard-card stat-card">
+            <div class="stat-icon"><i class="mdi mdi-numeric-1-box-outline"></i></div>
+            <div class="stat-content">
+                <div class="stat-title">Over 15 000</div>
+                <div class="stat-number">@Model.SingleCount.ToString("N0")</div>
+                <div class="stat-subtitle">Single transaction</div>
+            </div>
+        </div>
+
+        <div class="dashboard-card stat-card">
+            <div class="stat-icon"><i class="mdi mdi-clock-outline"></i></div>
+            <div class="stat-content">
+                <div class="stat-title">Over 23 000</div>
+                <div class="stat-number">@Model.WindowCount.ToString("N0")</div>
+                <div class="stat-subtitle">Total in 3 days</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Result list -->
+    <div class="table-card">
+        <h3 class="card-title">
+            <i class="mdi mdi-alert-circle-outline icon"></i>
+            @Model.Country, @(Model.Days == 0 ? "all time" : $"last {Model.Days} days")
+        </h3>
+
+        @if (Model.TotalCount == 0)
+        {
+            <p>No suspicious transactions found in @Model.Country (@(Model.Days == 0 ? "all time" : $"last {Model.Days} days")).</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="mybank-table mobile-cards">
+                    <thead>
+                        <tr>
+                            <th>Transaction</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Account</th>
+                            <th>Amount</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var t in Model.PageItems)
+                        {
+                            <tr>
+                                <td data-label="Transaction">@t.TransactionId</td>
+                                <td class="text-nowrap" data-label="Date">@t.Date.ToString("yyyy-MM-dd")</td>
+                                <td class="primary-value" data-label="Customer">
+                                    <a asp-page="/Admin/Customer" asp-route-id="@t.CustomerId">@t.CustomerName</a>
+                                </td>
+                                <td data-label="Account">
+                                    <a asp-page="/Admin/Account" asp-route-id="@t.AccountId">@t.AccountId</a>
+                                </td>
+                                <td data-label="Amount">@t.Amount.ToString("N2")</td>
+                                <td data-label="Reason">@t.Reason</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="bank-pagination">
+
+                @if (Model.CurrentPage > 1)
+                {
+                    <a class="bank-btn-outline"
+                       asp-page="/Admin/Suspicious"
+                       asp-route-country="@Model.Country"
+                       asp-route-days="@Model.Days"
+                       asp-route-pageNo="@(Model.CurrentPage - 1)">
+                        ❮
+                    </a>
+                }
+
+                <span class="bank-page-info">@Model.CurrentPage / @Model.TotalPages</span>
+
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <a class="bank-btn-outline"
+                       asp-page="/Admin/Suspicious"
+                       asp-route-country="@Model.Country"
+                       asp-route-days="@Model.Days"
+                       asp-route-pageNo="@(Model.CurrentPage + 1)">
+                        ❯
+                    </a>
+                }
+
+            </div>
+        }
+    </div>
+}

@@ -8,12 +8,15 @@ namespace BankApp.Services.Services
     // Service - Rules for finding suspicious transactions
     public class SuspiciousTransactionService : ISuspiciousTransactionService
     {
+        // Rule limits
         private const decimal SingleTransactionLimit = 15000m;
-
         private const decimal TotalLimit = 23000m;
         private const int DaysBack = 3;
 
         private readonly BankAppContext _context;
+
+        // The owner of an account 
+        private record Owner(int CustomerId, string CustomerName);
 
         public SuspiciousTransactionService(BankAppContext context)
         {
@@ -36,10 +39,13 @@ namespace BankApp.Services.Services
         }
 
         // Runs both rules, only for transactions after the last run
-        public async Task<List<SuspiciousTransactionDto>> FindSuspiciousAsync(string country, int afterTransactionId)
+        public async Task<List<SuspiciousTransactionDto>> FindSuspiciousAsync(string country, int afterTransactionId, DateOnly? since = null)
         {
-            var single = await FindSingleLargeAsync(country, afterTransactionId);
-            var total = await FindHighTotalAsync(country, afterTransactionId);
+            var from = since ?? DateOnly.MinValue;
+            var owners = await GetOwnersAsync(country);
+
+            var single = await FindSingleLargeAsync(country, afterTransactionId, from, owners);
+            var total = await FindHighTotalAsync(country, afterTransactionId, from, owners);
 
             // One transaction can break both rules, so show it once
             return single.Concat(total)
@@ -54,55 +60,82 @@ namespace BankApp.Services.Services
                 .ToList();
         }
 
-        // Single large transaction - Start in Transactions (few rows), then join to customer
-        private async Task<List<SuspiciousTransactionDto>> FindSingleLargeAsync(string country, int afterTransactionId)
+        // Account owners in one country - a small query, so it is fast
+        private async Task<Dictionary<int, Owner>> GetOwnersAsync(string country)
         {
-            // OWNER only, so shared accounts are not counted twice
-            return await _context.Transactions
-                .Where(t => t.TransactionId > afterTransactionId
-                         && (t.Amount > SingleTransactionLimit || t.Amount < -SingleTransactionLimit))
-                .SelectMany(t => t.AccountNavigation.Dispositions
-                    .Where(d => d.Type == "OWNER" && d.Customer.Country == country)
-                    .Select(d => new SuspiciousTransactionDto
-                    {
-                        Country = country,
-                        CustomerId = d.CustomerId,
-                        CustomerName = d.Customer.Givenname + " " + d.Customer.Surname,
-                        AccountId = d.AccountId,
-                        TransactionId = t.TransactionId,
-                        Date = t.Date,
-                        Amount = t.Amount,
-                        Reason = "Single transaction over 15 000"
-                    }))
+            var list = await _context.Dispositions
+                .Where(d => d.Type == "OWNER" && d.Customer.Country == country)
+                .Select(d => new
+                {
+                    d.AccountId,
+                    d.CustomerId,
+                    Name = d.Customer.Givenname + " " + d.Customer.Surname
+                })
                 .ToListAsync();
+
+            // AccountId is the key, so a transaction finds its owner directly
+            return list
+                .GroupBy(o => o.AccountId)
+                .ToDictionary(g => g.Key, g => new Owner(g.First().CustomerId, g.First().Name));
+        }
+
+        // Single large transaction - Only the matching rows, joined to the owner in memory
+        private async Task<List<SuspiciousTransactionDto>> FindSingleLargeAsync(
+            string country, int afterTransactionId, DateOnly from, Dictionary<int, Owner> owners)
+        {
+            var accountIds = owners.Keys.ToList();
+
+            var large = await _context.Transactions
+                .Where(t => t.TransactionId > afterTransactionId
+                         && t.Date >= from
+                         && accountIds.Contains(t.AccountId)
+                         && (t.Amount > SingleTransactionLimit || t.Amount < -SingleTransactionLimit))
+                .Select(t => new { t.TransactionId, t.AccountId, t.Date, t.Amount })
+                .ToListAsync();
+
+            return large
+                .Select(t => new SuspiciousTransactionDto
+                {
+                    Country = country,
+                    CustomerId = owners[t.AccountId].CustomerId,
+                    CustomerName = owners[t.AccountId].CustomerName,
+                    AccountId = t.AccountId,
+                    TransactionId = t.TransactionId,
+                    Date = t.Date,
+                    Amount = t.Amount,
+                    Reason = "Single transaction over 15 000"
+                })
+                .ToList();
         }
 
         // High total - A customer's sum over the last 3 days
-        private async Task<List<SuspiciousTransactionDto>> FindHighTotalAsync(string country, int afterTransactionId)
+        private async Task<List<SuspiciousTransactionDto>> FindHighTotalAsync(
+            string country, int afterTransactionId, DateOnly from, Dictionary<int, Owner> owners)
         {
             // Date has no time of day, so 72 hours = 3 days
             var since = DateOnly.FromDateTime(DateTime.Now.AddDays(-DaysBack));
+            var accountIds = owners.Keys.ToList();
 
             // All transactions in the window, old ones count in the total too
             var recent = await _context.Transactions
-                .Where(t => t.Date >= since)
-                .SelectMany(t => t.AccountNavigation.Dispositions
-                    .Where(d => d.Type == "OWNER" && d.Customer.Country == country)
-                    .Select(d => new SuspiciousTransactionDto
-                    {
-                        Country = country,
-                        CustomerId = d.CustomerId,
-                        CustomerName = d.Customer.Givenname + " " + d.Customer.Surname,
-                        AccountId = d.AccountId,
-                        TransactionId = t.TransactionId,
-                        Date = t.Date,
-                        Amount = t.Amount,
-                        Reason = "Total over 23 000 in 3 days"
-                    }))
+                .Where(t => t.Date >= since && t.Date >= from && accountIds.Contains(t.AccountId))
+                .Select(t => new { t.TransactionId, t.AccountId, t.Date, t.Amount })
                 .ToListAsync();
 
+            var rows = recent.Select(t => new SuspiciousTransactionDto
+            {
+                Country = country,
+                CustomerId = owners[t.AccountId].CustomerId,
+                CustomerName = owners[t.AccountId].CustomerName,
+                AccountId = t.AccountId,
+                TransactionId = t.TransactionId,
+                Date = t.Date,
+                Amount = t.Amount,
+                Reason = "Total over 23 000 in 3 days"
+            });
+
             // Sum per customer, keep only the new transactions
-            return recent
+            return rows
                 .GroupBy(r => r.CustomerId)
                 .Where(g => g.Sum(r => Math.Abs(r.Amount)) > TotalLimit)
                 .SelectMany(g => g)

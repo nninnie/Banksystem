@@ -6,7 +6,7 @@ namespace BankApp.Services.Interfaces
     public interface ISuspiciousTransactionService
     {
         Task<List<string>> GetCountriesAsync();
-        Task<List<SuspiciousTransactionDto>> FindSuspiciousAsync(string country, int afterTransactionId);
+        Task<List<SuspiciousTransactionDto>> FindSuspiciousAsync(string country, int afterTransactionId, DateOnly? since = null);
 
         Task<int> GetLastTransactionIdAsync();
     }

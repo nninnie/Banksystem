@@ -117,6 +117,17 @@
                     </li>
                 }
 
+                <!-- Admin only -->
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item menu-items">
+                        <a class="nav-link" asp-page="/Admin/Suspicious">
+                            <span class="menu-icon"><i class="mdi mdi-alert-octagon-outline"></i></span>
+                            <span class="menu-title">Suspicious</span>
+                        </a>
+                    </li>
+                }
+
                 <!-- Log in / Log out -->
                 @if (isLoggedIn)
                 {
