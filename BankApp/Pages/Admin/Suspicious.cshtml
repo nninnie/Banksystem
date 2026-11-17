@@ -48,14 +48,14 @@
             </div>
 
             <div class="col-md-2">
-                <button type="submit" class="bank-btn w-100">Show</button>
+                <button type="submit" name="Search" value="true" class="bank-btn w-100">Show</button>
             </div>
 
         </div>
     </form>
 </div>
 
-@if (ModelState.IsValid)
+@if (ModelState.IsValid && Model.Search)
 {
     <!-- Summary cards -->
     <div class="dashboard-grid">
@@ -152,6 +152,7 @@
                        asp-page="/Admin/Suspicious"
                        asp-route-country="@Model.Country"
                        asp-route-days="@Model.Days"
+                       asp-route-search="true"
                        asp-route-pageNo="@(Model.CurrentPage - 1)">
                         ❮
                     </a>
@@ -165,6 +166,7 @@
                        asp-page="/Admin/Suspicious"
                        asp-route-country="@Model.Country"
                        asp-route-days="@Model.Days"
+                       asp-route-search="true"
                        asp-route-pageNo="@(Model.CurrentPage + 1)">
                         ❯
                     </a>
@@ -172,5 +174,12 @@
 
             </div>
         }
+    </div>
+}
+
+else if (ModelState.IsValid)
+{
+    <div class="table-card">
+        <p>Choose a country and a period, then press Show.</p>
     </div>
 }

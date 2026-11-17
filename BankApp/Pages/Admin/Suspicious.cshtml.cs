@@ -33,6 +33,10 @@ namespace BankApp.Pages.Admin
         [BindProperty(SupportsGet = true)]
         public int Days { get; set; } = 30;
 
+        // Search only runs when the Admin presses Show
+        [BindProperty(SupportsGet = true)]
+        public bool Search { get; set; }
+
         // Summary for the cards
         public int TotalCount { get; set; }
         public decimal TotalAmount { get; set; }
@@ -60,7 +64,7 @@ namespace BankApp.Pages.Admin
             if (!DaysOptions.Contains(Days))
                 ModelState.AddModelError(nameof(Days), "Choose All time, 7, 30 or 90 days.");
 
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || !Search)
                 return;
 
             // null = all time, otherwise how far back to show
