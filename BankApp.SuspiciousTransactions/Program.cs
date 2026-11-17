@@ -109,7 +109,3 @@ AnsiConsole.Write(examples);
 
 // Save - Next run starts after this id
 File.WriteAllText(stateFile, newestId.ToString());
-
-// Temporary - Keeps the window open
-AnsiConsole.MarkupLine("[grey]Done. Press Enter to close.[/]");
-Console.ReadLine();

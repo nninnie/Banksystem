@@ -1,12 +1,12 @@
 using BankApp.DataAccessLayer.Data;
 using BankApp.DataAccessLayer.Models;
-using BankApp.Services.Services;
 using BankApp.Mapping;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using BankApp.Services.Interfaces;
-using System.Globalization;
+using BankApp.Services.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace BankApp
 {

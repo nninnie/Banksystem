@@ -1,5 +1,5 @@
-﻿using System.Text;
-using BankApp.DataAccessLayer.DTOs;
+﻿using BankApp.DataAccessLayer.DTOs;
+using System.Text;
 
 // ReportWriter - Writes one .txt report per country
 public class ReportWriter

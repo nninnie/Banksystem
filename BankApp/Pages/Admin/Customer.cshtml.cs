@@ -1,9 +1,9 @@
 using AutoMapper;
+using BankApp.Services.Interfaces;
 using BankApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Authorization;
-using BankApp.Services.Interfaces;
 
 namespace BankApp.Pages.Admin
 {
@@ -14,7 +14,7 @@ namespace BankApp.Pages.Admin
         private readonly ICustomerService _customerService;
         private readonly IMapper _mapper;
         public CustomerViewModel Customer { get; set; }
-        
+
         public CustomerModel(ICustomerService customerService, IMapper mapper)
         {
             _customerService = customerService;
