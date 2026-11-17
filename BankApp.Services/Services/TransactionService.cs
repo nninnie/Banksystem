@@ -1,5 +1,4 @@
-﻿using BankApp.DataAccessLayer.Data;
-using BankApp.DataAccessLayer.DTOs;
+﻿using BankApp.DataAccessLayer.DTOs;
 using BankApp.DataAccessLayer.Models;
 using BankApp.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;

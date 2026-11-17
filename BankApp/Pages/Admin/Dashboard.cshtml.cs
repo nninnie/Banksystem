@@ -1,10 +1,10 @@
+using AutoMapper;
 using BankApp.DataAccessLayer.DTOs;
+using BankApp.Helpers;
 using BankApp.Services.Interfaces;
 using BankApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BankApp.Helpers;
-using AutoMapper;
 
 namespace BankApp.Pages.Admin
 {

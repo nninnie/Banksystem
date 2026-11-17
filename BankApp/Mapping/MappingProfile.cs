@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using BankApp.DataAccessLayer.DTOs;
 using BankApp.DataAccessLayer.Models;
-using BankApp.ViewModels;
 using BankApp.Helpers;
+using BankApp.ViewModels;
 
 namespace BankApp.Mapping
 {

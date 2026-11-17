@@ -9,7 +9,7 @@
             "Norway" => "NOK",
             "Denmark" => "DKK",
             "Finland" => "EUR",
-            _ => "" 
+            _ => ""
         };
     }
 }

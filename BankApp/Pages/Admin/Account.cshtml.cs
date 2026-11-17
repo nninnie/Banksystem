@@ -19,7 +19,7 @@ namespace BankApp.Pages.Admin
         public AccountModel(IAccountService accountService, IMapper mapper)
         {
             _accountService = accountService;
-            _mapper = mapper;   
+            _mapper = mapper;
 
         }
 

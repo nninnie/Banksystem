@@ -1,8 +1,8 @@
 using BankApp.DataAccessLayer.DTOs;
 using BankApp.DataAccessLayer.Models;
+using BankApp.Services.Enums;
 using BankApp.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using BankApp.Services.Enums;
 
 
 namespace BankApp.Services.Services
@@ -83,7 +83,7 @@ namespace BankApp.Services.Services
             if (amount <= 0)
                 return ErrorCode.IncorrectAmount;
 
-            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountId == accountId);   
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountId == accountId);
 
             if (account == null)
                 return ErrorCode.AccountNotFound;
@@ -118,7 +118,7 @@ namespace BankApp.Services.Services
             if (account == null)
                 return ErrorCode.AccountNotFound;
 
-            if (amount > account.Balance) 
+            if (amount > account.Balance)
                 return ErrorCode.BalanceTooLow;
 
             account.Balance -= amount;
@@ -153,7 +153,7 @@ namespace BankApp.Services.Services
 
             if (fromAccount == null || toAccount == null)
                 return ErrorCode.AccountNotFound;
-            
+
             if (amount > fromAccount.Balance)
                 return ErrorCode.BalanceTooLow;
 

@@ -18,7 +18,7 @@ namespace BankApp.ViewModels
 
         [Required(ErrorMessage = "Operation type is required.")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Operation must be between 3 and 50 characters.")]
-        public string Operation { get; set; } = "";  
+        public string Operation { get; set; } = "";
 
         [Required(ErrorMessage = "Amount is required.")]
         [Range(0.01, 10000000, ErrorMessage = "Amount must be greater than 0.")]
