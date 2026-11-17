@@ -1974,7 +1974,7 @@ html body .form-card .form-group {
     text-transform: none;
 }
 
-.balance-sparkline { 
+.balance-sparkline {
     width: 100%;
     height: 85px;
     margin-top: 20px;
@@ -1986,6 +1986,7 @@ html body .form-card .form-group {
     width: 100%;
     height: 100%;
 }
+
 
 /* ----- Accounts ----- */
 
