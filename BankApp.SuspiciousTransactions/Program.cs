@@ -20,7 +20,7 @@ var config = new ConfigurationBuilder()
 // DbContext - Same BankAppContext as the web app 
 var options = new DbContextOptionsBuilder<BankAppContext>()
     .UseSqlServer(config.GetConnectionString("DefaultConnection"),
-        sql => sql.CommandTimeout(120))   
+        sql => sql.CommandTimeout(120))
     .Options;
 
 using var context = new BankAppContext(options);
@@ -83,4 +83,33 @@ foreach (var country in countries)
     var reportFile = "-";
     if (suspicious.Count > 0)
         reportFile = Path.GetFileName(reportWriter.Write(country, suspicious, lastRunId, newestId));
+
+    // Summary - One row per country
+    summary.AddRow(country, suspicious.Count.ToString("N0"), Markup.Escape(reportFile));
+
+    // Examples - First three per country
+    foreach (var s in suspicious.Take(3))
+    {
+        examples.AddRow(
+            country,
+            Markup.Escape($"{s.CustomerId} {s.CustomerName}"),
+            s.AccountId.ToString(),
+            s.TransactionId.ToString(),
+            s.Date.ToString("yyyy-MM-dd"),
+            s.Amount.ToString("N2"),
+            Markup.Escape(s.Reason));
+    }
 }
+
+// Result - Print the tables
+AnsiConsole.Write(summary);
+AnsiConsole.MarkupLine($"[grey]Reports saved in:[/] {Markup.Escape(folder)}");
+AnsiConsole.MarkupLine("[grey]First three per country:[/]");
+AnsiConsole.Write(examples);
+
+// Save - Next run starts after this id
+File.WriteAllText(stateFile, newestId.ToString());
+
+// Temporary - Keeps the window open
+AnsiConsole.MarkupLine("[grey]Done. Press Enter to close.[/]");
+Console.ReadLine();
