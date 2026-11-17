@@ -96,6 +96,13 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 - Man kan inte ta bort sig själv eller ändra sin egen roll
 - Servicen `IUserService` pratar med Identity, sidorna använder ViewModels (`CreateUserViewModel`, `EditUserViewModel`)
 
+### 🚨 Misstänkta transaktioner (Admin)
+- Sidan `/Admin/Suspicious` visar misstänkta transaktioner för ett valt land. Bara Admin har åtkomst, Cashier och utloggade skickas vidare.
+- Filter på land och period (All time, 7, 30 eller 90 dagar), med validering.
+- Samma regler som konsolappen, via samma service (`SuspiciousTransactionService`): en enskild transaktion över 15 000, eller en kunds summa över 23 000 de senaste tre dagarna.
+- Sammanfattningskort (antal, summa och antal per regel), listan är paginerad med 50 per sida och har länkar till kundbild och kontosida.
+- Snabb fråga: kontoägare hämtas först, sedan bara matchande transaktioner, och kopplingen sker i minnet.
+
 ### 🕵️ Konsolapp: misstänkta transaktioner
 - Eget konsolprojekt (`BankApp.SuspiciousTransactions`) som återanvänder `BankAppContext` och servicen `ISuspiciousTransactionService` (DRY)
 - Körs för varje land och kontrollerar kundernas transaktioner mot två regler:
@@ -108,7 +115,7 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 ### 🛡️ Inloggning, roller och behörighet
 - Egen inloggningssida, ingen öppen registrering
 - Utloggning sker med ett POST-formulär som skyddas av en antiforgery-token
-- **Admin:** dashboard, User Admin (skapa, läsa, ändra och ta bort användare samt tilldela roll), kundsökning, kundbild och kontobild. Admin kan se kunder men inte ändra dem
+- **Admin:** dashboard, User Admin (skapa, läsa, ändra och ta bort användare samt tilldela roll), misstänkta transaktioner, kundsökning, kundbild och kontobild. Admin kan se kunder men inte ändra dem
 - **Cashier:** kundsökning, kundbild, kontobild, skapa och ändra kund, insättning, uttag och överföring
 - `[Authorize(Roles = "...")]` skyddar varje sida, även om någon skriver adressen direkt
 - Menyn visar bara det som användarens roll har tillgång till
@@ -255,6 +262,7 @@ Lärdomar:
 - Nästa gång gör jag moodboard och sidplanering innan jag designar
 - Frågor som börjar i `Transactions` (filtrera först, koppla sedan till kund) gick på sekunder, medan frågor som började hos kunden tog över 30 sekunder i den stora databasen
 - `Date` på transaktioner saknar klockslag, så regeln om 72 timmar blev 3 dagar
+- Webbens SQL-timeout var 30 sekunder, och en fråga som joinade över en miljon transaktioner gav timeout. Jag delade upp den i tre enkla steg (ägare, matchande transaktioner, koppling i minnet) och höjde timeouten till 120 sekunder
 
 ---
 
