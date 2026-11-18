@@ -51,32 +51,35 @@
             <ul class="nav">
 
                 <!-- PROFILE -->
-                <li class="nav-item profile">
-                    <div class="profile-desc">
-                        <div class="profile-toggle" id="sidebarProfile">
-                            <div class="profile-pic">
-                                <span class="avatar-wrap">
-                                    @if (isLoggedIn)
-                                    {
-                                        <img class="img-xs rounded-circle" src="@avatar" alt="Profile image">
-                                    }
-                                    else
-                                    {
-                                        <i class="mdi mdi-account-circle" style="font-size: 2.2rem;"></i>
-                                    }
-                                    @if (isLoggedIn)
-                                    {
-                                        <span class="online-dot" title="Online"></span>
-                                    }
-                                </span>
-                                <div class="profile-name">
-                                    <h5>@displayName</h5>
-                                    <span>@role</span>
+                @if (isLoggedIn)
+                {
+                    <li class="nav-item profile">
+                        <div class="profile-desc">
+                            <div class="profile-toggle" id="sidebarProfile">
+                                <div class="profile-pic">
+                                    <span class="avatar-wrap">
+                                        @if (isLoggedIn)
+                                        {
+                                            <img class="img-xs rounded-circle" src="@avatar" alt="Profile image">
+                                        }
+                                        else
+                                        {
+                                            <i class="mdi mdi-account-circle" style="font-size: 2.2rem;"></i>
+                                        }
+                                        @if (isLoggedIn)
+                                        {
+                                            <span class="online-dot" title="Online"></span>
+                                        }
+                                    </span>
+                                    <div class="profile-name">
+                                        <h5>@displayName</h5>
+                                        <span>@role</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                }
 
                 <!-- NAVIGATION -->
                 <li class="nav-item nav-category">
@@ -231,36 +234,36 @@
                         </li>
 
                         @if (User.Identity?.IsAuthenticated == true)
-                            {
-                                <li class="nav-item dropdown border-left">
-                                    <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
-                                        <i class="mdi mdi-bell icon-white"></i>
-                                        @if (notifications.Any())
-                                        {
-                                            <span class="count @(hasWarning ? "dot-warning" : "dot-info")"></span>
-                                        }
-                                    </a>
+                        {
+                            <li class="nav-item dropdown border-left">
+                                <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
+                                    <i class="mdi mdi-bell icon-white"></i>
+                                    @if (notifications.Any())
+                                    {
+                                        <span class="count @(hasWarning ? "dot-warning" : "dot-info")"></span>
+                                    }
+                                </a>
 
-                                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
-                                        <h6 class="p-3 mb-0">Notifications</h6>
-                                        <div class="dropdown-divider"></div>
-                                        @if (notifications.Any())
+                                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
+                                    <h6 class="p-3 mb-0">Notifications</h6>
+                                    <div class="dropdown-divider"></div>
+                                    @if (notifications.Any())
+                                    {
+                                        foreach (var note in notifications)
                                         {
-                                            foreach (var note in notifications)
-                                            {
-                                                <a class="dropdown-item">@note</a>
-                                            }
+                                            <a class="dropdown-item">@note</a>
                                         }
-                                        else
-                                        {
-                                            <p class="dropdown-item mb-0">No new notifications</p>
-                                        }
+                                    }
+                                    else
+                                    {
+                                        <p class="dropdown-item mb-0">No new notifications</p>
+                                    }
 
-                                        <div class="dropdown-divider"></div>
-                                        <p class="p-3 mb-0 text-center">End of notifications</p>
-                                    </div>
-                                </li>
-                            }
+                                    <div class="dropdown-divider"></div>
+                                    <p class="p-3 mb-0 text-center">End of notifications</p>
+                                </div>
+                            </li>
+                        }
 
                         @if (isLoggedIn)
                         {
@@ -272,29 +275,29 @@
                                         <span class="count dot-info"></span>
                                     }
                                 
-                            </a>
+                                </a>
 
-                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
-                                <h6 class="p-3 mb-0">Messages</h6>
-                                <div class="dropdown-divider"></div>
+                                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
+                                    <h6 class="p-3 mb-0">Messages</h6>
+                                    <div class="dropdown-divider"></div>
 
-                                @if (isLoggedIn)
-                                {
-                                    <a class="dropdown-item">
-                                        <i class="mdi mdi-email-open text-info me-2"></i>
-                                        Welcome back, @displayName!
-                                    </a>
+                                    @if (isLoggedIn)
+                                    {
+                                        <a class="dropdown-item">
+                                            <i class="mdi mdi-email-open text-info me-2"></i>
+                                            Welcome back, @displayName!
+                                        </a>
 
-                                    <a class="dropdown-item">
-                                        <i class="mdi mdi-clock-outline text-secondary me-2"></i>
-                                        Logged in at: @(User.FindFirst("LoginTime")?.Value ?? "-")
-                                    </a>
-                                }
+                                        <a class="dropdown-item">
+                                            <i class="mdi mdi-clock-outline text-secondary me-2"></i>
+                                            Logged in at: @(User.FindFirst("LoginTime")?.Value ?? "-")
+                                        </a>
+                                    }
 
-                                <div class="dropdown-divider"></div>
-                                <p class="p-3 mb-0 text-center">End of messages</p>
-                            </div>
-                        </li>
+                                    <div class="dropdown-divider"></div>
+                                    <p class="p-3 mb-0 text-center">End of messages</p>
+                                </div>
+                            </li>
                         }
 
                         <li class="nav-item dropdown">
