@@ -11,7 +11,7 @@ namespace BankApp.Services.Services
         // Rule limits
         private const decimal SingleTransactionLimit = 15000m;
         private const decimal TotalLimit = 23000m;
-        private const int DaysBack = 3;
+        private const int DaysBack = 2;
 
         private readonly BankAppContext _context;
 

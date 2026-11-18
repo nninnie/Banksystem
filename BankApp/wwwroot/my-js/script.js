@@ -9,6 +9,15 @@ const formatNumber = (n) => Number(n).toLocaleString("sv-SE");
 const formatMoney = (n) =>
     Number(n).toLocaleString("sv-SE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+// Escapes text so that it is shown as text, never as HTML
+const escapeHtml = (value) =>
+    String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+
 
 /* ==========================================================
    APP-LAUNCHER
@@ -325,8 +334,8 @@ document.addEventListener("DOMContentLoaded", function () {
         table.querySelector("tbody").insertAdjacentHTML("beforeend",
             `<tr class="${rowClass}">
                 <td data-label="Date">${new Date(element.date).toLocaleDateString("sv-SE")}</td>
-                <td data-label="Type">${element.type}</td>
-                <td data-label="Operation">${element.operation || "–"}</td>
+                <td data-label="Type">${escapeHtml(element.type)}</td>
+                <td data-label="Operation">${escapeHtml(element.operation) || "–"}</td>
                 <td class="currency ${amountClass}" data-label="Amount">${formatMoney(element.amount)} ${currency}</td>
                 <td class="currency" data-label="Balance">${formatMoney(element.balance)} ${currency}</td>
             </tr>`);

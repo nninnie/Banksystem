@@ -80,9 +80,7 @@ foreach (var country in countries)
         .StartAsync($"Checking {country}...", ctx => service.FindSuspiciousAsync(country, lastRunId));
 
     // Report - One .txt file per country 
-    var reportFile = "-";
-    if (suspicious.Count > 0)
-        reportFile = Path.GetFileName(reportWriter.Write(country, suspicious, lastRunId, newestId));
+    var reportFile = Path.GetFileName(reportWriter.Write(country, suspicious, lastRunId, newestId));
 
     // Summary - One row per country
     summary.AddRow(country, suspicious.Count.ToString("N0"), Markup.Escape(reportFile));

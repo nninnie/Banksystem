@@ -47,7 +47,7 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 ### 🔎 Snabbsökning på kundnummer
 - Sökfält i navbaren, synligt för Admin och Cashier
 - Kundbilden öppnas direkt om kunden finns, annars visas ett felmeddelande
-- Server- och client-side-validering
+- Server-side-validering. Sökfältet i navbaren har bara `min="1"` i webbläsaren
 
 ### 👥 Kundsökning
 - Sök på kundnummer eller namn, och på stad
@@ -112,6 +112,7 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 - Skapar en rapport som .txt-fil per land i `Dokument\BankAppReports`, med person, kontonummer och transaktionsnummer
 - Sparar senast kontrollerade transaktions-id i `last-checked-transaction-id.txt`, så att nästa körning bara rapporterar **nya** misstänkta transaktioner
 - Tabeller och färger med Spectre.Console, i samma färger som webben
+- Tolkning: programmet körs per land och grupperar träffarna per kund. Regel 2 räknar absolutbelopp, så att insättningar och uttag läggs ihop. Kravet nämner inte om belopp ska räknas med tecken, så vi har valt absolutbelopp
 
 ### 🛡️ Inloggning, roller och behörighet
 - Egen inloggningssida, ingen öppen registrering
@@ -168,7 +169,7 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 
 - Data annotations på ViewModels (`[Required]`, `[Range]`, `[StringLength]` m.fl.) med egna felmeddelanden
 - **Server-side:** `ModelState.IsValid` kontrolleras innan något sparas eller söks
-- **Client-side:** jQuery Validation (installerat med LibMan i `wwwroot/lib`) via `_ValidationScriptsPartial` på alla formulär: inloggning, snabbsökning, kundsökning, insättning, uttag, överföring samt skapa och ändra kund
+- **Client-side:** jQuery Validation (installerat med LibMan i `wwwroot/lib`) via `_ValidationScriptsPartial` på formulären: inloggning, kundsökning, insättning, uttag, överföring samt skapa och ändra kund. Snabbsökningen i navbaren har bara `min="1"` i webbläsaren, och validering görs på söksidan
 - Regler som kräver databasen (t.ex. för lite pengar eller ett mottagarkonto som inte finns) returneras som `ErrorCode` från servicen och visas med `ModelState.AddModelError`
 - Ett kund- eller kontonummer som inte finns i adressen ger 404
 
@@ -178,7 +179,7 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 
 - Bygger på **Corona Admin (Free Bootstrap Template)**, omgjord med egen stilmall (`wwwroot/my-css/style.css`)
 - Mörka skogsgröna ytor, guld som primärfärg och grönt som accent
-- Färgerna ligger som CSS-variabler i `:root`, så de kan ändras på ett ställe
+- Huvudfärgerna ligger som CSS-variabler i `:root`, så de kan ändras på ett ställe
 - Typsnittet Inter med tabulära siffror, så att belopp linjerar i kolumner
 - Egen logga och tagline: *TRUST • SECURITY • GROWTH*
 - Responsiv: fungerar på mobil, surfplatta och dator. På mobil blir tabellerna kort med etiketter, och kort och knappar anpassas efter skärmbredden
