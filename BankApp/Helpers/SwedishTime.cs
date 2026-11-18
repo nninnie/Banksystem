@@ -5,5 +5,6 @@
     {
         public static DateTime Now =>
             TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Europe/Stockholm");
+        public static DateOnly Today => DateOnly.FromDateTime(Now);
     }
 }

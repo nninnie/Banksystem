@@ -5,6 +5,7 @@ using BankApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using BankApp.Helpers;
 
 namespace BankApp.Pages.Admin
 {
@@ -34,7 +35,7 @@ namespace BankApp.Pages.Admin
         public async Task<IActionResult> OnPostAsync()
         {
             // Extra rule that DataAnnotations can not check
-            if (Input.Birthday > DateOnly.FromDateTime(DateTime.Today))
+            if (Input.Birthday > SwedishTime.Today)
                 ModelState.AddModelError("Input.Birthday", "Birthday can not be in the future.");
 
             // Server-side validation

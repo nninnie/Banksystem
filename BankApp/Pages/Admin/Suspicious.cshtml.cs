@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
+using BankApp.Helpers;
 
 namespace BankApp.Pages.Admin
 {
@@ -75,7 +76,7 @@ namespace BankApp.Pages.Admin
             if (!_cache.TryGetValue(key, out List<SuspiciousTransactionViewModel>? all) || all == null)
             {
                 // null = all time, otherwise how far back to show
-                DateOnly? since = Days == 0 ? null : DateOnly.FromDateTime(DateTime.Now.AddDays(-Days));
+                DateOnly? since = Days == 0 ? null : SwedishTime.Today.AddDays(-Days);
                 var found = await _service.FindSuspiciousAsync(Country!, 0, since);
 
                 all = _mapper.Map<List<SuspiciousTransactionViewModel>>(found)

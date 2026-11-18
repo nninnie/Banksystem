@@ -36,6 +36,8 @@ namespace BankApp.Pages.Admin
         public string? SortOrder { get; set; }
         public int CurrentPage { get; set; }
 
+        public bool HasNextPage { get; set; }
+
         public async Task OnGetAsync(string? sortColumn, string? sortOrder, int pageNo)
         {
             if (pageNo < 1) pageNo = 1;
@@ -51,7 +53,10 @@ namespace BankApp.Pages.Admin
             var customers = await _customerService.SearchCustomersAsync(
                 SearchName, SearchCity, sortColumn, sortOrder, pageNo);
 
-            Customers = _mapper.Map<List<CustomerViewModel>>(customers);
+            // The service fetches 51 rows: the 51st only tells us that there is a next page
+            HasNextPage = customers.Count > 50;
+
+            Customers = _mapper.Map<List<CustomerViewModel>>(customers.Take(50));
         }
     }
 }

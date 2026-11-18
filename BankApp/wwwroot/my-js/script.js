@@ -429,7 +429,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
 
+            // Delete user: the message only needs the email
+            if (form.dataset.confirm === "delete") {
+                e.preventDefault();
+                message.textContent = `Delete user ${form.dataset.email}? This can not be undone.`;
+                formToSend = form;
+                modal.show();
+                return;
+            }
+
             e.preventDefault();
+
 
             const amount = form.querySelector("[name='Input.Amount']").value;
             const currency = form.dataset.currency;

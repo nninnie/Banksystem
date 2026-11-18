@@ -113,7 +113,7 @@ namespace BankApp.Services.Services
             string country, int afterTransactionId, DateOnly from, Dictionary<int, Owner> owners)
         {
             // Date has no time of day, so 72 hours = 3 days
-            var since = DateOnly.FromDateTime(DateTime.Now.AddDays(-DaysBack));
+            var since = DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Europe/Stockholm").AddDays(-DaysBack));
 
             // All transactions in the window, old ones count in the total too
             var recent = await _context.Transactions

@@ -162,7 +162,8 @@ namespace BankApp.Services.Services
             var firstPageIndex = (page - 1) * 50;
 
             query = query.Skip(firstPageIndex);
-            query = query.Take(50);
+            // One extra row, so the page can tell if there is a next page
+            query = query.Take(51);
 
             return await query.ToListAsync();
         }
