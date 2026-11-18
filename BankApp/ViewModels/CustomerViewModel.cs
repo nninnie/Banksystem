@@ -24,6 +24,7 @@ namespace BankApp.ViewModels
         public string City { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Zip code is required.")]
+        [RegularExpression(@"^[0-9 ]{4,6}$", ErrorMessage = "Zip code must be 4-6 digits (spaces allowed).")]
         [StringLength(15, ErrorMessage = "Zip code cannot exceed 15 characters.")]
         public string Zipcode { get; set; } = string.Empty;
 

@@ -30,7 +30,7 @@
         var role = UserDisplay.Role(User);
         var avatar = isLoggedIn
             ? Url.Content("~/images/faces/face16.jpg")
-            : Url.Content("~/images/faces-clipart/pic-1.png");
+            : "";
     }
 
     <div class="container-scroller">
@@ -56,7 +56,14 @@
                         <div class="profile-toggle" id="sidebarProfile">
                             <div class="profile-pic">
                                 <span class="avatar-wrap">
-                                    <img class="img-xs rounded-circle" src="@avatar" alt="Profile image">
+                                    @if (isLoggedIn)
+                                    {
+                                        <img class="img-xs rounded-circle" src="@avatar" alt="Profile image">
+                                    }
+                                    else
+                                    {
+                                        <i class="mdi mdi-account-circle" style="font-size: 2.2rem;"></i>
+                                    }
                                     @if (isLoggedIn)
                                     {
                                         <span class="online-dot" title="Online"></span>
@@ -294,7 +301,14 @@
                             <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">
                                 <div class="navbar-profile">
                                     <span class="avatar-wrap">
-                                        <img class="img-xs rounded-circle" src="@avatar" alt="Profile image">
+                                        @if (isLoggedIn)
+                                        {
+                                            <img class="img-xs rounded-circle" src="@avatar" alt="Profile image">
+                                        }
+                                        else
+                                        {
+                                            <i class="mdi mdi-account-circle" style="font-size: 2.2rem;"></i>
+                                        }
                                         @if (isLoggedIn)
                                         {
                                             <span class="online-dot" title="Online"></span>

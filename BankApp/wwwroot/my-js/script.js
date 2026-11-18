@@ -404,6 +404,22 @@ document.addEventListener("DOMContentLoaded", function () {
             // Validation first: invalid form = no dialog, the errors are shown instead
             if (window.jQuery && jQuery(form).valid && !jQuery(form).valid()) return;
 
+            // Transfer: no dialog for an unknown receiver or the same account
+            if (form.dataset.confirm === "transfer") {
+                const toId = form.querySelector("[name='Input.ToAccountId']").value.trim();
+                const recipientInfo = document.getElementById("recipientInfo");
+
+                if (toId === form.dataset.from && recipientInfo) {
+                    recipientInfo.textContent = "You can't transfer to the same account.";
+                    recipientInfo.className = "recipient-info not-found";
+                }
+
+                if (toId === form.dataset.from || (recipientInfo && recipientInfo.classList.contains("not-found"))) {
+                    e.preventDefault();
+                    return;
+                }
+            }
+
             e.preventDefault();
 
             const amount = form.querySelector("[name='Input.Amount']").value;

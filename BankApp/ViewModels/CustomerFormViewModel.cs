@@ -13,7 +13,7 @@ namespace BankApp.ViewModels
         public string Gender { get; set; } = "";
 
         [Required(ErrorMessage = "First name is required.")]
-        [StringLength(100, ErrorMessage = "First name can be max 100 characters.")]
+        [StringLength(100, MinimumLength = 2, ErrorMessage = "First name must be between 2 and 100 characters.")]
         public string Givenname { get; set; } = "";
 
         [Required(ErrorMessage = "Last name is required.")]
@@ -29,6 +29,7 @@ namespace BankApp.ViewModels
         public string City { get; set; } = "";
 
         [Required(ErrorMessage = "Zip code is required.")]
+        [RegularExpression(@"^[0-9 ]{4,6}$", ErrorMessage = "Zip code must be 4-6 digits (spaces allowed).")]
         [StringLength(15, ErrorMessage = "Zip code can be max 15 characters.")]
         public string Zipcode { get; set; } = "";
 
