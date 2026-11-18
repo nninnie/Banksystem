@@ -109,3 +109,8 @@ AnsiConsole.Write(examples);
 
 // Save - Next run starts after this id
 File.WriteAllText(stateFile, newestId.ToString());
+
+
+Console.WriteLine();
+Console.WriteLine("Press any key to exit...");
+Console.ReadKey();

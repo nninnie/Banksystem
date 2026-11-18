@@ -114,13 +114,15 @@ namespace BankApp.Services.Services
         {
             // Date has no time of day, so 72 hours = 3 days
             var since = DateOnly.FromDateTime(DateTime.Now.AddDays(-DaysBack));
-            var accountIds = owners.Keys.ToList();
 
             // All transactions in the window, old ones count in the total too
             var recent = await _context.Transactions
-                .Where(t => t.Date >= since && t.Date >= from && accountIds.Contains(t.AccountId))
-                .Select(t => new { t.TransactionId, t.AccountId, t.Date, t.Amount })
-                .ToListAsync();
+            .Where(t => t.Date >= since && t.Date >= from
+             && _context.Dispositions.Any(d => d.AccountId == t.AccountId
+                                           && d.Type == "OWNER"
+                                           && d.Customer.Country == country))
+            .Select(t => new { t.TransactionId, t.AccountId, t.Date, t.Amount })
+            .ToListAsync();
 
             var rows = recent.Select(t => new SuspiciousTransactionDto
             {
