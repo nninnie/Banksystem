@@ -16,6 +16,8 @@ namespace BankApp.Pages.Admin
 
         public AccountViewModel Account { get; set; }
 
+        public int TransactionCount { get; set; }
+
         public AccountModel(IAccountService accountService, IMapper mapper)
         {
             _accountService = accountService;
@@ -32,6 +34,7 @@ namespace BankApp.Pages.Admin
                 return NotFound();
 
             Account = _mapper.Map<AccountViewModel>(account);
+            TransactionCount = await _accountService.GetTransactionCountAsync(id);
 
             return Page();
         }

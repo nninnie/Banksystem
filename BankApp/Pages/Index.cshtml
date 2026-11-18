@@ -17,7 +17,8 @@
              Kicker = "PUBLIC OVERVIEW",
              Title = "Country Statistics",
              Subtitle = "Public overview of customers, accounts and total balance grouped by country.",
-             ShowDate = true
+             ShowDate = true,
+             Compact = false
          }' />
 
 <!--- KPI-card --->
@@ -66,18 +67,18 @@
     <div class="dashboard-card stat-card">
 
         <div class="stat-icon">
-            <i class="mdi mdi-cash-multiple"></i>
+            <i class="mdi mdi-earth"></i>
         </div>
 
         <div class="stat-content">
-            <div class="stat-title">Total Balance (all currencies)</div>
+            <div class="stat-title">Countries</div>
 
             <div class="stat-number">
-                @Model.Countries.Sum(x => x.TotalBalance).ToString("N2")
+                @Model.Countries.Count.ToString("N0")
             </div>
 
             <div class="stat-subtitle">
-                Not converted, see table below
+                @string.Join(" · ", Model.Countries.Select(c => c.Country))
             </div>
         </div>
 

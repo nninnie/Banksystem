@@ -119,7 +119,7 @@
                             <th>Date</th>
                             <th>Customer</th>
                             <th>Account</th>
-                            <th>Amount</th>
+                            <th class="currency">Amount</th>
                             <th>Reason</th>
                         </tr>
                     </thead>
@@ -135,7 +135,7 @@
                                 <td data-label="Account">
                                     <a asp-page="/Admin/Account" asp-route-id="@t.AccountId">@t.AccountId</a>
                                 </td>
-                                <td class="@(t.Amount < 0 ? "negative" : "positive")" data-label="Amount">@t.Amount.ToString("N2")</td>
+                                <td class="currency @(t.Amount < 0 ? "negative" : "positive")" data-label="Amount">@t.Amount.ToString("N2") @CountryCurrency.Code(Model.Country!)</td>
                                 <td data-label="Reason">@t.Reason</td>
                             </tr>
                         }
@@ -158,7 +158,7 @@
                     </a>
                 }
 
-                <span class="bank-page-info">@Model.CurrentPage</span>
+                <span class="bank-page-info">Page @Model.CurrentPage</span>
 
                 @if (Model.CurrentPage < Model.TotalPages)
                 {

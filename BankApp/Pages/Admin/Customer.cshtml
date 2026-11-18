@@ -21,7 +21,7 @@
 </div>
 
 <!-- Page header -->
-<div class="welcome-card customer-hero">
+div class="welcome-card welcome-card-compact customer-hero">
     <div class="customer-page-header">
 
 
@@ -73,7 +73,7 @@
             </div>
             <div class="customer-detail">
                 <span class="label">Gender</span>
-                <span class="value">@Model.Customer.Gender</span>
+                <span class="value">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Model.Customer.Gender ?? "")</span>
             </div>
             <div class="customer-detail">
                 <span class="label">Birthday</span>
@@ -99,7 +99,7 @@
     <!-- Total Balance -->
     <div class="dashboard-card balance-card">
         <h3 class="card-title">
-            <i class="mdi mdi-currency-usd icon"></i>
+            <i class="mdi mdi-wallet-outline icon"></i>
             Total Balance
         </h3>
 
@@ -111,9 +111,15 @@
             Total balance across all accounts
         </div>
 
-        <!-- Decorative balance line -->
-        <div class="balance-sparkline" aria-hidden="true">
-            <canvas></canvas>
+        <div class="balance-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
+            <div style="background:rgba(255,255,255,0.03);border:1px solid var(--line, #123a2a);border-radius:10px;padding:10px 12px;">
+                <div style="font-size:12px;color:var(--muted);">Antal konton</div>
+                <div style="font-size:18px;font-weight:600;color:var(--text);">@Model.Customer.Accounts.Count</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03);border:1px solid var(--line, #123a2a);border-radius:10px;padding:10px 12px;">
+                <div style="font-size:12px;color:var(--muted);">Land</div>
+                <div style="font-size:18px;font-weight:600;color:var(--text);">@Model.Customer.Country</div>
+            </div>
         </div>
     </div>
 
@@ -146,7 +152,7 @@
                                 <i class="mdi mdi-wallet-outline account-icon"></i>
 
                                 <span class="account-number">
-                                    Account: @account.AccountId
+                                    Account @account.AccountId
                                 </span>
                             </td>
 

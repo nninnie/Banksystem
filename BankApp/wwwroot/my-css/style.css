@@ -1306,6 +1306,7 @@ html body .form-card .form-group {
     .mybank-table th.currency,
     .mybank-table td.currency {
         text-align: right;
+        white-space: nowrap;
     }
 
 /* Bold values */
@@ -1457,6 +1458,15 @@ html body .form-card .form-group {
     }
 
 
+/* Suspisuios green for deposits, red for withdrawals */
+.mybank-table td.positive {
+    color: #63D097;
+}
+
+.mybank-table td.negative {
+    color: #E57367;
+}
+
 /* ==========================================================
    10. HOME PAGE STATS
    ========================================================== */
@@ -1509,7 +1519,7 @@ html body .form-card .form-group {
 
 .stat-number {
     color: var(--text);
-    font-size: clamp(0.75rem, 8cqw, 1.9rem);
+    font-size: clamp(0.75rem, 10cqw, 2.4rem);
     font-weight: 700;
     margin-top: 4px;
     line-height: 1.1;
@@ -2217,6 +2227,24 @@ html body .form-card .form-group {
     }
 }
 
+/* Compact page header on work pages  */
+.welcome-card-compact {
+    padding: 14px 20px;
+    margin-bottom: 16px;
+}
+
+    .welcome-card-compact .welcome-kicker {
+        margin-bottom: 4px;
+    }
+
+    .welcome-card-compact .welcome-title {
+        font-size: 20px;
+    }
+
+    .welcome-card-compact .welcome-subtitle {
+        font-size: 13px;
+        margin: 0;
+    }
 
 /* ==========================================================
    14. DASHBOARD ACTIVITY
@@ -2597,6 +2625,13 @@ a.transaction-name {
     display: flex;
     justify-content: flex-end;
     margin-top: 24px;
+}
+
+.show-more-info {
+    align-self: center;
+    margin-right: 12px;
+    font-size: 13px;
+    color: var(--muted);
 }
 
 /* Owner link */
@@ -3098,7 +3133,7 @@ td .account-actions {
     }
 }
 
-/* Balance card without a curve (Deposit, Withdraw, Transfer): the amount sits in the middle */
+/* Balance card  */
 .balance-card:not(:has(.balance-sparkline)) {
     display: flex;
     flex-direction: column;
@@ -3112,17 +3147,32 @@ td .account-actions {
         margin-bottom: auto;
     }
 
+
+/* Balance cards */
+.balance-card:has(.balance-stats) .balance-value {
+    margin: auto 0 4px;
+}
+
+.balance-card:has(.balance-stats) .balance-label {
+    margin: 0;
+}
+
+.balance-card .balance-stats {
+    margin-top: auto;
+    padding-top: 16px;
+}
+
 /* Mobile: Top 10 cards and a lower balance card */
 @media (max-width: 576px) {
 
-    /* Rank: label on the left, badge on the right, like the other rows */
+    /* Rank */
     .mybank-table.mobile-cards td.rank-column {
         text-align: right !important;
         padding-right: 0 !important;
         font-size: .9rem;
     }
 
-    /* The Customer ID cell had a desktop margin */
+    /* Customer ID cell */
     .mybank-table.mobile-cards td.customer-id {
         margin-top: 0;
     }

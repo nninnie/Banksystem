@@ -158,105 +158,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 /* ==========================================================
-   TOTAL BALANCE - DECORATIVE CURVE (sparkline)
-   Runs on every canvas inside .balance-sparkline.
-   The curve is only for looks, it does not show real data.
-   ========================================================== */
-function setupSparkline(canvas) {
-    const ctx = canvas.getContext("2d");
-
-    function drawChart() {
-        const rect = canvas.getBoundingClientRect();
-
-        // Hidden element = nothing to draw
-        if (rect.width === 0 || rect.height === 0) return;
-
-        // Sharp lines on high-resolution screens
-        const dpr = window.devicePixelRatio || 1;
-
-        canvas.width = rect.width * dpr;
-        canvas.height = rect.height * dpr;
-
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.clearRect(0, 0, rect.width, rect.height);
-
-        const width = rect.width;
-        const height = rect.height;
-
-        // The points of the curve (x and y as part of width and height)
-        const points = [
-            [0.00, 0.78],
-            [0.12, 0.64],
-            [0.23, 0.70],
-            [0.36, 0.40],
-            [0.48, 0.52],
-            [0.60, 0.25],
-            [0.72, 0.38],
-            [0.84, 0.15],
-            [1.00, 0.28]
-        ].map(([x, y]) => ({
-            x: x * width,
-            y: y * height
-        }));
-
-        // Draws the smooth curve through the points
-        function drawCurve() {
-            ctx.beginPath();
-            ctx.moveTo(points[0].x, points[0].y);
-
-            for (let i = 0; i < points.length - 1; i++) {
-                const current = points[i];
-                const next = points[i + 1];
-
-                const midX = (current.x + next.x) / 2;
-                const midY = (current.y + next.y) / 2;
-
-                ctx.quadraticCurveTo(current.x, current.y, midX, midY);
-            }
-
-            const last = points[points.length - 1];
-            ctx.lineTo(last.x, last.y);
-        }
-
-        // Green fill under the curve
-        drawCurve();
-        ctx.lineTo(width, height);
-        ctx.lineTo(0, height);
-        ctx.closePath();
-
-        const fillGradient = ctx.createLinearGradient(0, 0, 0, height);
-        fillGradient.addColorStop(0, "rgba(32, 184, 121, 0.24)");
-        fillGradient.addColorStop(1, "rgba(32, 184, 121, 0)");
-
-        ctx.fillStyle = fillGradient;
-        ctx.fill();
-
-        // The line itself, green to gold
-        drawCurve();
-
-        const lineGradient = ctx.createLinearGradient(0, 0, width, 0);
-        lineGradient.addColorStop(0, "#16865B");
-        lineGradient.addColorStop(1, "#F2D675");
-
-        ctx.strokeStyle = lineGradient;
-        ctx.lineWidth = 2;
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-        ctx.stroke();
-    }
-
-    drawChart();
-
-    // Redraws the curve when the window changes size
-    window.addEventListener("resize", drawChart);
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".balance-sparkline canvas").forEach(setupSparkline);
-});
-
-
-/* ==========================================================
    START PAGE - COUNTRY MAP
    ========================================================== */
 document.addEventListener("DOMContentLoaded", function () {
@@ -400,6 +301,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 pageNo = pageNo + 1;
                 json.transactions.forEach(drawElements);
 
+                // Updates "Showing X of N"
+                const shown = table.querySelector("tbody").rows.length;
+                document.getElementById("show-more-info").textContent =
+                    `Showing ${shown} of ${table.dataset.total}`;
+
                 // Hides the button when there are no more transactions
                 if (json.transactions.length < 20) {
                     button.style.display = "none";
@@ -420,7 +326,7 @@ document.addEventListener("DOMContentLoaded", function () {
             `<tr class="${rowClass}">
                 <td data-label="Date">${new Date(element.date).toLocaleDateString("sv-SE")}</td>
                 <td data-label="Type">${element.type}</td>
-                <td data-label="Operation">${element.operation ?? "-"}</td>
+                <td data-label="Operation">${element.operation || "–"}</td>
                 <td class="currency ${amountClass}" data-label="Amount">${formatMoney(element.amount)} ${currency}</td>
                 <td class="currency" data-label="Balance">${formatMoney(element.balance)} ${currency}</td>
             </tr>`);

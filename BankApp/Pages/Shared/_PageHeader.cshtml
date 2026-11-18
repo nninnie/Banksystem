@@ -1,6 +1,6 @@
 ﻿@model BankApp.ViewModels.PageHeaderViewModel
 
-<div class="welcome-card">
+<div class="welcome-card @(Model.Compact ? "welcome-card-compact" : "")">
     <span class="welcome-kicker">@Model.Kicker</span>
 
     <div class="welcome-header">

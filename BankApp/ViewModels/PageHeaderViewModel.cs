@@ -10,5 +10,7 @@
         public string ActionPage { get; set; } = "";
         public string ActionText { get; set; } = "";
         public string ActionIcon { get; set; } = "";
+
+        public bool Compact { get; set; } = true;
     }
 }

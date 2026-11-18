@@ -53,6 +53,13 @@ namespace BankApp.Services.Services
                 .FirstOrDefaultAsync();
         }
 
+        // Total number of transactions on the account, for "Showing 40 of N"
+        public async Task<int> GetTransactionCountAsync(int accountId)
+        {
+            return await _context.Transactions
+                .CountAsync(t => t.AccountId == accountId);
+        }
+
         // Fetches transactions newest first, in chunks (used for AJAX "load more")
         public async Task<List<TransactionDto>> GetTransactionsAsync(int accountId, int skip, int take)
         {

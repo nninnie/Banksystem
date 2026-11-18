@@ -223,42 +223,48 @@
                             </button>
                         </li>
 
-                        <li class="nav-item dropdown border-left">
-                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
-                                <i class="mdi mdi-bell icon-white"></i>
-                                @if (notifications.Any())
-                                {
-                                    <span class="count @(hasWarning ? "dot-warning" : "dot-info")"></span>
-                                }
-                            </a>
+                        @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <li class="nav-item dropdown border-left">
+                                    <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
+                                        <i class="mdi mdi-bell icon-white"></i>
+                                        @if (notifications.Any())
+                                        {
+                                            <span class="count @(hasWarning ? "dot-warning" : "dot-info")"></span>
+                                        }
+                                    </a>
 
-                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
-                                <h6 class="p-3 mb-0">Notifications</h6>
-                                <div class="dropdown-divider"></div>
-                                @if (notifications.Any())
-                                {
-                                    foreach (var note in notifications)
+                                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
+                                        <h6 class="p-3 mb-0">Notifications</h6>
+                                        <div class="dropdown-divider"></div>
+                                        @if (notifications.Any())
+                                        {
+                                            foreach (var note in notifications)
+                                            {
+                                                <a class="dropdown-item">@note</a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p class="dropdown-item mb-0">No new notifications</p>
+                                        }
+
+                                        <div class="dropdown-divider"></div>
+                                        <p class="p-3 mb-0 text-center">End of notifications</p>
+                                    </div>
+                                </li>
+                            }
+
+                        @if (isLoggedIn)
+                        {
+                            <li class="nav-item dropdown border-left">
+                                <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-bs-toggle="dropdown">
+                                    <i class="mdi mdi-email icon-white"></i>
+                                    @if (hasWelcome)
                                     {
-                                        <a class="dropdown-item">@note</a>
+                                        <span class="count dot-info"></span>
                                     }
-                                }
-                                else
-                                {
-                                    <p class="dropdown-item mb-0">No new notifications</p>
-                                }
-
-                                <div class="dropdown-divider"></div>
-                                <p class="p-3 mb-0 text-center">End of notifications</p>
-                            </div>
-                        </li>
-
-                        <li class="nav-item dropdown border-left">
-                            <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-bs-toggle="dropdown">
-                                <i class="mdi mdi-email icon-white"></i>
-                                @if (hasWelcome)
-                                {
-                                    <span class="count dot-info"></span>
-                                }
+                                
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
@@ -282,6 +288,7 @@
                                 <p class="p-3 mb-0 text-center">End of messages</p>
                             </div>
                         </li>
+                        }
 
                         <li class="nav-item dropdown">
                             <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">

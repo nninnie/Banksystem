@@ -8,8 +8,7 @@ namespace BankApp.Services.Interfaces
     {
         Task<AccountDto?> GetAccountAsync(int accountId);
         Task<List<TransactionDto>> GetTransactionsAsync(int accountId, int skip, int take);
-
-        // Deposit+ Withdraw + Transfer – returns OK or the reason it failed
+        Task<int> GetTransactionCountAsync(int accountId);
         Task<ErrorCode> DepositAsync(int accountId, decimal amount);
         Task<ErrorCode> WithdrawAsync(int accountId, decimal amount);
         Task<ErrorCode> TransferAsync(int fromAccountId, int toAccountId, decimal amount);

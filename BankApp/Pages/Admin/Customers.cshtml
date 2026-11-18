@@ -140,8 +140,10 @@
                                 @c.CustomerId
                             </a>
                         </td>
-                        <td class="national-id" data-label="National ID">@c.NationalId</td>
-                        <td class="primary-value" data-label="Name">@c.FullName</td>
+                        <td class="national-id" data-label="National ID">@(string.IsNullOrWhiteSpace(c.NationalId) ? "–" : c.NationalId)</td>
+                        <td class="primary-value" data-label="Name">
+                            <a asp-page="/Admin/Customer" asp-route-id="@c.CustomerId">@c.FullName</a>
+                        </td>
                         <td data-label="Address">@c.Streetaddress</td>
                         <td data-label="City">@c.City</td>
                     </tr>
@@ -167,9 +169,7 @@
         </a>
     }
 
-    <span class="bank-page-info">
-        @Model.CurrentPage
-    </span>
+        <span class="bank-page-info">Page @Model.CurrentPage</span>
 
     @if (Model.Customers.Count == 50)
     {

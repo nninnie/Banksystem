@@ -17,7 +17,7 @@
 </div>
 
 <!-- Page header -->
-<div class="welcome-card customer-hero">
+div class="welcome-card welcome-card-compact customer-hero">
     <div class="customer-page-header">
         <div>
             <h2 class="welcome-title">Account Details</h2>
@@ -80,7 +80,7 @@
     <!-- Balance -->
     <div class="dashboard-card balance-card">
         <h3 class="card-title">
-            <i class="mdi mdi-currency-usd icon"></i>
+            <i class="mdi mdi-wallet-outline icon"></i>
             Balance
         </h3>
 
@@ -91,8 +91,15 @@
         <div class="balance-label">
             Current balance on this account
         </div>
-        <div class="balance-sparkline" aria-hidden="true">
-            <canvas></canvas>
+        <div class="balance-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
+            <div style="background:rgba(255,255,255,0.03);border:1px solid var(--line, #123a2a);border-radius:10px;padding:10px 12px;">
+                <div style="font-size:12px;color:var(--muted);">Frekvens</div>
+                <div style="font-size:18px;font-weight:600;color:var(--text);">@Model.Account.Frequency</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03);border:1px solid var(--line, #123a2a);border-radius:10px;padding:10px 12px;">
+                <div style="font-size:12px;color:var(--muted);">Skapad</div>
+                <div style="font-size:18px;font-weight:600;color:var(--text);">@Model.Account.Created.ToString("yyyy-MM-dd")</div>
+            </div>
         </div>
     </div>
 
@@ -105,7 +112,7 @@
 
         <!-- data-url = address of OnGetShowMoreAsync, read by script.js -->
         <div class="table-responsive">
-            <table class="mybank-table mobile-cards" id="transactions-table"
+            <table class="mybank-table mobile-cards" id="transactions-table" data-total="@Model.TransactionCount"
                data-url="@Url.Page("/Admin/Account", "ShowMore", new { id = Model.Account.AccountId })"
                data-currency="@CountryCurrency.Code(Model.Account.Country)">
             <thead>
@@ -123,6 +130,7 @@
         </div>
 
         <div class="show-more-wrap">
+            <span class="show-more-info" id="show-more-info">Showing 0 of @Model.TransactionCount</span>
             <button type="button" class="bank-btn-outline" id="show-more-btn">
                 Show more <i class="mdi mdi-chevron-down"></i>
             </button>
