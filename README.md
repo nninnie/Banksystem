@@ -106,9 +106,9 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 
 ### 🕵️ Konsolapp: misstänkta transaktioner
 - Eget konsolprojekt (`BankApp.SuspiciousTransactions`) som återanvänder `BankAppContext` och servicen `ISuspiciousTransactionService` (DRY)
-- Körs för varje land och kontrollerar kundernas transaktioner mot två regler:
-  1. En enskild transaktion över 15 000 kr
-  2. En kunds totala transaktioner de senaste 3 dygnen över 23 000 kr (`Date` är ett `DateOnly` i databasen, så 72 timmar räknas som 3 dagar)
+- Körs för varje land, och regel 2 summeras per kund:
+  1. En enskild transaktion över 15 000 kr, oavsett om pengarna sätts in eller tas ut
+  2. En kunds samlade belopp (in och ut, som absolutbelopp) de senaste 3 dygnen över 23 000 kr (`Date` är ett `DateOnly` i databasen, så 72 timmar räknas som 3 dagar)
 - Skapar en rapport som .txt-fil per land i `Dokument\BankAppReports`, med person, kontonummer och transaktionsnummer
 - Sparar senast kontrollerade transaktions-id i `last-checked-transaction-id.txt`, så att nästa körning bara rapporterar **nya** misstänkta transaktioner
 - Tabeller och färger med Spectre.Console, i samma färger som webben
