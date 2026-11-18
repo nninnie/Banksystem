@@ -69,7 +69,7 @@ div class="welcome-card welcome-card-compact customer-hero">
             </div>
             <div class="customer-detail">
                 <span class="label">Personal ID</span>
-                <span class="value">@Model.Customer.NationalId</span>
+                <span class="value">@(string.IsNullOrWhiteSpace(Model.Customer.NationalId) ? "–" : Model.Customer.NationalId)</span>
             </div>
             <div class="customer-detail">
                 <span class="label">Gender</span>
@@ -152,7 +152,7 @@ div class="welcome-card welcome-card-compact customer-hero">
                                 <i class="mdi mdi-wallet-outline account-icon"></i>
 
                                 <span class="account-number">
-                                    Account @account.AccountId
+                                    <a asp-page="/Admin/Account" asp-route-id="@account.AccountId" class="account-link">Account @account.AccountId</a>
                                 </span>
                             </td>
 

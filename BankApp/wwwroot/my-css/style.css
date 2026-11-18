@@ -1467,6 +1467,24 @@ html body .form-card .form-group {
     color: #E57367;
 }
 
+/* Customer number as a gold link */
+.mybank-table td.customer-id a {
+    color: var(--gold) !important;
+    font-weight: 600;
+}
+
+/* Account number as a gold link */
+.account-link {
+    color: var(--gold);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+    .account-link:hover {
+        color: var(--gold-soft);
+        text-decoration: underline;
+    }
+
 /* ==========================================================
    10. HOME PAGE STATS
    ========================================================== */
