@@ -2523,7 +2523,7 @@ a.transaction-name {
     }
 
 /* Side by side (wide screens): the table matches the map card's height */
-@media (min-width: 1301px) {
+@media (min-width: 1601px) {
     .country-overview .table-responsive,
     .country-overview .table-responsive .mybank-table {
         height: 100%;
@@ -2939,7 +2939,7 @@ td .account-actions {
     }
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1600px) {
     .country-overview {
         grid-template-columns: 1fr;
     }
