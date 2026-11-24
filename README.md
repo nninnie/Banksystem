@@ -42,7 +42,7 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 - De 10 kunder med högst totalt saldo i valt land, med placering, kundnummer, namn och stad
 - KPI-kort med antal toppkunder, genomsnittligt saldo och totalt saldo
 - **Response Caching** i 60 sekunder, en version per land (`VaryByQueryKeys = "country"`)
-- `[AllowAnonymous]`, eftersom Response Caching bara fungerar för utloggade användare
+- `[AllowAnonymous]`, så att sidan är publik. Kravet säger att sidan ska vara publik för att Response Caching ska fungera
 
 ### 🔎 Snabbsökning på kundnummer
 - Sökfält i navbaren, synligt för Admin och Cashier
@@ -108,7 +108,7 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 - Eget konsolprojekt (`BankApp.SuspiciousTransactions`) som återanvänder `BankAppContext` och servicen `ISuspiciousTransactionService` (DRY)
 - Körs för varje land, och regel 2 summeras per kund:
   1. En enskild transaktion över 15 000 kr, oavsett om pengarna sätts in eller tas ut
-  2. En kunds samlade belopp (in och ut, som absolutbelopp) de senaste 3 kalenderdagarna, idag och två dagar bakåt, över 23 000 kr (`Date` är ett `DateOnly` i databasen, så 72 timmar räknas som 3 dagar)
+   2. En kunds samlade belopp (in och ut, som absolutbelopp) de senaste 3 kalenderdagarna, idag och två dagar bakåt, över 23 000 kr (`Date` saknar klockslag, så vi räknar hela dagar i stället för 72 timmar)
 - Skapar en rapport som .txt-fil per land i `Dokument\BankAppReports`, med person, kontonummer och transaktionsnummer
 - Sparar senast kontrollerade transaktions-id i `last-checked-transaction-id.txt`, så att nästa körning bara rapporterar **nya** misstänkta transaktioner
 - Tabeller och färger med Spectre.Console, i samma färger som webben
