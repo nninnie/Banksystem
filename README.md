@@ -265,6 +265,12 @@ Lärdomar:
 - `Date` på transaktioner saknar klockslag, så regeln om 72 timmar blev 3 dagar
 - Webbens SQL-timeout var 30 sekunder, och en fråga som joinade över en miljon transaktioner gav timeout. Jag delade upp den i tre enkla steg (ägare, matchande transaktioner, koppling i minnet) och höjde timeouten till 120 sekunder
 
+## ⚠️ Kända begränsningar
+
+- Överföringar mellan konton i olika valutor görs utan valutaväxling. Beloppet dras från avsändarkontot och sätts in på mottagarkontot i samma siffra, och systemet räknar inte om till en annan valuta.
+- Regel 2 för misstänkta transaktioner räknar tre kalenderdagar i stället för 72 timmar, eftersom `Date` saknar klockslag.
+- Det finns inget lås mot samtidiga uttag och överföringar på samma konto.
+- `last-checked-transaction-id.txt` sparar högsta id. Transaktioner med lägre id som kommer till senare missas därför.
 ---
 
 ## ✍️ Utvecklat av
