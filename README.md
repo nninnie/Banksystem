@@ -65,7 +65,7 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 ### 💳 Kontobild
 - Kontonummer, saldo, kontoägare, frekvens och skapandedatum
 - Transaktioner sorterade med nyaste först
-- **AJAX "Show more"**: hämtar 20 transaktioner i taget med `fetch` utan sidladdning, och knappen döljs när det inte finns fler
+- **AJAX "Show more"**: hämtar 20 transaktioner i taget med `fetch` utan sidladdning
 
 ### 💰 Insättning, uttag och överföring (Cashier)
 - Saldot ändras **aldrig direkt**, bara genom en transaktion
@@ -139,7 +139,7 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 `BankAppContext.SaveChangesAsync()` sparar båda på en gång, eller ingen.
 
 ### **BankApp – Webbapplikation**
-- Tar emot förfrågan, validerar indata i ViewModels och visar resultatet. Innehåller ingen affärslogik för bankens regler
+- Tar emot förfrågan, validerar indata i ViewModels och visar resultatet. Innehåller nästan ingen affärslogik för bankens regler. Den enda regeln i sidorna är flaggan för uttag över 15 000 kr (`Withdraw.cshtml.cs`)
 - Razor Pages (`.cshtml` + PageModel)
 - ViewModels med validering
 - AutoMapper-profil (`MappingProfile`)
@@ -167,7 +167,7 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 
 ## ✅ Validering
 
-- Data annotations på ViewModels (`[Required]`, `[Range]`, `[StringLength]` m.fl.) med egna felmeddelanden
+- Data annotations på inmatningsmodeller (`[Required]`, `[Range]`, `[StringLength]` m.fl.) med egna felmeddelanden: `CustomerFormViewModel`, `DepositWithdrawViewModel`, `TransferViewModel`, `CreateUserViewModel`, `EditUserViewModel`, `LoginViewModel`, `NavbarSearchViewModel`. Visningsmodeller (`AccountViewModel`, `UserViewModel`, `SuspiciousTransactionViewModel`) saknar validering eftersom de bara visar data från databasen
 - **Server-side:** `ModelState.IsValid` kontrolleras innan något sparas eller söks
 - **Client-side:** jQuery Validation (installerat med LibMan i `wwwroot/lib`) via `_ValidationScriptsPartial` på formulären: inloggning, kundsökning, insättning, uttag, överföring samt skapa och ändra kund. Snabbsökningen i navbaren har bara `min="1"` i webbläsaren, och validering görs på söksidan
 - Regler som kräver databasen (t.ex. för lite pengar eller ett mottagarkonto som inte finns) returneras som `ErrorCode` från servicen och visas med `ModelState.AddModelError`
