@@ -33,7 +33,7 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 ## ✨ Funktionalitet
 
 ### 🌐 Startsida (publik)
-- KPI-kort med totalt antal kunder, totalt antal konton och totalt saldo
+- KPI-kort med totalt antal kunder, konton och länder
 - Tabell med statistik per land: antal kunder, antal konton och totalt saldo
 - Klickbar karta och klickbara länder som leder till landssidan
 - Kräver ingen inloggning
@@ -196,7 +196,7 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 - JavaScript (`fetch` / AJAX)
 - jQuery Validation
 - Bootstrap (Corona Admin Free)
-- Git & GitHub (en branch per funktion)
+- Git & GitHub 
 - Console Application med Spectre.Console
 
 ---
@@ -250,9 +250,9 @@ Jag arbetade enligt principer som:
 
 - **Separation of concerns:** sida, logik och data i olika projekt
 - **DRY:** partials och services som återanvänds, och flagglogiken samlad på ett ställe
-- **En branch per funktion:** merge till master när funktionen är testad
-- **Validering från början:** varje ny sida byggs med server- och client-side-validering direkt
-
+- **Branches:** används för större ändringar, t.ex. `suspicious-page` och `design/fix-layout`.
+- **Validering från början:** varje nytt formulär byggs med server- och client-side-validering direkt
+  
 Lärdomar:
 
 - Jag borde ha skapat klassbiblioteken och planerat lagren tidigare
