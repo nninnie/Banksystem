@@ -94,7 +94,6 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 - Skyddad med `[Authorize(Roles = "Admin")]`
 - Lösenord hanteras av `UserManager` (Identity), aldrig i klartext
 - De två seedade kontona är markerade **Protected** och kan inte tas bort
-- Man kan inte ta bort sig själv eller ändra sin egen roll
 - Servicen `IUserService` pratar med Identity, sidorna använder ViewModels (`CreateUserViewModel`, `EditUserViewModel`)
 
 ### 🚨 Misstänkta transaktioner (Admin)
@@ -109,7 +108,7 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 - Körs för varje land, och regel 2 summeras per kund:
   1. En enskild transaktion över 15 000 kr, oavsett om pengarna sätts in eller tas ut
    2. En kunds samlade belopp (in och ut, som absolutbelopp) de senaste 3 kalenderdagarna, idag och två dagar bakåt, över 23 000 kr (`Date` saknar klockslag, så vi räknar hela dagar i stället för 72 timmar)
-- Skapar en rapport som .txt-fil per land i `Dokument\BankAppReports`, med person, kontonummer och transaktionsnummer
+- Skapar en rapport som .txt-fil per land i `Documents\BankAppReports`, med person, kontonummer och transaktionsnummer
 - Sparar senast kontrollerade transaktions-id i `last-checked-transaction-id.txt`, så att nästa körning bara rapporterar **nya** misstänkta transaktioner
 - Tabeller och färger med Spectre.Console, i samma färger som webben
 - Tolkning: programmet körs per land och grupperar träffarna per kund. Regel 2 räknar absolutbelopp, så att insättningar och uttag läggs ihop. Kravet nämner inte om belopp ska räknas med tecken, så vi har valt absolutbelopp
