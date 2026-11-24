@@ -166,7 +166,7 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 
 ## ✅ Validering
 
-- Data annotations på inmatningsmodeller (`[Required]`, `[Range]`, `[StringLength]` m.fl.) med egna felmeddelanden: `CustomerFormViewModel`, `DepositWithdrawViewModel`, `TransferViewModel`, `CreateUserViewModel`, `EditUserViewModel`, `LoginViewModel`, `NavbarSearchViewModel`. Visningsmodeller (`AccountViewModel`, `UserViewModel`, `SuspiciousTransactionViewModel`) saknar validering eftersom de bara visar data från databasen
+- Data annotations på inmatningsmodeller (`[Required]`, `[Range]`, `[StringLength]` m.fl.) med egna felmeddelanden: `CustomerFormViewModel`, `DepositWithdrawViewModel`, `TransferViewModel`, `CreateUserViewModel`, `EditUserViewModel`, `LoginViewModel`, `NavbarSearchViewModel`. Visningsmodeller (`AccountViewModel`, `UserViewModel`, `SuspiciousTransactionViewModel`, `PageHeaderViewModel`) saknar validering eftersom de bara visar data från databasen
 - **Server-side:** `ModelState.IsValid` kontrolleras innan något sparas eller söks
 - **Client-side:** jQuery Validation (installerat med LibMan i `wwwroot/lib`) via `_ValidationScriptsPartial` på formulären: inloggning, kundsökning, insättning, uttag, överföring samt skapa och ändra kund. Snabbsökningen i navbaren har bara `min="1"` i webbläsaren, och validering görs på söksidan
 - Regler som kräver databasen (t.ex. för lite pengar eller ett mottagarkonto som inte finns) returneras som `ErrorCode` från servicen och visas med `ModelState.AddModelError`
