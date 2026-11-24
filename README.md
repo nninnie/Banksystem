@@ -237,7 +237,7 @@ Vid första start skapas Identity-tabellerna automatiskt (`MigrateAsync` i `Prog
 
 1. Öppna `BankApp.SuspiciousTransactions/appsettings.json` och ändra `Server=` och `Database=` till samma som i BankApp
 2. Högerklicka **BankApp.SuspiciousTransactions** i Solution Explorer → **Debug** → **Start Without Debugging**, så står fönstret kvar när rapporten är klar (eller kör `dotnet run --project BankApp.SuspiciousTransactions` i terminalen)
-3. Rapporterna sparas i `Dokument\BankAppReports`. Första körningen rapporterar hela historiken, och efter det bara nya transaktioner. Ta bort filen `last-checked-transaction-id.txt` för att börja om
+3. Rapporterna sparas i `Documents\BankAppReports`. Första körningen rapporterar hela historiken, och efter det bara nya transaktioner. Ta bort filen `last-checked-transaction-id.txt` för att börja om
 
 Konsolappen körs lokalt, inte i Azure.
 
