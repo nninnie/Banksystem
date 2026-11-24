@@ -108,7 +108,7 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 - Eget konsolprojekt (`BankApp.SuspiciousTransactions`) som återanvänder `BankAppContext` och servicen `ISuspiciousTransactionService` (DRY)
 - Körs för varje land, och regel 2 summeras per kund:
   1. En enskild transaktion över 15 000 kr, oavsett om pengarna sätts in eller tas ut
-  2. En kunds samlade belopp (in och ut, som absolutbelopp) de senaste 3 dygnen över 23 000 kr (`Date` är ett `DateOnly` i databasen, så 72 timmar räknas som 3 dagar)
+  2. En kunds samlade belopp (in och ut, som absolutbelopp) de senaste 3 kalenderdagarna, idag och två dagar bakåt, över 23 000 kr (`Date` är ett `DateOnly` i databasen, så 72 timmar räknas som 3 dagar)
 - Skapar en rapport som .txt-fil per land i `Dokument\BankAppReports`, med person, kontonummer och transaktionsnummer
 - Sparar senast kontrollerade transaktions-id i `last-checked-transaction-id.txt`, så att nästa körning bara rapporterar **nya** misstänkta transaktioner
 - Tabeller och färger med Spectre.Console, i samma färger som webben
@@ -119,7 +119,7 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 - Utloggning sker med ett POST-formulär som skyddas av en antiforgery-token
 - **Admin:** dashboard, User Admin (skapa, läsa, ändra och ta bort användare samt tilldela roll), misstänkta transaktioner, kundsökning, kundbild och kontobild. Admin kan se kunder men inte ändra dem
 - **Cashier:** kundsökning, kundbild, kontobild, skapa och ändra kund, insättning, uttag och överföring
-- `[Authorize(Roles = "...")]` varje skyddad sida, även om någon skriver adressen direkt
+- `[Authorize(Roles = "...")]` skyddar varje skyddad sida, även om någon skriver adressen direkt
 - Menyn visar bara det som användarens roll har tillgång till
 
 ---
@@ -139,7 +139,7 @@ Razor Page (PageModel)  →  Service  →  DbContext  →  SQL Server
 `BankAppContext.SaveChangesAsync()` sparar båda på en gång, eller ingen.
 
 ### **BankApp – Webbapplikation**
-- Tar emot förfrågan, validerar indata i ViewModels och visar resultatet. Innehåller ingen affärslogik.
+- Tar emot förfrågan, validerar indata i ViewModels och visar resultatet. Innehåller ingen affärslogik för bankens regler
 - Razor Pages (`.cshtml` + PageModel)
 - ViewModels med validering
 - AutoMapper-profil (`MappingProfile`)
