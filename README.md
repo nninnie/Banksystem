@@ -119,7 +119,7 @@ Rollerna och användarna skapas automatiskt (seed) vid uppstart om de inte redan
 - Utloggning sker med ett POST-formulär som skyddas av en antiforgery-token
 - **Admin:** dashboard, User Admin (skapa, läsa, ändra och ta bort användare samt tilldela roll), misstänkta transaktioner, kundsökning, kundbild och kontobild. Admin kan se kunder men inte ändra dem
 - **Cashier:** kundsökning, kundbild, kontobild, skapa och ändra kund, insättning, uttag och överföring
-- `[Authorize(Roles = "...")]` skyddar varje skyddad sida, även om någon skriver adressen direkt
+- `[Authorize(Roles = "...")]` skyddar alla sidor som kräver inloggning, även om någon skriver adressen direkt. Startsidan, landssidan och inloggningen är publika.
 - Menyn visar bara det som användarens roll har tillgång till
 
 ---
