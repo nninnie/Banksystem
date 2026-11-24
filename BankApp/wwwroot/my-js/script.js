@@ -315,8 +315,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.getElementById("show-more-info").textContent =
                     `Showing ${shown} of ${table.dataset.total}`;
 
-                // Hides the button when there are no more transactions
-                if (json.transactions.length < 20) {
+                // Hides the button when all transactions are shown
+                if (shown >= Number(table.dataset.total)) {
                     button.style.display = "none";
                 }
             })

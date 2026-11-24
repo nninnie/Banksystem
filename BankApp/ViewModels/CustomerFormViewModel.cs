@@ -2,10 +2,9 @@
 
 namespace BankApp.ViewModels
 {
-    // ViewModel - Represents a customer in the create/edit form (Input/Post Model), validation matches the database
+    // ViewModel - Form data for creating and editing a customer
     public class CustomerFormViewModel
     {
-        // Hidden field, only used when editing (0 = new customer)
         public int CustomerId { get; set; }
 
         [Required(ErrorMessage = "Gender is required.")]
@@ -44,7 +43,6 @@ namespace BankApp.ViewModels
         [StringLength(20, MinimumLength = 6, ErrorMessage = "National ID must be between 6 and 20 characters.")]
         public string NationalId { get; set; } = "";
 
-        // Optional - the database allows null
         [RegularExpression(@"^\+?\d{1,4}$", ErrorMessage = "Country code must look like +46.")]
         [StringLength(10, ErrorMessage = "Country code can be max 10 characters.")]
         public string? Telephonecountrycode { get; set; }
