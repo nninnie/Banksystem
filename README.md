@@ -271,6 +271,13 @@ Lärdomar:
 - Regel 2 för misstänkta transaktioner räknar tre kalenderdagar i stället för 72 timmar, eftersom `Date` saknar klockslag.
 - Det finns inget lås mot samtidiga uttag och överföringar på samma konto.
 - `last-checked-transaction-id.txt` sparar högsta id. Transaktioner med lägre id som kommer till senare missas därför.
+
+## 🔜 Nästa steg
+
+- Automatiska tester med xUnit för regler för misstänkta transaktioner och överföringar
+- Hantering av samtidiga uttag och överföringar (concurrency)
+- Valutaväxling vid överföring mellan konton i olika valutor
+
 ---
 
 ## ✍️ Utvecklat av
