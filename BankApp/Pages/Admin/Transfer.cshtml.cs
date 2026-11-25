@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BankApp.Pages.Admin
 {
-    // PageModel – transfer money from one account to another (Cashier only)
+    // PageModel – transfer money from one account to another 
     [Authorize(Roles = "Cashier")]
     public class TransferModel : PageModel
     {
@@ -22,13 +22,10 @@ namespace BankApp.Pages.Admin
             _mapper = mapper;
         }
 
-        // The sending account: owner, account number, balance
         public AccountViewModel Account { get; set; } = new();
 
-        // The 5 latest transactions, shown under the form
         public List<TransactionViewModel> RecentTransactions { get; set; } = new();
 
-        // Typed in the form, filled automatically on POST
         [BindProperty]
         public TransferViewModel Input { get; set; } = new();
 
@@ -69,7 +66,6 @@ namespace BankApp.Pages.Admin
 
             if (result == ErrorCode.OK)
             {
-                // Receipt: shows who got the money in the notification on the next page
                 var receiver = await _accountService.GetAccountAsync(Input.ToAccountId.Value);
                 var currency = CountryCurrency.Code(Account.Country);
 

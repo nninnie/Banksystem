@@ -8,7 +8,6 @@
     private string ActiveColumn =>
         string.IsNullOrEmpty(Model.SortColumn) ? "Id" : Model.SortColumn;
 
-    // Klick på aktiv kolumn (stigande) -> fallande, annars stigande
     private string NextOrder(string column) =>
         ActiveColumn == column && Model.SortOrder != "desc" ? "desc" : "asc";
 

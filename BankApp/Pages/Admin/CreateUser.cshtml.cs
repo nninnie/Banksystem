@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BankApp.Pages.Admin
 {
-    // PageModel – create a new system user (Admin only)
+    // PageModel – create a new system user 
     [Authorize(Roles = "Admin")]
     public class CreateUserModel : PageModel
     {
@@ -17,7 +17,6 @@ namespace BankApp.Pages.Admin
             _userService = userService;
         }
 
-        // Typed in the form, filled automatically on POST
         [BindProperty]
         public CreateUserViewModel Input { get; set; } = new();
 

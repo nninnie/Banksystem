@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BankApp.Pages.Admin
 {
-    // PageModel – user administration (Admin only), shows all system users
+    // PageModel – user administration, shows all system users
     [Authorize(Roles = "Admin")]
     public class UserAdminModel : PageModel
     {
@@ -20,10 +20,8 @@ namespace BankApp.Pages.Admin
             _mapper = mapper;
         }
 
-        // Shown in the table on the page
         public List<UserViewModel> Users { get; set; } = new();
 
-        // Shown above the table if a delete fails
         public string? ErrorMessage { get; set; }
 
         // GET – page opens: load all system users

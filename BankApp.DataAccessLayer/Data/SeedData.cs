@@ -10,7 +10,6 @@ namespace BankApp.DataAccessLayer.Data
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-            // Defines the roles that must be created during seeding.
             string[] roles = { "Admin", "Cashier" };
 
             foreach (var role in roles)

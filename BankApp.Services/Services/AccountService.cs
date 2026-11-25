@@ -44,7 +44,6 @@ namespace BankApp.Services.Services
                         .Where(d => d.Type == "OWNER")
                         .Select(d => d.Customer.Givenname + " " + d.Customer.Surname)
                         .FirstOrDefault() ?? "",
-                    // Country of the owner - used to show the right currency
                     Country = a.Dispositions
                         .Where(d => d.Type == "OWNER")
                         .Select(d => d.Customer.Country)
@@ -68,8 +67,8 @@ namespace BankApp.Services.Services
                 .Where(t => t.AccountId == accountId)
                 .OrderByDescending(t => t.Date)
                 .ThenByDescending(t => t.TransactionId)
-                .Skip(skip) // Needed for AJAX
-                .Take(take) // Needed for AJAX
+                .Skip(skip) 
+                .Take(take) 
                 .ToListAsync();
 
             return rows.Select(t => new TransactionDto
@@ -97,7 +96,6 @@ namespace BankApp.Services.Services
 
             account.Balance += amount;
 
-            // The balance only changes together with a transaction row
             _context.Transactions.Add(new Transaction
             {
                 AccountId = accountId,
@@ -112,7 +110,6 @@ namespace BankApp.Services.Services
             return ErrorCode.OK;
 
         }
-
 
         // Withdraw – removes money from the account and saves a Debit transaction
         public async Task<ErrorCode> WithdrawAsync(int accountId, decimal amount)
@@ -130,7 +127,6 @@ namespace BankApp.Services.Services
 
             account.Balance -= amount;
 
-            // Balance only changes through a transaction (amount is negative for withdrawals)
             _context.Transactions.Add(new Transaction
             {
                 AccountId = accountId,
@@ -169,7 +165,6 @@ namespace BankApp.Services.Services
 
             var today = Today();
 
-            // Money out from the sender (negative amount)
             _context.Transactions.Add(new Transaction
             {
                 AccountId = fromAccountId,
@@ -180,7 +175,6 @@ namespace BankApp.Services.Services
                 Balance = fromAccount.Balance
             });
 
-            // Money in to the receiver
             _context.Transactions.Add(new Transaction
             {
                 AccountId = toAccountId,
@@ -191,7 +185,6 @@ namespace BankApp.Services.Services
                 Balance = toAccount.Balance
             });
 
-            // One SaveChanges = both sides are saved together, or nothing
             await _context.SaveChangesAsync();
             return ErrorCode.OK;
         }

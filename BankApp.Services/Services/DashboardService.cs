@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankApp.Services.Services
 {
+    // Provides the country statistics for the dashboard: customers, accounts and total balance per country.
     public class DashboardService : IDashboardService
     {
         private readonly BankAppContext _context;
@@ -23,7 +24,6 @@ namespace BankApp.Services.Services
                 {
                     Country = g.Key,
                     CustomerCount = g.Count(),
-                    // Only OWNER dispositions – otherwise shared accounts are counted twice
                     AccountCount = g.SelectMany(c => c.Dispositions)
                     .Count(d => d.Type == "OWNER"),
                     TotalBalance = g.SelectMany(c => c.Dispositions)

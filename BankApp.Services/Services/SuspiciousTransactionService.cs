@@ -14,8 +14,7 @@ namespace BankApp.Services.Services
         private const int DaysBack = 2;
 
         private readonly BankAppContext _context;
-
-        // The owner of an account 
+ 
         private record Owner(int CustomerId, string CustomerName);
 
         public SuspiciousTransactionService(BankAppContext context)
@@ -47,7 +46,6 @@ namespace BankApp.Services.Services
             var single = await FindSingleLargeAsync(country, afterTransactionId, from, owners);
             var total = await FindHighTotalAsync(country, afterTransactionId, from, owners);
 
-            // One transaction can break both rules, so show it once
             return single.Concat(total)
                 .GroupBy(s => s.TransactionId)
                 .Select(g =>
@@ -73,7 +71,6 @@ namespace BankApp.Services.Services
                 })
                 .ToListAsync();
 
-            // AccountId is the key, so a transaction finds its owner directly
             return list
                 .GroupBy(o => o.AccountId)
                 .ToDictionary(g => g.Key, g => new Owner(g.First().CustomerId, g.First().Name));
@@ -112,10 +109,8 @@ namespace BankApp.Services.Services
         private async Task<List<SuspiciousTransactionDto>> FindHighTotalAsync(
             string country, int afterTransactionId, DateOnly from, Dictionary<int, Owner> owners)
         {
-            // Date has no time of day, so 72 hours = 3 days
             var since = DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Europe/Stockholm").AddDays(-DaysBack));
 
-            // All transactions in the window, old ones count in the total too
             var recent = await _context.Transactions
             .Where(t => t.Date >= since && t.Date >= from
              && _context.Dispositions.Any(d => d.AccountId == t.AccountId
@@ -136,7 +131,6 @@ namespace BankApp.Services.Services
                 Reason = "Total over 23 000 in 3 days"
             });
 
-            // Sum per customer, keep only the new transactions
             return rows
                 .GroupBy(r => r.CustomerId)
                 .Where(g => g.Sum(r => Math.Abs(r.Amount)) > TotalLimit)

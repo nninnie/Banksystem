@@ -17,10 +17,10 @@ namespace BankApp.Pages.Admin
             _customerService = customerService;
         }
 
-        // Customer number from the URL (GET)
         [BindProperty(SupportsGet = true)]
         public NavbarSearchViewModel Search { get; set; } = new();
 
+        // Looks up a customer by number from the navbar search, then opens the customer page.
         public async Task<IActionResult> OnGetAsync()
         {
             if (!Request.Query.ContainsKey("Search.CustomerId"))
@@ -29,7 +29,6 @@ namespace BankApp.Pages.Admin
                 return Page();
             }
 
-            // Server-side validation
             if (!ModelState.IsValid)
                 return Page();
 

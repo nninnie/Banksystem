@@ -9,7 +9,7 @@ using BankApp.Helpers;
 
 namespace BankApp.Pages.Admin
 {
-    // PageModel – edit an existing customer (Cashier only)
+    // PageModel – edit an existing customer 
     [Authorize(Roles = "Cashier")]
     public class EditCustomerModel : PageModel
     {
@@ -22,7 +22,6 @@ namespace BankApp.Pages.Admin
             _mapper = mapper;
         }
 
-        // Filled with the customer's current values on GET, typed in the form on POST
         [BindProperty]
         public CustomerFormViewModel Input { get; set; } = new();
 
@@ -42,14 +41,11 @@ namespace BankApp.Pages.Admin
         // POST – form sent: validate, update, then go back to the customer page
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            // The id in the address is the truth, not the hidden field in the form
             Input.CustomerId = id;
 
-            // Extra rule that DataAnnotations can not check
             if (Input.Birthday > SwedishTime.Today)
                 ModelState.AddModelError("Input.Birthday", "Birthday can not be in the future.");
 
-            // Server-side validation
             if (!ModelState.IsValid)
                 return Page();
 

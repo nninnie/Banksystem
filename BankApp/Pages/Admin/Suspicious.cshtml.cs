@@ -30,7 +30,6 @@ namespace BankApp.Pages.Admin
         public List<string> Countries { get; set; } = new();
         public List<SuspiciousTransactionViewModel> PageItems { get; set; } = new();
 
-        // Filters - bound from the URL (GET) and validated below
         [BindProperty(SupportsGet = true)]
         public string? Country { get; set; }
 
@@ -40,8 +39,6 @@ namespace BankApp.Pages.Admin
         // Search only runs when the Admin presses Show
         [BindProperty(SupportsGet = true)]
         public bool Search { get; set; }
-
-        // Summary for the cards
         public int TotalCount { get; set; }
         public decimal TotalAmount { get; set; }
         public int SingleCount { get; set; }
@@ -50,6 +47,7 @@ namespace BankApp.Pages.Admin
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
 
+        // Shows suspicious transactions for one country and period, searched only on Show and cached for 5 minutes.
         public async Task OnGetAsync(int pageNo)
         {
             Countries = (await _service.GetCountriesAsync()).OrderBy(c => c).ToList();
@@ -57,11 +55,9 @@ namespace BankApp.Pages.Admin
             if (pageNo < 1) pageNo = 1;
             CurrentPage = pageNo;
 
-            // First visit - pick the first country
             if (string.IsNullOrEmpty(Country))
                 Country = Countries.FirstOrDefault();
 
-            // Server-side validation of the filters
             if (Country == null || !Countries.Contains(Country))
                 ModelState.AddModelError(nameof(Country), "Choose a country from the list.");
 
@@ -71,11 +67,9 @@ namespace BankApp.Pages.Admin
             if (!ModelState.IsValid || !Search)
                 return;
 
-            // Saved for 5 minutes per country and period, so paging does not search again
             var key = $"suspicious-{Country}-{Days}";
             if (!_cache.TryGetValue(key, out List<SuspiciousTransactionViewModel>? all) || all == null)
             {
-                // null = all time, otherwise how far back to show
                 DateOnly? since = Days == 0 ? null : SwedishTime.Today.AddDays(-Days);
                 var found = await _service.FindSuspiciousAsync(Country!, 0, since);
 

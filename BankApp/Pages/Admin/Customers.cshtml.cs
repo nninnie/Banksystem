@@ -23,7 +23,6 @@ namespace BankApp.Pages.Admin
 
         public List<CustomerViewModel> Customers { get; set; } = new();
 
-        // Search input – bound from the URL (GET) and validated
         [BindProperty(SupportsGet = true)]
         [StringLength(50, ErrorMessage = "Name or ID can be max 50 characters.")]
         public string? SearchName { get; set; }
@@ -38,6 +37,7 @@ namespace BankApp.Pages.Admin
 
         public bool HasNextPage { get; set; }
 
+        // Loads one page (50 customers) for the search, sort and paging on the Customers page
         public async Task OnGetAsync(string? sortColumn, string? sortOrder, int pageNo)
         {
             if (pageNo < 1) pageNo = 1;
@@ -46,14 +46,12 @@ namespace BankApp.Pages.Admin
             SortOrder = sortOrder;
             CurrentPage = pageNo;
 
-            // Server-side validation – stop if the search input is invalid
             if (!ModelState.IsValid)
                 return;
 
             var customers = await _customerService.SearchCustomersAsync(
                 SearchName, SearchCity, sortColumn, sortOrder, pageNo);
 
-            // The service fetches 51 rows: the 51st only tells us that there is a next page
             HasNextPage = customers.Count > 50;
 
             Customers = _mapper.Map<List<CustomerViewModel>>(customers.Take(50));

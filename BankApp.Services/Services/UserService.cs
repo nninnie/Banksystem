@@ -10,7 +10,7 @@ namespace BankApp.Services.Services
     {
         private readonly UserManager<IdentityUser> _userManager;
 
-        // The seeded accounts are protected, so nobody can lock themselves (or the teacher) out
+        // The seeded accounts are protected
         private static readonly string[] ProtectedEmails =
         {
             "robert.johansson@admin.se",

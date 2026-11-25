@@ -16,7 +16,6 @@ namespace BankApp.ViewModels
         [RegularExpression("^(Admin|Cashier)$", ErrorMessage = "Choose Admin or Cashier.")]
         public string Role { get; set; } = "";
 
-        // Optional - leave empty to keep the current password
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 100 characters.")]
         [DataType(DataType.Password)]
         public string? NewPassword { get; set; }

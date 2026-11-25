@@ -1,7 +1,6 @@
 ﻿namespace BankApp.DataAccessLayer.DTOs
 {
-    // Customer DTO – exposes only non-sensitive fields such as name and location.
-    // Sensitive customer information (address, personal ID number, phone, email) is intentionally excluded.
+    // Customer DTO – exposes only non-sensitive fields such as name and location
     public class CustomerDto
     {
         public int CustomerId { get; set; }

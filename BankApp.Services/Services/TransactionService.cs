@@ -14,9 +14,7 @@ namespace BankApp.Services.Services
         {
             _context = context;
         }
-
-        // Loads the 5 latest transactions and their owner names using separate, lightweight SQL queries to prevent timeouts; 
-        // it then maps the data using a standard in-memory .ToList() because the SQL database has already finished its work.
+        // Loads the 5 latest transactions with their owner names, using two small queries to avoid timeouts.
         public async Task<List<TransactionDto>> GetRecentTransactionsAsync(int count)
         {
             var recent = await _context.Transactions

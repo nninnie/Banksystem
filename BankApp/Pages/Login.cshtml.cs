@@ -26,7 +26,7 @@ namespace BankApp.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            // If fields are empty or invalid, stop here and return the page with error messages
+  
             if (!ModelState.IsValid)
                 return Page();
 
@@ -34,21 +34,18 @@ namespace BankApp.Pages
 
             if (user != null)
             {
-                // Checks the password without signing in yet
                 var check = await _signInManager.CheckPasswordSignInAsync(user, Input.Password, lockoutOnFailure: false);
 
                 if (check.Succeeded)
                 {
                     var loginTime = SwedishTime.Now;
 
-                    // Saves the login time in the auth cookie, so it is shown as long as the user is logged in
                     var claims = new[] { new Claim("LoginTime", loginTime.ToString("yyyy-MM-dd HH:mm")) };
 
                     await _signInManager.SignInWithClaimsAsync(user, isPersistent: false, claims);
 
                     TempData["Welcome"] = true;
 
-                    // Each role starts where it works: Admin on the dashboard, Cashier on customer search
                     if (await _userManager.IsInRoleAsync(user, "Admin"))
                         return RedirectToPage("/Admin/Dashboard");
 

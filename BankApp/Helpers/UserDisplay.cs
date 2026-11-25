@@ -15,7 +15,6 @@ namespace BankApp.Helpers
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(raw);
         }
 
-        // Returns the user's role, or "Visitor" when not logged in
         public static string Role(ClaimsPrincipal user) =>
             user.IsInRole("Admin") ? "Admin"
             : user.IsInRole("Cashier") ? "Cashier"

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BankApp.Pages.Admin
 {
-    // PageModel – deposit money to one account (Cashier only)
+    // PageModel – deposit money to one account 
     [Authorize(Roles = "Cashier")]
     public class DepositModel : PageModel
     {
@@ -21,18 +21,13 @@ namespace BankApp.Pages.Admin
             _mapper = mapper;
         }
 
-        // Shown on the page: owner, account number, balance
         public AccountViewModel Account { get; set; } = new();
-
-        // The 5 latest transactions, shown under the form
         public List<TransactionViewModel> RecentTransactions { get; set; } = new();
 
-        // Typed in the form, filled automatically on POST
         [BindProperty]
         public DepositWithdrawViewModel Input { get; set; } = new();
 
-
-        // GET – page opens: load the account and show it
+        // Loads the account and its 5 latest transactions for the form page.
         public async Task<IActionResult> OnGetAsync(int id)
         {
             var account = await _accountService.GetAccountAsync(id);
@@ -60,7 +55,6 @@ namespace BankApp.Pages.Admin
             var transactions = await _accountService.GetTransactionsAsync(id, 0, 5);
             RecentTransactions = _mapper.Map<List<TransactionViewModel>>(transactions);
 
-            // Server-side validation
             if (!ModelState.IsValid)
                 return Page();
 

@@ -9,7 +9,7 @@ using BankApp.Helpers;
 
 namespace BankApp.Pages.Admin
 {
-    // PageModel – create a new customer (Cashier only)
+    // PageModel – create a new customer 
     [Authorize(Roles = "Cashier")]
     public class CreateCustomerModel : PageModel
     {
@@ -22,11 +22,9 @@ namespace BankApp.Pages.Admin
             _mapper = mapper;
         }
 
-        // Typed in the form, filled automatically on POST
         [BindProperty]
         public CustomerFormViewModel Input { get; set; } = new();
 
-        // GET – page opens with an empty form
         public void OnGet()
         {
         }
@@ -34,11 +32,9 @@ namespace BankApp.Pages.Admin
         // POST – form sent: validate, create customer + account, then go to the customer page
         public async Task<IActionResult> OnPostAsync()
         {
-            // Extra rule that DataAnnotations can not check
             if (Input.Birthday > SwedishTime.Today)
                 ModelState.AddModelError("Input.Birthday", "Birthday can not be in the future.");
 
-            // Server-side validation
             if (!ModelState.IsValid)
                 return Page();
 

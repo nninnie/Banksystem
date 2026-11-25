@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BankApp.Pages.Admin
 {
-    // DashboardModel for the home page. Retrieves dashboard statistics via DashboardService and passes them to the view.
+    // Admin dashboard: shows recent transactions, a greeting and the country statistics.
     [Authorize(Roles = "Admin")]
     public class DashboardModel : PageModel
     {
@@ -33,6 +33,7 @@ namespace BankApp.Pages.Admin
             _mapper = mapper;
         }
 
+        // Loads the admin dashboard: country statistics, the latest transactions and a greeting
         public async Task OnGet()
         {
             Data = await _dashboardService.GetDashboardAsync();

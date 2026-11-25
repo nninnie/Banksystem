@@ -9,7 +9,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BankApp.Pages
 {
-    // The page that shows the top customers in a given country
     [AllowAnonymous]
 
     // Caches the response for 60 seconds, separately for each country (?country=...) so the database isn't hit on every page load
@@ -25,14 +24,13 @@ namespace BankApp.Pages
             _mapper = mapper;
         }
 
-        // The country comes from the URL, e.g. /Country?country=Sweden
-        // SupportsGet = true makes binding work on GET requests, not just POST
         [BindProperty(SupportsGet = true)]
         [StringLength(50)]
         public string Country { get; set; } = "";
 
         public List<CustomerViewModel> TopCustomers { get; set; } = new();
 
+        // Loads the top 10 customers with the highest total balance in the selected country
         public async Task OnGetAsync()
         {
             if (!ModelState.IsValid) return;

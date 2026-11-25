@@ -117,8 +117,6 @@ namespace BankApp.Services.Services
             var desc = sortOrder == "desc";
             const string collation = "Finnish_Swedish_CI_AS";
 
-            // ThenBy CustomerId = tie-breaker, so customers with the same value
-            // always come in the same order (needed for correct paging)
             if (sortColumn == "NationalId")
             {
                 if (desc)
@@ -149,20 +147,18 @@ namespace BankApp.Services.Services
             }
             else
             {
-                // Default: sort by customer number (already unique)
                 if (desc)
                     query = query.OrderByDescending(c => c.CustomerId);
                 else
                     query = query.OrderBy(c => c.CustomerId);
             }
 
-            // Pagination (after sorting)
+            // Pagination 
             if (page < 1) page = 1;
 
             var firstPageIndex = (page - 1) * 50;
 
             query = query.Skip(firstPageIndex);
-            // One extra row, so the page can tell if there is a next page
             query = query.Take(51);
 
             return await query.ToListAsync();

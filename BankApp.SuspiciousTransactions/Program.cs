@@ -11,7 +11,7 @@ var green = new Color(0x2F, 0xA5, 0x74);
 // TrueColor - Forces exact 24-bit colors
 AnsiConsole.Profile.Capabilities.ColorSystem = ColorSystem.TrueColor;
 
-// Config - Reads the connection string from appsettings.json 
+// Config - Reads the connection string 
 var config = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("appsettings.json")
@@ -107,7 +107,6 @@ AnsiConsole.Write(examples);
 
 // Save - Next run starts after this id
 File.WriteAllText(stateFile, newestId.ToString());
-
 
 Console.WriteLine();
 Console.WriteLine("Press any key to exit...");

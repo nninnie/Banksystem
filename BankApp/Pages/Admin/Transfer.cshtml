@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Transfer";
     var currency = CountryCurrency.Code(Model.Account.Country);
-    // Shared with the partial _RecentTransactions (partials get the page's ViewData)
     ViewData["Currency"] = currency;
 }
 
