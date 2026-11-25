@@ -272,11 +272,13 @@ Lärdomar:
 - Det finns inget lås mot samtidiga uttag och överföringar på samma konto.
 - `last-checked-transaction-id.txt` sparar högsta id. Transaktioner med lägre id som kommer till senare missas därför.
 
-## 🔜 Nästa steg
+## 🔜 Framtida förbättringar
 
-- Automatiska tester med xUnit för regler för misstänkta transaktioner och överföringar
-- Hantering av samtidiga uttag och överföringar (concurrency)
-- Valutaväxling vid överföring mellan konton i olika valutor
+- **Automatiska tester:** Enhetstester med xUnit för reglerna för misstänkta transaktioner och för överföringar.
+- **Samtidighet:** Hantera samtidiga uttag och överföringar, till exempel med en rowversion-kolumn på kontot.
+- **Valutaväxling:** Växla valuta vid överföring mellan konton i olika valutor.
+- **Säkra hemligheter:** Flytta connection strings till User Secrets lokalt och App Settings i Azure.
+- **Ny publicering:** Publicera om Azure så att den körs samma version som master på GitHub.
 
 ---
 
