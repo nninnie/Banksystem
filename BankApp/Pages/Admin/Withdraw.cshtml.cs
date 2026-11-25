@@ -65,8 +65,9 @@ namespace BankApp.Pages.Admin
             if (result == ErrorCode.OK)
             {
                 if (_accountService.IsLargeWithdrawal(Input.Amount))
+                    TempData["LargeWithdrawal"] = true;
 
-                    return RedirectToPage("/Admin/Account", new { id });
+                return RedirectToPage("/Admin/Account", new { id });
             }
 
             if (result == ErrorCode.IncorrectAmount)
