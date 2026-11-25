@@ -64,10 +64,9 @@ namespace BankApp.Pages.Admin
 
             if (result == ErrorCode.OK)
             {
-                if (Input.Amount > 15000)
-                    TempData["LargeWithdrawal"] = true;
+                if (_accountService.IsLargeWithdrawal(Input.Amount))
 
-                return RedirectToPage("/Admin/Account", new { id });
+                    return RedirectToPage("/Admin/Account", new { id });
             }
 
             if (result == ErrorCode.IncorrectAmount)

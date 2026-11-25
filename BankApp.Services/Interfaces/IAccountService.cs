@@ -12,5 +12,6 @@ namespace BankApp.Services.Interfaces
         Task<ErrorCode> DepositAsync(int accountId, decimal amount);
         Task<ErrorCode> WithdrawAsync(int accountId, decimal amount);
         Task<ErrorCode> TransferAsync(int fromAccountId, int toAccountId, decimal amount);
+        bool IsLargeWithdrawal(decimal amount);
     }
 }

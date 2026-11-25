@@ -12,6 +12,10 @@ namespace BankApp.Services.Services
     {
         private readonly BankAppContext _context;
 
+        public const decimal LargeWithdrawalLimit = 15000m;
+
+        public bool IsLargeWithdrawal(decimal amount) => amount > LargeWithdrawalLimit;
+
         public AccountService(BankAppContext context)
         {
             _context = context;
