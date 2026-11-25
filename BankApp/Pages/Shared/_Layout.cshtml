@@ -208,9 +208,6 @@
                             // TempData is read once, so each notification is shown on the next page only.
                             var notifications = new List<string>();
 
-                            if (TempData["NewCustomer"] != null)
-                                notifications.Add("New customer registered");
-
                             if (TempData["LargeWithdrawal"] != null)
                                 notifications.Add("Large withdrawal detected");
 
