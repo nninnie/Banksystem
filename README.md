@@ -278,7 +278,6 @@ Lärdomar:
 - **Samtidighet:** Hantera samtidiga uttag och överföringar, till exempel med en rowversion-kolumn på kontot.
 - **Valutaväxling:** Växla valuta vid överföring mellan konton i olika valutor.
 - **Säkra hemligheter:** Flytta connection strings till User Secrets lokalt och App Settings i Azure.
-- **Ny publicering:** Publicera om Azure så att den körs samma version som master på GitHub.
 
 ---
 
