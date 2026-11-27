@@ -221,9 +221,11 @@ README.md
 
 ## 🛠️ Installation (F5 mot egen databas)
 
+> Vill du bara testa appen? Använd [live-demon på Azure](https://bankapp-ninnie-afebhbh6b8cjezg0.swedencentral-01.azurewebsites.net) med inloggningarna ovan. Ingen installation behövs. Stegen nedan gäller bara om du vill köra koden lokalt.
+
 **Krav:** Visual Studio 2026, .NET 10 SDK, SQL Server
 
-1. Återställ `BankAppDatav2.bak` i SQL Server Management Studio
+1. Ladda ner [BankAppDatav2.zip](https://github.com/nninnie/Banksystem/releases/download/v1.0/BankAppDatav2.zip), packa upp den och återställ `BankAppDatav2.bak` i SQL Server Management Studio
 2. Kör (byt till ditt databasnamn):
    ```sql
    ALTER AUTHORIZATION ON DATABASE::[databasnamn] TO [sa]
